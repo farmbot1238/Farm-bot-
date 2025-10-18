@@ -48,7 +48,8 @@ h1 { font-size:2rem; margin-bottom:15px; }
     height:100vh; padding:40px; color: var(--white); overflow-y:auto;
 }
 .page .content {
-    background: var(--glass); padding:20px; border-radius:15px; max-width:800px; margin:auto;
+    background: var(--glass); padding:30px; border-radius:15px; max-width:900px; margin:auto;
+    line-height: 1.6;
 }
 .page button { margin-top:20px; padding:10px 20px; background: var(--green); border:none; border-radius:8px; color: var(--white); cursor:pointer; }
 .page button:hover { background:#2e7d32; }
@@ -58,6 +59,72 @@ h1 { font-size:2rem; margin-bottom:15px; }
 .threeD-title { font-size:2rem; text-align:center; margin-bottom:15px; }
 .threeD-title .farm { color: var(--yellow); }
 .threeD-title .bot { color: var(--green); }
+/* قائمة الوظائف */
+.functions-list { text-align: left; margin: 20px 0; }
+.function-item { 
+    margin: 15px 0; 
+    padding: 15px; 
+    background: rgba(255,255,255,0.1); 
+    border-radius: 8px;
+    border-right: 4px solid var(--green);
+    transition: transform 0.3s ease;
+}
+.function-item:hover {
+    transform: translateX(5px);
+    background: rgba(255,255,255,0.15);
+}
+
+/* تصميم جديد لقسم الشرح */
+.about-content {
+    text-align: justify;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.about-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    border-left: 4px solid var(--yellow);
+}
+
+.about-section h3 {
+    color: var(--yellow);
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.feature-item {
+    padding: 12px;
+    background: rgba(27, 94, 32, 0.3);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.highlight {
+    color: var(--yellow);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 235, 59, 0.3);
+}
+
+.highlight-green {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.contact-btn {
+    display: inline-block;
+    width: auto;
+    margin: 5px;
+}
 </style>
 </head>
 <body>
@@ -69,10 +136,10 @@ h1 { font-size:2rem; margin-bottom:15px; }
         <h1 id="title">FARM BOT</h1>
         <p id="subtitle">Revolution in the world of agriculture</p>
         <div class="menu">
-            <button onclick="openPage('about')">About</button>
-            <button onclick="openPage('what')">What it does</button>
-            <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'">Contact</button>
-            <button onclick="open3DPage()">3D</button>
+            <button onclick="openPage('about')" id="about-btn">About</button>
+            <button onclick="openPage('what')" id="what-btn">What it does</button>
+            <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'" id="contact-btn">Contact</button>
+            <button onclick="open3DPage()" id="threeD-btn">3D</button>
         </div>
     </div>
 </section>
@@ -81,28 +148,32 @@ h1 { font-size:2rem; margin-bottom:15px; }
 <div id="suggestions">
     <h2 id="suggest-title">Suggestions</h2>
     <p id="suggest-text">We believe in any suggestion that can develop and enhance our project.</p>
-    <p><strong>Phone:</strong> +962 7XXXXXXXX</p>
+    <p><strong id="phone-text">Phone:</strong> +962 7XXXXXXXX</p>
     <form onsubmit="event.preventDefault(); alert('Suggestion sent!');">
-        <input type="text" placeholder="Write your suggestion..." required>
-        <button type="submit">Send</button>
+        <input type="text" id="suggest-input" placeholder="Write your suggestion..." required>
+        <button type="submit" id="send-btn">Send</button>
     </form>
 </div>
 
 <!-- صفحة About -->
 <section class="page" id="about">
     <div class="content">
-        <h2>About</h2>
-        <p> Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture. </p>
-        <button onclick="closePage('about')">Exit</button>
+        <h2 id="about-page-title">About Farm Bot</h2>
+        <div class="about-content" id="about-text">
+            <!-- المحتوى سيتم تعبئته عبر الجافاسكريبت -->
+        </div>
+        <button onclick="closePage('about')" id="exit-about-btn">Exit</button>
     </div>
 </section>
 
 <!-- صفحة What it does -->
 <section class="page" id="what">
     <div class="content">
-        <h2>What it does</h2>
-        <p>[Write the explanation here...]</p>
-        <button onclick="closePage('what')">Exit</button>
+        <h2 id="what-title">What it does</h2>
+        <div class="functions-list" id="functions-content">
+            <!-- المحتوى سيتم تعبئته عبر الجافاسكريبت -->
+        </div>
+        <button onclick="closePage('what')" id="exit-what-btn">Exit</button>
     </div>
 </section>
 
@@ -112,19 +183,190 @@ h1 { font-size:2rem; margin-bottom:15px; }
         <h2 class="threeD-title"><span class="farm">FARM</span> <span class="bot">BOT</span></h2>
         <p id="threeD-text">Here you can view the 3D model of Farm Bot.</p>
         <div id="threeDContainer" style="width:100%; height:400px;"></div>
-        <button onclick="closePage('threeD')">Exit</button>
+        <button onclick="closePage('threeD')" id="exit-3d-btn">Exit</button>
     </div>
 </section>
 
-<!-- Three.js مع GLTFLoader -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
-
 <script>
+// بيانات جميع النصوص باللغتين
+const textData = {
+    en: {
+        // الصفحة الرئيسية
+        title: "FARM BOT",
+        subtitle: "Revolution in the world of agriculture",
+        aboutBtn: "About",
+        whatBtn: "What it does",
+        contactBtn: "Contact",
+        threeDBtn: "3D",
+        
+        // قسم الاقتراحات
+        suggestTitle: "Suggestions",
+        suggestText: "We believe in any suggestion that can develop and enhance our project.",
+        phoneText: "Phone:",
+        suggestInput: "Write your suggestion...",
+        sendBtn: "Send",
+        
+        // صفحة About
+        aboutPageTitle: "About Farm Bot",
+        aboutContent: `
+            <div class="about-section">
+                <h3>🎯 Project Overview</h3>
+                <p>Farm Bot is an <span class="highlight">intelligent agricultural robot</span> fully designed and built in Jordan by the students <strong>Haitham Al-Maaytah</strong> and <strong>Abdulrahman Al-Maaytah</strong>.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>🚀 Mission & Vision</h3>
+                <p>Designed to assist farmers and improve farming processes in a <span class="highlight-green">modern and efficient way</span>, Farm Bot represents the future of smart agriculture.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>📊 Smart Monitoring</h4>
+                    <p>Monitors crops, tracks their growth, and identifies plants ready for harvest</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🌿 Plant Health</h4>
+                    <p>Detects harmful plants and removes them automatically</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🤖 Autonomous Operation</h4>
+                    <p>Capable of operating independently and making accurate decisions</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📡 Remote Control</h4>
+                    <p>Can be controlled and monitored remotely from anywhere</p>
+                </div>
+            </div>
+
+            <div class="about-section">
+                <h3>📈 Advanced Features</h3>
+                <p>Farm Bot provides farmers with <span class="highlight">detailed reports</span> on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>⚡ Efficiency & Performance</h3>
+                <p>Operates continuously throughout the day with <span class="highlight-green">high efficiency</span>, and represents an ideal integration of modern technology with traditional farming.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>🌟 The Perfect Partner</h3>
+                <p>Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, and serving as a step toward the future of <span class="highlight">smart and sustainable agriculture</span>.</p>
+            </div>
+        `,
+        
+        // صفحة What it does
+        whatTitle: "What it does",
+        functions: [
+            "Crop Monitoring & Growth Tracking",
+            "Harvest Readiness Identification", 
+            "Harmful Plant Detection & Automated Removal",
+            "Autonomous Operation & Decision-Making",
+            "Remote Control & Monitoring",
+            "Automated Reporting & Data Analysis"
+        ],
+        
+        // صفحة 3D
+        threeDText: "Here you can view the 3D model of Farm Bot.",
+        
+        // أزرار الخروج
+        exitBtn: "Exit"
+    },
+    ar: {
+        // الصفحة الرئيسية
+        title: "المزرعة الذكية",
+        subtitle: "ثورة في عالم الزراعة",
+        aboutBtn: "حول المشروع",
+        whatBtn: "ماذا يفعل",
+        contactBtn: "تواصل ",
+        threeDBtn: "3D",
+        
+        // قسم الاقتراحات
+        suggestTitle: "اقتراحات",
+        suggestText: "نحن نؤمن بأي اقتراح يمكن أن يطور ويعزز مشروعنا.",
+        phoneText: "هاتف:",
+        suggestInput: "اكتب اقتراحك...",
+        sendBtn: "إرسال",
+        
+        // صفحة About
+        aboutPageTitle: "حول المزرعة الذكية",
+        aboutContent: `
+            <div class="about-section">
+                <h3>🎯 نظرة عامة على المشروع</h3>
+                <p>المزرعة الذكية هو <span class="highlight">روبوت زراعي ذكي</span> تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب <strong>هيثم المعايطة</strong> و <strong>عبدالرحمن المعايطة</strong>.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>🚀 المهمة والرؤية</h3>
+                <p>صمم لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة <span class="highlight-green">حديثة وفعالة</span>، تمثل المزرعة الذكية مستقبل الزراعة الذكية.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>📊 المراقبة الذكية</h4>
+                    <p>يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🌿 صحة النباتات</h4>
+                    <p>يكتشف النباتات الضارة ويقوم بإزالتها تلقائياً</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🤖 التشغيل المستقل</h4>
+                    <p>قادر على العمل بشكل مستقل واتخاذ القرارات الدقيقة</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📡 التحكم عن بعد</h4>
+                    <p>يمكن التحكم فيه ومراقبته عن بعد من أي مكان</p>
+                </div>
+            </div>
+
+            <div class="about-section">
+                <h3>📈 الميزات المتقدمة</h3>
+                <p>توفر المزرعة الذكية للمزارعين <span class="highlight">تقارير مفصلة</span> عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. وتساهم في زيادة الإنتاجية وتقليل هدر الموارد.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>⚡ الكفاءة والأداء</h3>
+                <p>تعمل بشكل مستمر طوال اليوم <span class="highlight-green">بكفاءة عالية</span>، وتمثل تكاملاً مثالياً بين التكنولوجيا الحديثة والزراعة التقليدية.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>🌟 الشريك المثالي</h3>
+                <p>المزرعة الذكية هي الشريك الزراعي المثالي لتحقيق زراعة أكثر ذكاءً وكفاءة، وتوفير الوقت والجهد، وتعزيز دقة مراقبة المحاصيل، وتمثل خطوة نحو مستقبل <span class="highlight">الزراعة الذكية والمستدامة</span>.</p>
+            </div>
+        `,
+        
+        // صفحة What it does
+        whatTitle: "ماذا يفعل",
+        functions: [
+            "مراقبة المحاصيل وتتبع النمو",
+            "تحديد النباتات الجاهزة للحصاد",
+            "كشف النباتات الضارة وإزالتها آلياً",
+            "التشغيل المستقل واتخاذ القرارات",
+            "التحكم والمراقبة عن بُعد", 
+            "إعداد التقارير الآلية وتحليل البيانات"
+        ],
+        
+        // صفحة 3D
+        threeDText: "هنا يمكنك عرض نموذج المزرعة الذكية ثلاثي الأبعاد.",
+        
+        // أزرار الخروج
+        exitBtn: "خروج"
+    }
+};
+
 function openPage(pageId){
     document.getElementById('home').style.display='none';
     document.getElementById('suggestions').style.display='none';
     document.getElementById(pageId).style.display='block';
+    
+    // إذا كانت صفحة About، نعرض المحتوى المناسب للغة
+    if(pageId === 'about') {
+        updateAboutContent();
+    }
+    // إذا كانت صفحة What it does، نعرض المحتوى المناسب للغة
+    if(pageId === 'what') {
+        updateFunctionsContent();
+    }
 }
 
 function closePage(pageId){
@@ -133,38 +375,97 @@ function closePage(pageId){
     document.getElementById('suggestions').style.display='block';
 }
 
+// تحديث محتوى قسم About بناءً على اللغة
+function updateAboutContent() {
+    const container = document.getElementById('about-text');
+    const currentLang = lang;
+    
+    container.innerHTML = textData[currentLang].aboutContent;
+}
+
+// تحديث محتوى قسم الوظائف بناءً على اللغة
+function updateFunctionsContent() {
+    const container = document.getElementById('functions-content');
+    const currentLang = lang;
+    
+    container.innerHTML = '';
+    
+    const functions = textData[currentLang].functions;
+    
+    for(let i = 0; i < functions.length; i++) {
+        const functionItem = document.createElement('div');
+        functionItem.className = 'function-item';
+        functionItem.textContent = functions[i];
+        container.appendChild(functionItem);
+    }
+}
+
+// تحديث جميع النصوص بناءً على اللغة
+function updateAllTexts() {
+    const currentLang = lang;
+    const data = textData[currentLang];
+    
+    // الصفحة الرئيسية
+    document.getElementById("title").innerText = data.title;
+    document.getElementById("subtitle").innerText = data.subtitle;
+    document.getElementById("about-btn").innerText = data.aboutBtn;
+    document.getElementById("what-btn").innerText = data.whatBtn;
+    document.getElementById("contact-btn").innerText = data.contactBtn;
+    document.getElementById("threeD-btn").innerText = data.threeDBtn;
+    
+    // قسم الاقتراحات
+    document.getElementById("suggest-title").innerText = data.suggestTitle;
+    document.getElementById("suggest-text").innerText = data.suggestText;
+    document.getElementById("phone-text").innerText = data.phoneText;
+    document.getElementById("suggest-input").placeholder = data.suggestInput;
+    document.getElementById("send-btn").innerText = data.sendBtn;
+    
+    // صفحة About
+    document.getElementById("about-page-title").innerText = data.aboutPageTitle;
+    document.getElementById("exit-about-btn").innerText = data.exitBtn;
+    
+    // صفحة What it does
+    document.getElementById("what-title").innerText = data.whatTitle;
+    document.getElementById("exit-what-btn").innerText = data.exitBtn;
+    
+    // صفحة 3D
+    document.getElementById("threeD-text").innerText = data.threeDText;
+    document.getElementById("exit-3d-btn").innerText = data.exitBtn;
+    
+    // تحديث المحتوى إذا كانت الصفحات مفتوحة
+    if(document.getElementById('about').style.display === 'block') {
+        updateAboutContent();
+    }
+    if(document.getElementById('what').style.display === 'block') {
+        updateFunctionsContent();
+    }
+}
+
 // فتح صفحة 3D يذهب مباشرة للرابط
 function open3DPage(){
     window.location.href = 'https://farmbot1238.github.io/3D/';
 }
 
 // تبديل اللغة
-let lang="en";
+let lang = "en";
 function toggleLang(){
-    if(lang==="en"){
-        document.getElementById("title").innerText="المزرعة الذكية";
-        document.getElementById("subtitle").innerText="ثورة في عالم الزراعة";
-        document.querySelectorAll(".menu button")[0].innerText="حول";
-        document.querySelectorAll(".menu button")[1].innerText="ماذا يفعل";
-        document.querySelectorAll(".menu button")[2].innerText="تواصل";
-        document.querySelectorAll(".menu button")[3].innerText="3D";
-        document.getElementById("suggest-title").innerText="اقتراحات";
-        document.getElementById("suggest-text").innerText="نحن نؤمن بأي اقتراح يمكن أن يطور ويعزز مشروعنا.";
-        document.getElementById("threeD-text").innerText="هنا يمكنك عرض نموذج Farm Bot ثلاثي الأبعاد.";
-        lang="ar";
-    }else{
-        document.getElementById("title").innerText="FARM BOT";
-        document.getElementById("subtitle").innerText="Revolution in the world of agriculture";
-        document.querySelectorAll(".menu button")[0].innerText="About";
-        document.querySelectorAll(".menu button")[1].innerText="What it does";
-        document.querySelectorAll(".menu button")[2].innerText="Contact";
-        document.querySelectorAll(".menu button")[3].innerText="3D";
-        document.getElementById("suggest-title").innerText="Suggestions";
-        document.getElementById("suggest-text").innerText="We believe in any suggestion that can develop and enhance our project.";
-        document.getElementById("threeD-text").innerText="Here you can view the 3D model of Farm Bot.";
-        lang="en";
+    if(lang === "en"){
+        lang = "ar";
+        document.querySelector('.lang-toggle').innerText = "EN";
+        document.body.style.direction = "rtl";
+    } else {
+        lang = "en";
+        document.querySelector('.lang-toggle').innerText = "AR";
+        document.body.style.direction = "ltr";
     }
+    
+    updateAllTexts();
 }
+
+// تهيئة المحتوى عند التحميل
+document.addEventListener('DOMContentLoaded', function() {
+    updateAllTexts();
+});
 </script>
 </body>
 </html>
