@@ -48,8 +48,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
     height:100vh; padding:40px; color: var(--white); overflow-y:auto;
 }
 .page .content {
-    background: var(--glass); padding:30px; border-radius:15px; max-width:900px; margin:auto;
-    line-height: 1.6;
+    background: var(--glass); padding:20px; border-radius:15px; max-width:800px; margin:auto;
 }
 .page button { margin-top:20px; padding:10px 20px; background: var(--green); border:none; border-radius:8px; color: var(--white); cursor:pointer; }
 .page button:hover { background:#2e7d32; }
@@ -61,69 +60,24 @@ h1 { font-size:2rem; margin-bottom:15px; }
 .threeD-title .bot { color: var(--green); }
 /* قائمة الوظائف */
 .functions-list { text-align: left; margin: 20px 0; }
-.function-item { 
-    margin: 15px 0; 
-    padding: 15px; 
-    background: rgba(255,255,255,0.1); 
-    border-radius: 8px;
-    border-right: 4px solid var(--green);
-    transition: transform 0.3s ease;
-}
-.function-item:hover {
-    transform: translateX(5px);
-    background: rgba(255,255,255,0.15);
-}
-
-/* تصميم جديد لقسم الشرح */
-.about-content {
-    text-align: justify;
-    font-size: 1.1rem;
-    line-height: 1.8;
-}
-
-.about-section {
-    margin-bottom: 25px;
-    padding: 15px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 10px;
-    border-left: 4px solid var(--yellow);
-}
-
-.about-section h3 {
-    color: var(--yellow);
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-}
-
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.feature-item {
-    padding: 12px;
-    background: rgba(27, 94, 32, 0.3);
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.highlight {
-    color: var(--yellow);
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(255, 235, 59, 0.3);
-}
-
-.highlight-green {
-    color: #4caf50;
-    font-weight: bold;
-}
-
-.contact-btn {
+.function-item { margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+/* زر تنزيل PDF */
+.pdf-download-btn {
     display: inline-block;
-    width: auto;
-    margin: 5px;
+    margin: 15px 0;
+    padding: 12px 25px;
+    background: #d32f2f;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+.pdf-download-btn:hover {
+    background: #b71c1c;
+}
+.pdf-icon {
+    margin-right: 8px;
 }
 </style>
 </head>
@@ -138,8 +92,9 @@ h1 { font-size:2rem; margin-bottom:15px; }
         <div class="menu">
             <button onclick="openPage('about')" id="about-btn">About</button>
             <button onclick="openPage('what')" id="what-btn">What it does</button>
-            <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'" id="contact-btn">Contact</button>
-            <button onclick="open3DPage()" id="threeD-btn">3D</button>
+            <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'">Contact</button>
+            <button onclick="open3DPage()">3D</button>
+            <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
     </div>
 </section>
@@ -158,10 +113,8 @@ h1 { font-size:2rem; margin-bottom:15px; }
 <!-- صفحة About -->
 <section class="page" id="about">
     <div class="content">
-        <h2 id="about-page-title">About Farm Bot</h2>
-        <div class="about-content" id="about-text">
-            <!-- المحتوى سيتم تعبئته عبر الجافاسكريبت -->
-        </div>
+        <h2 id="about-page-title">About</h2>
+        <p id="about-text">Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.</p>
         <button onclick="closePage('about')" id="exit-about-btn">Exit</button>
     </div>
 </section>
@@ -187,6 +140,24 @@ h1 { font-size:2rem; margin-bottom:15px; }
     </div>
 </section>
 
+<!-- صفحة Download PDF -->
+<section class="page" id="download">
+    <div class="content">
+        <h2 id="download-title">Download Farm Bot PDF</h2>
+        <p id="download-text">Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.</p>
+        
+        <!-- زر تنزيل PDF -->
+        <a href="FARM8OT.pdf" id="pdf-download-link" class="pdf-download-btn" download="FARM8OT.pdf">
+            <span class="pdf-icon">📄</span>
+            <span id="download-btn-text">Download Farm Bot PDF</span>
+        </a>
+        
+        <p id="file-info">File size: 1.2 MB | Format: PDF</p>
+        
+        <button onclick="closePage('download')" id="exit-download-btn">Exit</button>
+    </div>
+</section>
+
 <script>
 // بيانات جميع النصوص باللغتين
 const textData = {
@@ -198,6 +169,7 @@ const textData = {
         whatBtn: "What it does",
         contactBtn: "Contact",
         threeDBtn: "3D",
+        downloadBtn: "Download PDF",
         
         // قسم الاقتراحات
         suggestTitle: "Suggestions",
@@ -207,52 +179,8 @@ const textData = {
         sendBtn: "Send",
         
         // صفحة About
-        aboutPageTitle: "About Farm Bot",
-        aboutContent: `
-            <div class="about-section">
-                <h3>🎯 Project Overview</h3>
-                <p>Farm Bot is an <span class="highlight">intelligent agricultural robot</span> fully designed and built in Jordan by the students <strong>Haitham Al-Maaytah</strong> and <strong>Abdulrahman Al-Maaytah</strong>.</p>
-            </div>
-
-            <div class="about-section">
-                <h3>🚀 Mission & Vision</h3>
-                <p>Designed to assist farmers and improve farming processes in a <span class="highlight-green">modern and efficient way</span>, Farm Bot represents the future of smart agriculture.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <h4>📊 Smart Monitoring</h4>
-                    <p>Monitors crops, tracks their growth, and identifies plants ready for harvest</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🌿 Plant Health</h4>
-                    <p>Detects harmful plants and removes them automatically</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🤖 Autonomous Operation</h4>
-                    <p>Capable of operating independently and making accurate decisions</p>
-                </div>
-                <div class="feature-item">
-                    <h4>📡 Remote Control</h4>
-                    <p>Can be controlled and monitored remotely from anywhere</p>
-                </div>
-            </div>
-
-            <div class="about-section">
-                <h3>📈 Advanced Features</h3>
-                <p>Farm Bot provides farmers with <span class="highlight">detailed reports</span> on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste.</p>
-            </div>
-
-            <div class="about-section">
-                <h3>⚡ Efficiency & Performance</h3>
-                <p>Operates continuously throughout the day with <span class="highlight-green">high efficiency</span>, and represents an ideal integration of modern technology with traditional farming.</p>
-            </div>
-
-            <div class="about-section">
-                <h3>🌟 The Perfect Partner</h3>
-                <p>Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, and serving as a step toward the future of <span class="highlight">smart and sustainable agriculture</span>.</p>
-            </div>
-        `,
+        aboutPageTitle: "About",
+        aboutText: "Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.",
         
         // صفحة What it does
         whatTitle: "What it does",
@@ -268,6 +196,12 @@ const textData = {
         // صفحة 3D
         threeDText: "Here you can view the 3D model of Farm Bot.",
         
+        // صفحة Download
+        downloadTitle: "Download Farm Bot PDF",
+        downloadText: "Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.",
+        downloadBtnText: "Download Farm Bot PDF",
+        fileInfo: "File size: 1.2 MB | Format: PDF",
+        
         // أزرار الخروج
         exitBtn: "Exit"
     },
@@ -275,10 +209,11 @@ const textData = {
         // الصفحة الرئيسية
         title: "المزرعة الذكية",
         subtitle: "ثورة في عالم الزراعة",
-        aboutBtn: "حول المشروع",
+        aboutBtn: "حول",
         whatBtn: "ماذا يفعل",
-        contactBtn: "تواصل ",
+        contactBtn: "تواصل",
         threeDBtn: "3D",
+        downloadBtn: "تحميل PDF",
         
         // قسم الاقتراحات
         suggestTitle: "اقتراحات",
@@ -288,52 +223,8 @@ const textData = {
         sendBtn: "إرسال",
         
         // صفحة About
-        aboutPageTitle: "حول المزرعة الذكية",
-        aboutContent: `
-            <div class="about-section">
-                <h3>🎯 نظرة عامة على المشروع</h3>
-                <p>المزرعة الذكية هو <span class="highlight">روبوت زراعي ذكي</span> تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب <strong>هيثم المعايطة</strong> و <strong>عبدالرحمن المعايطة</strong>.</p>
-            </div>
-
-            <div class="about-section">
-                <h3>🚀 المهمة والرؤية</h3>
-                <p>صمم لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة <span class="highlight-green">حديثة وفعالة</span>، تمثل المزرعة الذكية مستقبل الزراعة الذكية.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <h4>📊 المراقبة الذكية</h4>
-                    <p>يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🌿 صحة النباتات</h4>
-                    <p>يكتشف النباتات الضارة ويقوم بإزالتها تلقائياً</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🤖 التشغيل المستقل</h4>
-                    <p>قادر على العمل بشكل مستقل واتخاذ القرارات الدقيقة</p>
-                </div>
-                <div class="feature-item">
-                    <h4>📡 التحكم عن بعد</h4>
-                    <p>يمكن التحكم فيه ومراقبته عن بعد من أي مكان</p>
-                </div>
-            </div>
-
-            <div class="about-section">
-                <h3>📈 الميزات المتقدمة</h3>
-                <p>توفر المزرعة الذكية للمزارعين <span class="highlight">تقارير مفصلة</span> عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. وتساهم في زيادة الإنتاجية وتقليل هدر الموارد.</p>
-            </div>
-
-            <div class="about-section">
-                <h3>⚡ الكفاءة والأداء</h3>
-                <p>تعمل بشكل مستمر طوال اليوم <span class="highlight-green">بكفاءة عالية</span>، وتمثل تكاملاً مثالياً بين التكنولوجيا الحديثة والزراعة التقليدية.</p>
-            </div>
-
-            <div class="about-section">
-                <h3>🌟 الشريك المثالي</h3>
-                <p>المزرعة الذكية هي الشريك الزراعي المثالي لتحقيق زراعة أكثر ذكاءً وكفاءة، وتوفير الوقت والجهد، وتعزيز دقة مراقبة المحاصيل، وتمثل خطوة نحو مستقبل <span class="highlight">الزراعة الذكية والمستدامة</span>.</p>
-            </div>
-        `,
+        aboutPageTitle: "حول",
+        aboutText: "المزرعة الذكية هو روبوت زراعي ذكي تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب هيثم المعايطة وعبدالرحمن المعايطة. تم تصميمه لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة حديثة وفعالة. فهو يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد. كما أنه يساعد في الحفاظ على صحة النباتات من خلال اكتشاف النباتات الضارة وإزالتها تلقائيًا. المزرعة الذكية قادر على العمل بشكل مستقل واتخاذ القرارات الزراعية الدقيقة بناءً على البيانات المحيطة. يمكن أيضًا التحكم فيه ومراقبته عن بُعد، مما يوفر للمزارعين تقارير مفصلة عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. يساهم في زيادة الإنتاجية وتقليل هدر الموارد، ويعمل بشكل مستمر طوال اليوم بكفاءة عالية، ويمثل تكاملاً مثاليًا بين التكنولوجيا الحديثة والزراعة التقليدية. المزرعة الذكية هو الشريك الزراعي المثالي لتحقيق زراعة أكثر ذكاءً وكفاءة، وتوفير الوقت والجهد، وتعزيز دقة مراقبة المحاصيل، وجعل العمليات الزراعية أكثر سلاسة وإدارة، ويمثل خطوة نحو مستقبل الزراعة الذكية والمستدامة.",
         
         // صفحة What it does
         whatTitle: "ماذا يفعل",
@@ -349,6 +240,12 @@ const textData = {
         // صفحة 3D
         threeDText: "هنا يمكنك عرض نموذج المزرعة الذكية ثلاثي الأبعاد.",
         
+        // صفحة Download
+        downloadTitle: "تحميل ملف PDF للمزرعة الذكية",
+        downloadText: "قم بتحميل وثيقة PDF الشاملة لمعرفة المزيد عن ميزات ومواصفات وتفاصيل المزرعة الذكية التقنية.",
+        downloadBtnText: "تحميل ملف PDF للمزرعة الذكية",
+        fileInfo: "حجم الملف: 1.2 ميجابايت | الصيغة: PDF",
+        
         // أزرار الخروج
         exitBtn: "خروج"
     }
@@ -359,10 +256,6 @@ function openPage(pageId){
     document.getElementById('suggestions').style.display='none';
     document.getElementById(pageId).style.display='block';
     
-    // إذا كانت صفحة About، نعرض المحتوى المناسب للغة
-    if(pageId === 'about') {
-        updateAboutContent();
-    }
     // إذا كانت صفحة What it does، نعرض المحتوى المناسب للغة
     if(pageId === 'what') {
         updateFunctionsContent();
@@ -373,14 +266,6 @@ function closePage(pageId){
     document.getElementById(pageId).style.display='none';
     document.getElementById('home').style.display='flex';
     document.getElementById('suggestions').style.display='block';
-}
-
-// تحديث محتوى قسم About بناءً على اللغة
-function updateAboutContent() {
-    const container = document.getElementById('about-text');
-    const currentLang = lang;
-    
-    container.innerHTML = textData[currentLang].aboutContent;
 }
 
 // تحديث محتوى قسم الوظائف بناءً على اللغة
@@ -410,8 +295,7 @@ function updateAllTexts() {
     document.getElementById("subtitle").innerText = data.subtitle;
     document.getElementById("about-btn").innerText = data.aboutBtn;
     document.getElementById("what-btn").innerText = data.whatBtn;
-    document.getElementById("contact-btn").innerText = data.contactBtn;
-    document.getElementById("threeD-btn").innerText = data.threeDBtn;
+    document.getElementById("download-btn").innerText = data.downloadBtn;
     
     // قسم الاقتراحات
     document.getElementById("suggest-title").innerText = data.suggestTitle;
@@ -422,6 +306,7 @@ function updateAllTexts() {
     
     // صفحة About
     document.getElementById("about-page-title").innerText = data.aboutPageTitle;
+    document.getElementById("about-text").innerText = data.aboutText;
     document.getElementById("exit-about-btn").innerText = data.exitBtn;
     
     // صفحة What it does
@@ -432,10 +317,14 @@ function updateAllTexts() {
     document.getElementById("threeD-text").innerText = data.threeDText;
     document.getElementById("exit-3d-btn").innerText = data.exitBtn;
     
-    // تحديث المحتوى إذا كانت الصفحات مفتوحة
-    if(document.getElementById('about').style.display === 'block') {
-        updateAboutContent();
-    }
+    // صفحة Download
+    document.getElementById("download-title").innerText = data.downloadTitle;
+    document.getElementById("download-text").innerText = data.downloadText;
+    document.getElementById("download-btn-text").innerText = data.downloadBtnText;
+    document.getElementById("file-info").innerText = data.fileInfo;
+    document.getElementById("exit-download-btn").innerText = data.exitBtn;
+    
+    // تحديث محتوى الوظائف إذا كانت الصفحة مفتوحة
     if(document.getElementById('what').style.display === 'block') {
         updateFunctionsContent();
     }
