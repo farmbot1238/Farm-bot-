@@ -11,6 +11,7 @@
     --green: #1b5e20;
     --yellow: #ffeb3b;
     --black: #000;
+    --hover-green: #4caf50;
 }
 /* عام */
 * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
@@ -28,8 +29,13 @@ h1 { font-size:2rem; margin-bottom:15px; }
 .menu button {
     display:block; width:200px; margin:10px auto; padding:12px; font-size:1rem;
     border:none; border-radius:10px; background: var(--green); color: var(--white); cursor:pointer; transition:0.3s;
+    position: relative;
+    overflow: hidden;
 }
-.menu button:hover { background:#2e7d32; }
+.menu button:hover { 
+    background: var(--hover-green);
+    box-shadow: 0 0 15px var(--hover-green);
+}
 /* قسم الاقتراحات */
 #suggestions {
     background: var(--black); padding:30px; border-radius:15px 15px 0 0; margin:0; width:100%;
@@ -40,7 +46,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
 #suggestions input, #suggestions button { padding:10px; margin:5px; border:none; border-radius:8px; }
 #suggestions input { width:250px; }
 #suggestions button { background: var(--green); color: var(--white); cursor:pointer; }
-#suggestions button:hover { background:#2e7d32; }
+#suggestions button:hover { background: var(--hover-green); }
 /* الصفحات الداخلية */
 .page {
     display:none;
@@ -51,7 +57,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
     background: var(--glass); padding:20px; border-radius:15px; max-width:800px; margin:auto;
 }
 .page button { margin-top:20px; padding:10px 20px; background: var(--green); border:none; border-radius:8px; color: var(--white); cursor:pointer; }
-.page button:hover { background:#2e7d32; }
+.page button:hover { background: var(--hover-green); }
 /* زر اللغة */
 .lang-toggle { position:absolute; top:20px; right:20px; background: var(--glass); color: var(--white); border:none; padding:8px 15px; border-radius:10px; cursor:pointer; }
 /* 3D Title */
@@ -79,6 +85,22 @@ h1 { font-size:2rem; margin-bottom:15px; }
 .pdf-icon {
     margin-right: 8px;
 }
+/* رابط الإنستجرام */
+.instagram-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+.instagram-link:hover {
+    color: #e4405f;
+}
+.instagram-icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
 </style>
 </head>
 <body>
@@ -87,7 +109,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
 <section class="home" id="home">
     <button class="lang-toggle" onclick="toggleLang()">AR</button>
     <div class="glass-box">
-        <h1 id="title">FARM BOT</h1>
+        <h1 id="title">FARM 8OT</h1>
         <p id="subtitle">Revolution in the world of agriculture</p>
         <div class="menu">
             <button onclick="openPage('about')" id="about-btn">About</button>
@@ -96,6 +118,11 @@ h1 { font-size:2rem; margin-bottom:15px; }
             <button onclick="open3DPage()">3D</button>
             <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
+        <!-- رابط الإنستجرام -->
+        <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank">
+            <span class="instagram-icon">📷</span>
+            <span id="instagram-text">Follow us on Instagram</span>
+        </a>
     </div>
 </section>
 
@@ -104,13 +131,13 @@ h1 { font-size:2rem; margin-bottom:15px; }
     <h2 id="suggest-title">Suggestions</h2>
     <p id="suggest-text">We believe in any suggestion that can develop and enhance our project.</p>
     <p><strong id="phone-text">Phone:</strong> +962 7XXXXXXXX</p>
-    <form onsubmit="event.preventDefault(); alert('Suggestion sent!');">
+    <form onsubmit="event.preventDefault(); sendSuggestion();">
         <input type="text" id="suggest-input" placeholder="Write your suggestion..." required>
         <button type="submit" id="send-btn">Send</button>
     </form>
 </div>
 
-<!-- صفحة About -->
+<!-- باقي الصفحات تبقى كما هي -->
 <section class="page" id="about">
     <div class="content">
         <h2 id="about-page-title">About</h2>
@@ -119,7 +146,6 @@ h1 { font-size:2rem; margin-bottom:15px; }
     </div>
 </section>
 
-<!-- صفحة What it does -->
 <section class="page" id="what">
     <div class="content">
         <h2 id="what-title">What it does</h2>
@@ -130,23 +156,20 @@ h1 { font-size:2rem; margin-bottom:15px; }
     </div>
 </section>
 
-<!-- صفحة 3D -->
 <section class="page" id="threeD">
     <div class="content">
-        <h2 class="threeD-title"><span class="farm">FARM</span> <span class="bot">BOT</span></h2>
+        <h2 class="threeD-title"><span class="farm">FARM</span> <span class="bot">8OT</span></h2>
         <p id="threeD-text">Here you can view the 3D model of Farm Bot.</p>
         <div id="threeDContainer" style="width:100%; height:400px;"></div>
         <button onclick="closePage('threeD')" id="exit-3d-btn">Exit</button>
     </div>
 </section>
 
-<!-- صفحة Download PDF -->
 <section class="page" id="download">
     <div class="content">
         <h2 id="download-title">Download Farm Bot PDF</h2>
         <p id="download-text">Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.</p>
         
-        <!-- زر تنزيل PDF -->
         <a href="FARM8OT.pdf" id="pdf-download-link" class="pdf-download-btn" download="FARM8OT.pdf">
             <span class="pdf-icon">📄</span>
             <span id="download-btn-text">Download Farm Bot PDF</span>
@@ -163,13 +186,14 @@ h1 { font-size:2rem; margin-bottom:15px; }
 const textData = {
     en: {
         // الصفحة الرئيسية
-        title: "FARM BOT",
+        title: "FARM 8OT",
         subtitle: "Revolution in the world of agriculture",
         aboutBtn: "About",
         whatBtn: "What it does",
         contactBtn: "Contact",
         threeDBtn: "3D",
         downloadBtn: "Download PDF",
+        instagramText: "Follow us on Instagram",
         
         // قسم الاقتراحات
         suggestTitle: "Suggestions",
@@ -207,13 +231,14 @@ const textData = {
     },
     ar: {
         // الصفحة الرئيسية
-        title: "المزرعة الذكية",
+        title: "FARM 8OT",
         subtitle: "ثورة في عالم الزراعة",
         aboutBtn: "حول",
         whatBtn: "ماذا يفعل",
         contactBtn: "تواصل",
         threeDBtn: "3D",
         downloadBtn: "تحميل PDF",
+        instagramText: "تابعنا على الإنستجرام",
         
         // قسم الاقتراحات
         suggestTitle: "اقتراحات",
@@ -251,12 +276,44 @@ const textData = {
     }
 };
 
+// دالة إرسال الاقتراح إلى الإيميل
+function sendSuggestion() {
+    const suggestion = document.getElementById('suggest-input').value;
+    
+    if (suggestion.trim() === '') {
+        alert('Please write your suggestion first');
+        return;
+    }
+    
+    // إعداد بيانات الإيميل
+    const email = 'abdalrhmanmaaith23@gmail.com';
+    const subject = 'New Suggestion for FARM 8OT';
+    const body = `Suggestion: ${suggestion}\n\nSent from FARM 8OT Website`;
+    
+    // إنشاء رابط mailto
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // فتح بريد المستخدم الافتراضي
+    window.location.href = mailtoLink;
+    
+    // تفريغ الحقل
+    document.getElementById('suggest-input').value = '';
+    
+    // إظهار رسالة تأكيد
+    setTimeout(() => {
+        if (lang === 'en') {
+            alert('Thank you! Your email client will open with the suggestion. Please click send to submit your suggestion.');
+        } else {
+            alert('شكراً! سيتم فتح بريدك الإلكتروني مع الاقتراح. الرجاء الضغط على إرسال لتقديم اقتراحك.');
+        }
+    }, 500);
+}
+
 function openPage(pageId){
     document.getElementById('home').style.display='none';
     document.getElementById('suggestions').style.display='none';
     document.getElementById(pageId).style.display='block';
     
-    // إذا كانت صفحة What it does، نعرض المحتوى المناسب للغة
     if(pageId === 'what') {
         updateFunctionsContent();
     }
@@ -268,7 +325,6 @@ function closePage(pageId){
     document.getElementById('suggestions').style.display='block';
 }
 
-// تحديث محتوى قسم الوظائف بناءً على اللغة
 function updateFunctionsContent() {
     const container = document.getElementById('functions-content');
     const currentLang = lang;
@@ -285,57 +341,48 @@ function updateFunctionsContent() {
     }
 }
 
-// تحديث جميع النصوص بناءً على اللغة
 function updateAllTexts() {
     const currentLang = lang;
     const data = textData[currentLang];
     
-    // الصفحة الرئيسية
     document.getElementById("title").innerText = data.title;
     document.getElementById("subtitle").innerText = data.subtitle;
     document.getElementById("about-btn").innerText = data.aboutBtn;
     document.getElementById("what-btn").innerText = data.whatBtn;
     document.getElementById("download-btn").innerText = data.downloadBtn;
+    document.getElementById("instagram-text").innerText = data.instagramText;
     
-    // قسم الاقتراحات
     document.getElementById("suggest-title").innerText = data.suggestTitle;
     document.getElementById("suggest-text").innerText = data.suggestText;
     document.getElementById("phone-text").innerText = data.phoneText;
     document.getElementById("suggest-input").placeholder = data.suggestInput;
     document.getElementById("send-btn").innerText = data.sendBtn;
     
-    // صفحة About
     document.getElementById("about-page-title").innerText = data.aboutPageTitle;
     document.getElementById("about-text").innerText = data.aboutText;
     document.getElementById("exit-about-btn").innerText = data.exitBtn;
     
-    // صفحة What it does
     document.getElementById("what-title").innerText = data.whatTitle;
     document.getElementById("exit-what-btn").innerText = data.exitBtn;
     
-    // صفحة 3D
     document.getElementById("threeD-text").innerText = data.threeDText;
     document.getElementById("exit-3d-btn").innerText = data.exitBtn;
     
-    // صفحة Download
     document.getElementById("download-title").innerText = data.downloadTitle;
     document.getElementById("download-text").innerText = data.downloadText;
     document.getElementById("download-btn-text").innerText = data.downloadBtnText;
     document.getElementById("file-info").innerText = data.fileInfo;
     document.getElementById("exit-download-btn").innerText = data.exitBtn;
     
-    // تحديث محتوى الوظائف إذا كانت الصفحة مفتوحة
     if(document.getElementById('what').style.display === 'block') {
         updateFunctionsContent();
     }
 }
 
-// فتح صفحة 3D يذهب مباشرة للرابط
 function open3DPage(){
     window.location.href = 'https://farmbot1238.github.io/3D/';
 }
 
-// تبديل اللغة
 let lang = "en";
 function toggleLang(){
     if(lang === "en"){
@@ -351,7 +398,6 @@ function toggleLang(){
     updateAllTexts();
 }
 
-// تهيئة المحتوى عند التحميل
 document.addEventListener('DOMContentLoaded', function() {
     updateAllTexts();
 });
