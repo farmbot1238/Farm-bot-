@@ -2,616 +2,211 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FARM 8OT - Revolutionizing Agriculture</title>
-<meta name="description" content="Farm Bot - Revolutionary agricultural robot designed and built in Jordan">
-<meta name="keywords" content="agriculture robot, smart farming, Jordan innovation">
-<meta name="author" content="Haitham Al-Maaytah, Abdulrahman Al-Maaytah">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farm Bot</title>
 <style>
 :root {
-    --primary: #00c853;
-    --secondary: #ffd600;
-    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600);
-    --light-gradient: linear-gradient(45deg, #333333, #666666);
-    --dark: #121212;
-    --light: #f5f5f5;
-    --glass: rgba(0, 0, 0, 0.7);
-    --text: #ffffff;
+    --glass: rgba(0,0,0,0.55);
+    --white: #fff;
+    --green: #1b5e20;
+    --yellow: #ffeb3b;
+    --black: #000;
+    --hover-green: #4caf50;
 }
-
-:root[data-theme="day"] {
-    --primary: #00c853;
-    --secondary: #ffd600;
-    --dark-gradient: linear-gradient(45deg, #333333, #666666);
-    --light-gradient: linear-gradient(45deg, #333333, #666666);
-    --dark: #f5f5f5;
-    --light: #121212;
-    --glass: rgba(255, 255, 255, 0.7);
-    --text: #000000;
-}
-
-:root[data-theme="night"] {
-    --primary: #00c853;
-    --secondary: #ffd600;
-    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600);
-    --light-gradient: linear-gradient(45deg, #00c853, #ffd600);
-    --dark: #121212;
-    --light: #f5f5f5;
-    --glass: rgba(0, 0, 0, 0.7);
-    --text: #ffffff;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-}
-
-body {
-    background: var(--dark);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    transition: background 0.3s, color 0.3s;
-    touch-action: manipulation;
-}
-
-/* تحسينات للأجهزة المحمولة */
-html {
-    -webkit-text-size-adjust: 100%;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-}
-
-/* منع سلوك السحب الافتراضي */
-body.prevent-scroll {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-}
-
-/* تحسينات للجسيمات */
-#particles-js {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -2;
-    pointer-events: none;
-}
-
-/* تحسينات لرسالة الترحيب */
-#welcome-message {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: white;
-    text-align: center;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: bold;
-    z-index: 1001;
-    animation: slideDown 0.8s ease-out;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-}
-
-/* تحسينات للصفحة الرئيسية */
+/* عام */
+* { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
+body, html { height: 100%; scroll-behavior: smooth; }
+/* الصفحة الرئيسية */
 .home {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    background: 
-        linear-gradient(135deg, 
-            #0a2e1d 0%,
-            #1b5e20 25%,
-            #2e7d32 50%,
-            #4caf50 75%,
-            #81c784 100%
-        );
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    background: url('rojet.jpg') no-repeat center center/cover;
+    height: 100vh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    color: var(--white); text-align:center;
 }
-
-.glass-box {
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 25px 20px;
-    border-radius: 16px;
-    max-width: 95%;
-    width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-        0 10px 20px rgba(0, 0, 0, 0.3),
-        0 0 60px rgba(0, 200, 83, 0.1),
-        inset 0 0 15px rgba(255, 255, 255, 0.05);
-    position: relative;
-    z-index: 3;
-    margin: 10px;
-    animation: float 6s ease-in-out infinite;
-}
-
-/* تحسينات للعنوان */
-#title {
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    margin-bottom: 15px;
-    background: var(--dark-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    height: auto;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: bold;
-    animation: titleGlow 3s infinite alternate;
-    line-height: 1.2;
-    word-break: break-word;
-}
-
-/* تحسينات للأزرار */
-.menu {
-    margin: 25px 0;
-    width: 100%;
-}
-
+.glass-box { background: var(--glass); padding:30px; border-radius:15px; max-width:600px; width:90%; }
+h1 { font-size:2rem; margin-bottom:15px; }
+.menu { margin:20px 0; }
 .menu button {
-    display: block;
-    width: 100%;
-    max-width: 280px;
-    margin: 10px auto;
-    padding: 16px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg, #00b248, #00c853);
-    color: white;
-    cursor: pointer;
+    display:block; width:200px; margin:10px auto; padding:12px; font-size:1rem;
+    border:none; border-radius:10px; background: var(--green); color: var(--white); cursor:pointer; transition:0.3s;
     position: relative;
     overflow: hidden;
-    transition: all 0.2s ease;
-    animation: glow 2s ease-in-out infinite;
-    border: 2px solid transparent;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    touch-action: manipulation;
-    -webkit-user-select: none;
-    user-select: none;
-    min-height: 54px;
 }
-
-/* تحسين للضغط على الأزرار */
-.menu button:active {
-    transform: scale(0.98);
-    transition: transform 0.1s;
+.menu button:hover { 
+    background: var(--hover-green);
+    box-shadow: 0 0 15px var(--hover-green);
 }
-
-/* تحسينات لأزرار التحكم */
-.controls {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    gap: 8px;
-    z-index: 1000;
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 8px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.control-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text);
-    border: none;
-    padding: 10px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    min-width: 44px;
-    min-height: 44px;
-    justify-content: center;
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: manipulation;
-}
-
-.control-btn:active {
-    transform: scale(0.95);
-    transition: transform 0.1s;
-}
-
-/* تحسينات للصفحات الداخلية */
-.page {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--dark);
-    z-index: 10000;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 20px;
-    overscroll-behavior: contain;
-}
-
-.page.active {
-    display: block;
-    animation: pageFadeIn 0.3s ease-out;
-}
-
-@keyframes pageFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.page .content {
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    max-width: 95%;
-    margin: 20px auto;
-    padding: 25px 20px;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text);
-    animation: contentSlideUp 0.4s ease-out;
-    position: relative;
-}
-
-@keyframes contentSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.close-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: all 0.2s;
-    z-index: 10001;
-    min-width: 44px;
-    min-height: 44px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: manipulation;
-}
-
-.close-btn:active {
-    transform: scale(0.95);
-}
-
-/* تحسينات لقسم الاقتراحات */
+/* قسم الاقتراحات */
 #suggestions {
-    background: var(--dark);
-    padding: 30px 15px;
-    text-align: center;
-    border-top: 3px solid var(--primary);
-    width: 100%;
+    background: var(--black); padding:30px; border-radius:15px 15px 0 0; margin:0; width:100%;
+    color: var(--white); text-align:center;
 }
-
-#suggestions form {
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+#suggestions h2 { margin-bottom:10px; }
+#suggestions p { margin-bottom:20px; }
+#suggestions input, #suggestions button { padding:10px; margin:5px; border:none; border-radius:8px; }
+#suggestions input { width:250px; }
+#suggestions button { background: var(--green); color: var(--white); cursor:pointer; }
+#suggestions button:hover { background: var(--hover-green); }
+/* الصفحات الداخلية */
+.page {
+    display:none;
+    background: url('about-bg.jpg') no-repeat center center/cover;
+    height:100vh; padding:40px; color: var(--white); overflow-y:auto;
 }
-
-#suggestions input {
-    padding: 14px;
-    width: 100%;
-    max-width: 400px;
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    background: var(--glass);
-    color: var(--text);
-    font-size: 1rem;
-    -webkit-appearance: none;
-    appearance: none;
-    min-height: 48px;
+.page .content {
+    background: var(--glass); padding:20px; border-radius:15px; max-width:800px; margin:auto;
 }
-
-#suggestions button {
-    padding: 14px 28px;
-    background: var(--primary);
+.page button { margin-top:20px; padding:10px 20px; background: var(--green); border:none; border-radius:8px; color: var(--white); cursor:pointer; }
+.page button:hover { background: var(--hover-green); }
+/* زر اللغة */
+.lang-toggle { position:absolute; top:20px; right:20px; background: var(--glass); color: var(--white); border:none; padding:8px 15px; border-radius:10px; cursor:pointer; }
+/* 3D Title */
+.threeD-title { font-size:2rem; text-align:center; margin-bottom:15px; }
+.threeD-title .farm { color: var(--yellow); }
+.threeD-title .bot { color: var(--green); }
+/* قائمة الوظائف */
+.functions-list { text-align: left; margin: 20px 0; }
+.function-item { margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+/* زر تنزيل PDF */
+.pdf-download-btn {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 12px 25px;
+    background: #d32f2f;
     color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: all 0.2s;
-    min-height: 48px;
-    min-width: 150px;
-    touch-action: manipulation;
-}
-
-#suggestions button:active {
-    transform: scale(0.98);
-}
-
-/* تحسينات للروابط */
-.instagram-link, .whatsapp-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
-    border-radius: 10px;
     text-decoration: none;
+    border-radius: 8px;
     font-weight: bold;
-    margin: 10px 0;
-    min-height: 44px;
-    transition: all 0.2s;
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: manipulation;
+    transition: background 0.3s;
 }
-
-.instagram-link:active, .whatsapp-link:active {
-    transform: scale(0.98);
+.pdf-download-btn:hover {
+    background: #b71c1c;
 }
-
-/* تحسينات للقوائم */
-.function-item {
-    background: rgba(0, 200, 83, 0.1);
-    padding: 16px;
-    border-radius: 10px;
-    margin: 12px 0;
-    border-left: 5px solid var(--primary);
-    transition: transform 0.2s;
-    color: var(--text);
-    font-size: 0.95rem;
-    line-height: 1.4;
+.pdf-icon {
+    margin-right: 8px;
 }
-
-/* تحسينات للخطوط والنصوص */
-p, span, div {
-    line-height: 1.5;
-    word-break: break-word;
-    overflow-wrap: break-word;
+/* رابط الإنستجرام */
+.instagram-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
 }
-
-/* تحسينات للاستجابة */
-@media (max-width: 768px) {
-    .glass-box {
-        padding: 20px 15px;
-        margin: 5px;
-    }
-    
-    .controls {
-        top: 10px;
-        right: 10px;
-        padding: 6px;
-    }
-    
-    .control-btn {
-        padding: 8px 10px;
-        font-size: 0.85rem;
-    }
-    
-    .page .content {
-        padding: 20px 15px;
-        margin: 15px auto;
-    }
-    
-    #welcome-message {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
+.instagram-link:hover {
+    color: #e4405f;
 }
-
-@media (max-width: 480px) {
-    .menu button {
-        padding: 14px;
-        font-size: 0.95rem;
-        max-width: 100%;
-    }
-    
-    .glass-box {
-        border-radius: 12px;
-    }
-    
-    #title {
-        font-size: 1.8rem;
-        min-height: 50px;
-    }
-    
-    .controls {
-        flex-direction: column;
-        gap: 5px;
-    }
-}
-
-/* تحسينات للعروض الصغيرة جداً */
-@media (max-width: 360px) {
-    .menu button {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    #title {
-        font-size: 1.6rem;
-    }
-    
-    .control-btn span:last-child {
-        display: none;
-    }
-    
-    .control-btn {
-        min-width: 40px;
-        min-height: 40px;
-        padding: 8px;
-    }
-}
-
-/* منع التكبير التلقائي على حقول الإدخال في iOS */
-input, textarea {
-    font-size: 16px !important;
-    transform: translateZ(0);
-}
-
-/* تحسينات للشريط العلوي في iOS */
-@supports (-webkit-touch-callout: none) {
-    .home {
-        min-height: -webkit-fill-available;
-    }
-    
-    .page {
-        min-height: -webkit-fill-available;
-    }
+.instagram-icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
 }
 </style>
 </head>
 <body>
 
-<div id="welcome-message">
-    🚀 Welcome to FARM 8OT - Revolutionizing Agriculture! 🌱
-</div>
-
-<div id="particles-js"></div>
-
-<div class="controls">
-    <button class="control-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-        <span>🌓</span>
-        <span id="theme-text">Night Mode</span>
-    </button>
-    <button class="control-btn" onclick="toggleLang()" aria-label="Toggle language">
-        <span>🌐</span>
-        <span id="lang-text">AR</span>
-    </button>
-</div>
-
-<section class="home">
-    <div class="glass-box fade-in">
+<!-- الصفحة الرئيسية -->
+<section class="home" id="home">
+    <button class="lang-toggle" onclick="toggleLang()">AR</button>
+    <div class="glass-box">
         <h1 id="title">FARM 8OT</h1>
         <p id="subtitle">Revolution in the world of agriculture</p>
-        
         <div class="menu">
             <button onclick="openPage('about')" id="about-btn">About</button>
             <button onclick="openPage('what')" id="what-btn">What it does</button>
             <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'">Contact</button>
-            <button onclick="open3DPage()">3D Model</button>
+            <button onclick="open3DPage()">3D</button>
             <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
-        
-        <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank" style="margin-top: 20px; display: inline-block; color: white; text-decoration: none; padding: 12px 20px; background: rgba(228,64,95,0.2); border-radius: 10px;">
-            <span>📷</span>
+        <!-- رابط الإنستجرام -->
+        <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank">
+            <span class="instagram-icon">📷</span>
             <span id="instagram-text">Follow us on Instagram</span>
         </a>
     </div>
 </section>
 
-<section id="suggestions">
+<!-- قسم الاقتراحات -->
+<div id="suggestions">
     <h2 id="suggest-title">Suggestions</h2>
     <p id="suggest-text">We believe in any suggestion that can develop and enhance our project.</p>
-    
+    <p><strong id="phone-text">Phone:</strong> +962 7XXXXXXXX</p>
     <form onsubmit="event.preventDefault(); sendSuggestion();">
         <input type="text" id="suggest-input" placeholder="Write your suggestion..." required>
-        <button type="submit" id="send-btn">Send Suggestion</button>
+        <button type="submit" id="send-btn">Send</button>
     </form>
-    
-    <div class="contact-info">
-        <h3 id="contact-title">Contact Our Team</h3>
-        <a href="https://wa.me/962798688787" class="whatsapp-link" target="_blank">
-            <span>💬</span>
-            <span>WhatsApp: +962 79 868 8787</span>
-        </a>
-    </div>
-</section>
+</div>
 
-<section id="about" class="page">
-    <button class="close-btn" onclick="closePage('about')" aria-label="Close">✕</button>
+<!-- باقي الصفحات تبقى كما هي -->
+<section class="page" id="about">
     <div class="content">
         <h2 id="about-page-title">About</h2>
-        <p id="about-text">Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way.</p>
+        <p id="about-text">Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.</p>
+        <button onclick="closePage('about')" id="exit-about-btn">Exit</button>
     </div>
 </section>
 
-<section id="what" class="page">
-    <button class="close-btn" onclick="closePage('what')" aria-label="Close">✕</button>
+<section class="page" id="what">
     <div class="content">
         <h2 id="what-title">What it does</h2>
-        <div class="functions-list" id="functions-content"></div>
+        <div class="functions-list" id="functions-content">
+            <!-- المحتوى سيتم تعبئته عبر الجافاسكريبت -->
+        </div>
+        <button onclick="closePage('what')" id="exit-what-btn">Exit</button>
     </div>
 </section>
 
-<section id="download" class="page">
-    <button class="close-btn" onclick="closePage('download')" aria-label="Close">✕</button>
+<section class="page" id="threeD">
     <div class="content">
-        <h2 id="download-title">Download PDF</h2>
-        <p id="download-text">Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.</p>
-        <a href="FARM8OT.pdf" class="pdf-download" download="FARM8OT.pdf" id="pdf-download-link">
-            📄 Download Farm Bot PDF
-        </a>
+        <h2 class="threeD-title"><span class="farm">FARM</span> <span class="bot">8OT</span></h2>
+        <p id="threeD-text">Here you can view the 3D model of Farm Bot.</p>
+        <div id="threeDContainer" style="width:100%; height:400px;"></div>
+        <button onclick="closePage('threeD')" id="exit-3d-btn">Exit</button>
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-// تحسينات للأداء على الجوال
-let isScrolling = false;
-let lastScrollTime = 0;
+<section class="page" id="download">
+    <div class="content">
+        <h2 id="download-title">Download Farm Bot PDF</h2>
+        <p id="download-text">Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.</p>
+        
+        <a href="FARM8OT.pdf" id="pdf-download-link" class="pdf-download-btn" download="FARM8OT.pdf">
+            <span class="pdf-icon">📄</span>
+            <span id="download-btn-text">Download Farm Bot PDF</span>
+        </a>
+        
+        <p id="file-info">File size: 1.2 MB | Format: PDF</p>
+        
+        <button onclick="closePage('download')" id="exit-download-btn">Exit</button>
+    </div>
+</section>
 
-// بيانات النصوص
+<script>
+// بيانات جميع النصوص باللغتين
 const textData = {
     en: {
-        welcome: "🚀 Welcome to FARM 8OT - Revolutionizing Agriculture! 🌱",
+        // الصفحة الرئيسية
         title: "FARM 8OT",
         subtitle: "Revolution in the world of agriculture",
         aboutBtn: "About",
         whatBtn: "What it does",
+        contactBtn: "Contact",
+        threeDBtn: "3D",
         downloadBtn: "Download PDF",
         instagramText: "Follow us on Instagram",
+        
+        // قسم الاقتراحات
         suggestTitle: "Suggestions",
         suggestText: "We believe in any suggestion that can develop and enhance our project.",
-        suggestPlaceholder: "Write your suggestion...",
-        sendBtn: "Send Suggestion",
-        contactTitle: "Contact Our Team",
-        aboutTitle: "About",
-        aboutText: "Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming.",
+        phoneText: "Phone:",
+        suggestInput: "Write your suggestion...",
+        sendBtn: "Send",
+        
+        // صفحة About
+        aboutPageTitle: "About",
+        aboutText: "Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.",
+        
+        // صفحة What it does
         whatTitle: "What it does",
         functions: [
             "Crop Monitoring & Growth Tracking",
@@ -621,26 +216,42 @@ const textData = {
             "Remote Control & Monitoring",
             "Automated Reporting & Data Analysis"
         ],
-        downloadTitle: "Download PDF",
+        
+        // صفحة 3D
+        threeDText: "Here you can view the 3D model of Farm Bot.",
+        
+        // صفحة Download
+        downloadTitle: "Download Farm Bot PDF",
         downloadText: "Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.",
-        themeText: "Night Mode",
-        langText: "AR"
+        downloadBtnText: "Download Farm Bot PDF",
+        fileInfo: "File size: 1.2 MB | Format: PDF",
+        
+        // أزرار الخروج
+        exitBtn: "Exit"
     },
     ar: {
-        welcome: "🚀 مرحباً بكم في FARM 8OT - ثورة في عالم الزراعة! 🌱",
+        // الصفحة الرئيسية
         title: "FARM 8OT",
         subtitle: "ثورة في عالم الزراعة",
         aboutBtn: "حول",
         whatBtn: "ماذا يفعل",
+        contactBtn: "تواصل",
+        threeDBtn: "3D",
         downloadBtn: "تحميل PDF",
         instagramText: "تابعنا على الإنستجرام",
+        
+        // قسم الاقتراحات
         suggestTitle: "اقتراحات",
         suggestText: "نحن نؤمن بأي اقتراح يمكن أن يطور ويعزز مشروعنا.",
-        suggestPlaceholder: "اكتب اقتراحك...",
-        sendBtn: "إرسال الاقتراح",
-        contactTitle: "تواصل مع فريقنا",
-        aboutTitle: "حول",
-        aboutText: "المزرعة الذكية هو روبوت زراعي ذكي تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب هيثم المعايطة وعبدالرحمن المعايطة. تم تصميمه لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة حديثة وفعالة. فهو يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد. كما أنه يساعد في الحفاظ على صحة النباتات من خلال اكتشاف النباتات الضارة وإزالتها تلقائيًا. المزرعة الذكية قادر على العمل بشكل مستقل واتخاذ القرارات الزراعية الدقيقة بناءً على البيانات المحيطة. يمكن أيضًا التحكم فيه ومراقبته عن بُعد، مما يوفر للمزارعين تقارير مفصلة عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. يساهم في زيادة الإنتاجية وتقليل هدر الموارد، ويعمل بشكل مستمر طوال اليوم بكفاءة عالية، ويمثل تكاملاً مثاليًا بين التكنولوجيا الحديثة والزراعة التقليدية.",
+        phoneText: "هاتف:",
+        suggestInput: "اكتب اقتراحك...",
+        sendBtn: "إرسال",
+        
+        // صفحة About
+        aboutPageTitle: "حول",
+        aboutText: "المزرعة الذكية هو روبوت زراعي ذكي تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب هيثم المعايطة وعبدالرحمن المعايطة. تم تصميمه لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة حديثة وفعالة. فهو يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد. كما أنه يساعد في الحفاظ على صحة النباتات من خلال اكتشاف النباتات الضارة وإزالتها تلقائيًا. المزرعة الذكية قادر على العمل بشكل مستقل واتخاذ القرارات الزراعية الدقيقة بناءً على البيانات المحيطة. يمكن أيضًا التحكم فيه ومراقبته عن بُعد، مما يوفر للمزارعين تقارير مفصلة عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. يساهم في زيادة الإنتاجية وتقليل هدر الموارد، ويعمل بشكل مستمر طوال اليوم بكفاءة عالية، ويمثل تكاملاً مثاليًا بين التكنولوجيا الحديثة والزراعة التقليدية. المزرعة الذكية هو الشريك الزراعي المثالي لتحقيق زراعة أكثر ذكاءً وكفاءة، وتوفير الوقت والجهد، وتعزيز دقة مراقبة المحاصيل، وجعل العمليات الزراعية أكثر سلاسة وإدارة، ويمثل خطوة نحو مستقبل الزراعة الذكية والمستدامة.",
+        
+        // صفحة What it does
         whatTitle: "ماذا يفعل",
         functions: [
             "مراقبة المحاصيل وتتبع النمو",
@@ -650,226 +261,145 @@ const textData = {
             "التحكم والمراقبة عن بُعد", 
             "إعداد التقارير الآلية وتحليل البيانات"
         ],
-        downloadTitle: "تحميل PDF",
+        
+        // صفحة 3D
+        threeDText: "هنا يمكنك عرض نموذج المزرعة الذكية ثلاثي الأبعاد.",
+        
+        // صفحة Download
+        downloadTitle: "تحميل ملف PDF للمزرعة الذكية",
         downloadText: "قم بتحميل وثيقة PDF الشاملة لمعرفة المزيد عن ميزات ومواصفات وتفاصيل المزرعة الذكية التقنية.",
-        themeText: "وضع النهار",
-        langText: "EN"
+        downloadBtnText: "تحميل ملف PDF للمزرعة الذكية",
+        fileInfo: "حجم الملف: 1.2 ميجابايت | الصيغة: PDF",
+        
+        // أزرار الخروج
+        exitBtn: "خروج"
     }
 };
 
-// تهيئة الجسيمات (مخففة للأداء)
-particlesJS("particles-js", {
-    particles: {
-        number: { value: 40, density: { enable: true, value_area: 600 } },
-        color: { value: "#00c853" },
-        shape: { type: "circle" },
-        opacity: { value: 0.2, random: true },
-        size: { value: 2, random: true },
-        line_linked: {
-            enable: true,
-            distance: 120,
-            color: "#00c853",
-            opacity: 0.1,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 1.5,
-            direction: "none",
-            random: true,
-            out_mode: "out"
-        }
-    }
-});
-
-// متغيرات النظام
-let currentLang = "en";
-let currentTheme = "night";
-let isPageOpen = false;
-
-// تحسينات لتبديل الثيم
-function toggleTheme() {
-    currentTheme = currentTheme === "night" ? "day" : "night";
-    document.documentElement.setAttribute("data-theme", currentTheme);
-    
-    document.getElementById("theme-text").textContent = 
-        currentTheme === "night" ? textData[currentLang].themeText : 
-        (currentLang === "en" ? "Day Mode" : "وضع الليل");
-    
-    // تأثير سلس
-    requestAnimationFrame(() => {
-        document.body.style.transition = 'background 0.3s, color 0.3s';
-    });
-}
-
-// تحسينات لتبديل اللغة
-function toggleLang() {
-    if (isPageOpen) return;
-    
-    const content = document.querySelector('.glass-box');
-    content.classList.remove('language-change');
-    
-    currentLang = currentLang === "en" ? "ar" : "en";
-    document.body.style.direction = currentLang === "ar" ? "rtl" : "ltr";
-    
-    updateAllTexts();
-    
-    content.classList.add('language-change');
-    
-    document.getElementById("theme-text").textContent = textData[currentLang].themeText;
-    document.getElementById("lang-text").textContent = currentLang === "en" ? "AR" : "EN";
-}
-
-// تحسينات لفتح الصفحات
-function openPage(pageId) {
-    if (isPageOpen) return;
-    
-    isPageOpen = true;
-    document.body.classList.add('prevent-scroll');
-    
-    const page = document.getElementById(pageId);
-    page.classList.add('active');
-    
-    // تحسينات للتحميل السريع
-    if (pageId === 'what') {
-        updateFunctionsContent();
-    }
-    
-    // إضافة تأثير سلس
-    requestAnimationFrame(() => {
-        page.style.opacity = '1';
-    });
-}
-
-// تحسينات لإغلاق الصفحات
-function closePage(pageId) {
-    const page = document.getElementById(pageId);
-    page.classList.remove('active');
-    
-    isPageOpen = false;
-    document.body.classList.remove('prevent-scroll');
-    
-    // إضافة تأثير سلس
-    requestAnimationFrame(() => {
-        page.style.opacity = '0';
-    });
-}
-
-// تحديث جميع النصوص
-function updateAllTexts() {
-    const data = textData[currentLang];
-    
-    document.getElementById("welcome-message").textContent = data.welcome;
-    document.getElementById("title").textContent = "FARM 8OT";
-    document.getElementById("subtitle").textContent = data.subtitle;
-    document.getElementById("about-btn").textContent = data.aboutBtn;
-    document.getElementById("what-btn").textContent = data.whatBtn;
-    document.getElementById("download-btn").textContent = data.downloadBtn;
-    document.getElementById("instagram-text").textContent = data.instagramText;
-    document.getElementById("suggest-title").textContent = data.suggestTitle;
-    document.getElementById("suggest-text").textContent = data.suggestText;
-    document.getElementById("suggest-input").placeholder = data.suggestPlaceholder;
-    document.getElementById("send-btn").textContent = data.sendBtn;
-    document.getElementById("contact-title").textContent = data.contactTitle;
-    document.getElementById("about-page-title").textContent = data.aboutTitle;
-    document.getElementById("about-text").textContent = data.aboutText;
-    document.getElementById("what-title").textContent = data.whatTitle;
-    document.getElementById("download-title").textContent = data.downloadTitle;
-    document.getElementById("download-text").textContent = data.downloadText;
-}
-
-// تحديث قائمة الوظائف
-function updateFunctionsContent() {
-    const container = document.getElementById("functions-content");
-    const functions = textData[currentLang].functions;
-    
-    container.innerHTML = "";
-    
-    functions.forEach(func => {
-        const item = document.createElement("div");
-        item.className = "function-item";
-        item.textContent = func;
-        container.appendChild(item);
-    });
-}
-
-// تحسينات لإرسال الاقتراحات
+// دالة إرسال الاقتراح إلى الإيميل
 function sendSuggestion() {
-    const suggestion = document.getElementById("suggest-input").value;
+    const suggestion = document.getElementById('suggest-input').value;
     
-    if (suggestion.trim() === "") {
-        alert(currentLang === "en" ? "Please write your suggestion first" : "الرجاء كتابة اقتراحك أولاً");
+    if (suggestion.trim() === '') {
+        alert('Please write your suggestion first');
         return;
     }
     
-    const email = "farm8ot@gmail.com";
-    const subject = "New Suggestion for FARM 8OT";
+    // إعداد بيانات الإيميل
+    const email = 'farm8ot@gmail.com';
+    const subject = 'New Suggestion for FARM 8OT';
     const body = `Suggestion: ${suggestion}\n\nSent from FARM 8OT Website`;
     
+    // إنشاء رابط mailto
     const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
-    // فتح الرابط في نافذة جديدة
-    window.open(mailtoLink, '_blank');
+    // فتح بريد المستخدم الافتراضي
+    window.location.href = mailtoLink;
     
-    document.getElementById("suggest-input").value = "";
+    // تفريغ الحقل
+    document.getElementById('suggest-input').value = '';
     
+    // إظهار رسالة تأكيد
     setTimeout(() => {
-        alert(currentLang === "en" 
-            ? "Thank you! Your suggestion email is ready to send."
-            : "شكراً! بريد الاقتراح جاهز للإرسال.");
-    }, 300);
+        if (lang === 'en') {
+            alert('Thank you! Your email client will open with the suggestion. Please click send to submit your suggestion.');
+        } else {
+            alert('شكراً! سيتم فتح بريدك الإلكتروني مع الاقتراح. الرجاء الضغط على إرسال لتقديم اقتراحك.');
+        }
+    }, 500);
 }
 
-function open3DPage() {
-    if (isPageOpen) return;
+function openPage(pageId){
+    document.getElementById('home').style.display='none';
+    document.getElementById('suggestions').style.display='none';
+    document.getElementById(pageId).style.display='block';
+    
+    if(pageId === 'what') {
+        updateFunctionsContent();
+    }
+}
+
+function closePage(pageId){
+    document.getElementById(pageId).style.display='none';
+    document.getElementById('home').style.display='flex';
+    document.getElementById('suggestions').style.display='block';
+}
+
+function updateFunctionsContent() {
+    const container = document.getElementById('functions-content');
+    const currentLang = lang;
+    
+    container.innerHTML = '';
+    
+    const functions = textData[currentLang].functions;
+    
+    for(let i = 0; i < functions.length; i++) {
+        const functionItem = document.createElement('div');
+        functionItem.className = 'function-item';
+        functionItem.textContent = functions[i];
+        container.appendChild(functionItem);
+    }
+}
+
+function updateAllTexts() {
+    const currentLang = lang;
+    const data = textData[currentLang];
+    
+    document.getElementById("title").innerText = data.title;
+    document.getElementById("subtitle").innerText = data.subtitle;
+    document.getElementById("about-btn").innerText = data.aboutBtn;
+    document.getElementById("what-btn").innerText = data.whatBtn;
+    document.getElementById("download-btn").innerText = data.downloadBtn;
+    document.getElementById("instagram-text").innerText = data.instagramText;
+    
+    document.getElementById("suggest-title").innerText = data.suggestTitle;
+    document.getElementById("suggest-text").innerText = data.suggestText;
+    document.getElementById("phone-text").innerText = data.phoneText;
+    document.getElementById("suggest-input").placeholder = data.suggestInput;
+    document.getElementById("send-btn").innerText = data.sendBtn;
+    
+    document.getElementById("about-page-title").innerText = data.aboutPageTitle;
+    document.getElementById("about-text").innerText = data.aboutText;
+    document.getElementById("exit-about-btn").innerText = data.exitBtn;
+    
+    document.getElementById("what-title").innerText = data.whatTitle;
+    document.getElementById("exit-what-btn").innerText = data.exitBtn;
+    
+    document.getElementById("threeD-text").innerText = data.threeDText;
+    document.getElementById("exit-3d-btn").innerText = data.exitBtn;
+    
+    document.getElementById("download-title").innerText = data.downloadTitle;
+    document.getElementById("download-text").innerText = data.downloadText;
+    document.getElementById("download-btn-text").innerText = data.downloadBtnText;
+    document.getElementById("file-info").innerText = data.fileInfo;
+    document.getElementById("exit-download-btn").innerText = data.exitBtn;
+    
+    if(document.getElementById('what').style.display === 'block') {
+        updateFunctionsContent();
+    }
+}
+
+function open3DPage(){
     window.location.href = 'https://farmbot1238.github.io/3D/';
 }
 
-// تحسينات للتهيئة
-window.onload = function() {
-    // تعيين القيم الافتراضية
-    document.getElementById("title").textContent = "FARM 8OT";
-    updateAllTexts();
-    document.documentElement.setAttribute("data-theme", "night");
-    
-    // تحسينات للأزرار
-    const buttons = document.querySelectorAll('button, a');
-    buttons.forEach(button => {
-        button.addEventListener('touchstart', function(e) {
-            this.style.transform = 'scale(0.98)';
-        }, { passive: true });
-        
-        button.addEventListener('touchend', function(e) {
-            this.style.transform = 'scale(1)';
-        }, { passive: true });
-    });
-    
-    // إخفاء رسالة الترحيب
-    setTimeout(() => {
-        document.getElementById('welcome-message').style.display = 'none';
-    }, 4000);
-    
-    // تحسينات للتمرير
-    document.addEventListener('touchmove', function(e) {
-        if (isPageOpen) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-    
-    // تحسينات لأداء الجوال
-    if ('ontouchstart' in window) {
-        document.body.classList.add('touch-device');
+let lang = "en";
+function toggleLang(){
+    if(lang === "en"){
+        lang = "ar";
+        document.querySelector('.lang-toggle').innerText = "EN";
+        document.body.style.direction = "rtl";
+    } else {
+        lang = "en";
+        document.querySelector('.lang-toggle').innerText = "AR";
+        document.body.style.direction = "ltr";
     }
-};
+    
+    updateAllTexts();
+}
 
-// منع السلوك الافتراضي للمس الطويل
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-// تحسينات للذاكرة
-window.addEventListener('beforeunload', function() {
-    particlesJS("particles-js", {});
+document.addEventListener('DOMContentLoaded', function() {
+    updateAllTexts();
 });
 </script>
 </body>
