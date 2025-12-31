@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>FARM 8OT - Revolutionizing Agriculture</title>
 <meta name="description" content="Farm Bot - Revolutionary agricultural robot designed and built in Jordan">
 <meta name="keywords" content="agriculture robot, smart farming, Jordan innovation">
@@ -10,21 +10,20 @@
 
 <style>
 :root {
-    --primary: #00c853; /* أخضر */
-    --secondary: #ffd600; /* أصفر */
-    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600); /* للتدرج في الثيم الداكن */
-    --light-gradient: linear-gradient(45deg, #333333, #666666); /* للتدرج في الثيم الفاتح */
+    --primary: #00c853;
+    --secondary: #ffd600;
+    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600);
+    --light-gradient: linear-gradient(45deg, #333333, #666666);
     --dark: #121212;
     --light: #f5f5f5;
     --glass: rgba(0, 0, 0, 0.7);
     --text: #ffffff;
 }
 
-/* ثيم النهار (فاتح) */
 :root[data-theme="day"] {
     --primary: #00c853;
     --secondary: #ffd600;
-    --dark-gradient: linear-gradient(45deg, #333333, #666666); /* أسود/رمادي في النهار */
+    --dark-gradient: linear-gradient(45deg, #333333, #666666);
     --light-gradient: linear-gradient(45deg, #333333, #666666);
     --dark: #f5f5f5;
     --light: #121212;
@@ -32,11 +31,10 @@
     --text: #000000;
 }
 
-/* ثيم الليل (داكن) */
 :root[data-theme="night"] {
     --primary: #00c853;
     --secondary: #ffd600;
-    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600); /* أخضر/أصفر في الليل */
+    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600);
     --light-gradient: linear-gradient(45deg, #00c853, #ffd600);
     --dark: #121212;
     --light: #f5f5f5;
@@ -48,7 +46,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 body {
@@ -56,10 +55,27 @@ body {
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background 0.5s, color 0.5s;
+    transition: background 0.3s, color 0.3s;
+    touch-action: manipulation;
 }
 
-/* جسيمات الخلفية */
+/* تحسينات للأجهزة المحمولة */
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* منع سلوك السحب الافتراضي */
+body.prevent-scroll {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* تحسينات للجسيمات */
 #particles-js {
     position: fixed;
     width: 100%;
@@ -67,9 +83,10 @@ body {
     top: 0;
     left: 0;
     z-index: -2;
+    pointer-events: none;
 }
 
-/* رسالة الترحيب */
+/* تحسينات لرسالة الترحيب */
 #welcome-message {
     position: fixed;
     top: 0;
@@ -78,22 +95,17 @@ body {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     color: white;
     text-align: center;
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: 12px;
+    font-size: 1rem;
     font-weight: bold;
     z-index: 1001;
     animation: slideDown 0.8s ease-out;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
 
-@keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-}
-
-/* الصفحة الرئيسية مع خلفية الروبوت الزراعي */
+/* تحسينات للصفحة الرئيسية */
 .home {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -110,187 +122,62 @@ body {
             #81c784 100%
         );
     overflow: hidden;
-}
-
-/* خلفية الروبوت الزراعي */
-.home::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 2%, transparent 2.5%),
-        radial-gradient(circle at 25% 30%, rgba(255,255,255,0.1) 2%, transparent 2.5%),
-        radial-gradient(circle at 22.5% 40%, rgba(255,255,255,0.15) 5%, transparent 5.5%),
-        linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 40.5%, 
-            rgba(255,255,255,0.1) 44%, transparent 44.5%),
-        linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 40.5%, 
-            rgba(255,255,255,0.1) 44%, transparent 44.5%),
-        radial-gradient(circle at 15% 70%, rgba(0,0,0,0.3) 8%, transparent 8.5%),
-        radial-gradient(circle at 30% 70%, rgba(0,0,0,0.3) 8%, transparent 8.5%),
-        radial-gradient(circle at 15% 70%, rgba(255,255,255,0.1) 6%, transparent 6.5%),
-        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 6%, transparent 6.5%),
-        repeating-linear-gradient(90deg, transparent, transparent 2px, 
-            rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px),
-        repeating-linear-gradient(0deg, transparent, transparent 2px, 
-            rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
-    
-    background-size: 
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        100% 100%,
-        30px 30px,
-        30px 30px;
-    
-    animation: scanLines 20s linear infinite;
-    z-index: 1;
-}
-
-@keyframes scanLines {
-    0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
-    100% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 600px, 600px 0; }
-}
-
-.home::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(circle at 50% 50%, rgba(0,200,83,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 20% 80%, rgba(100,255,100,0.05) 0%, transparent 30%),
-        radial-gradient(circle at 80% 20%, rgba(100,255,100,0.05) 0%, transparent 30%);
-    animation: pulse 4s ease-in-out infinite;
-    z-index: 2;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.05); }
+    -webkit-overflow-scrolling: touch;
 }
 
 .glass-box {
     background: var(--glass);
-    backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 20px;
-    max-width: 700px;
-    width: 90%;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 25px 20px;
+    border-radius: 16px;
+    max-width: 95%;
+    width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.5),
-        0 0 100px rgba(0, 200, 83, 0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.05);
+        0 10px 20px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(0, 200, 83, 0.1),
+        inset 0 0 15px rgba(255, 255, 255, 0.05);
     position: relative;
     z-index: 3;
+    margin: 10px;
     animation: float 6s ease-in-out infinite;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
-/* العنوان مع تغيير التدرج حسب الثيم */
+/* تحسينات للعنوان */
 #title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 8vw, 3.5rem);
     margin-bottom: 15px;
     background: var(--dark-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    height: 80px;
+    background-clip: text;
+    height: auto;
+    min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: bold;
     animation: titleGlow 3s infinite alternate;
-    position: relative;
-    background-size: 200% 200%;
-    animation: gradientMove 3s ease-in-out infinite;
+    line-height: 1.2;
+    word-break: break-word;
 }
 
-@keyframes titleGlow {
-    0% {
-        text-shadow: 
-            0 0 10px rgba(0, 200, 83, 0.3),
-            0 0 20px rgba(0, 200, 83, 0.2),
-            0 0 30px rgba(0, 200, 83, 0.1);
-    }
-    100% {
-        text-shadow: 
-            0 0 15px rgba(0, 200, 83, 0.4),
-            0 0 30px rgba(0, 200, 83, 0.3),
-            0 0 45px rgba(0, 200, 83, 0.2);
-    }
-}
-
-/* تأثير التدرج المتحرك */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* الظل الخلفي للتأثير */
-#title::after {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: var(--dark-gradient);
-    border-radius: 10px;
-    z-index: -1;
-    filter: blur(15px);
-    opacity: 0.3;
-    animation: titleShadow 3s ease-in-out infinite alternate;
-}
-
-@keyframes titleShadow {
-    0% {
-        opacity: 0.2;
-        transform: scale(0.95);
-    }
-    100% {
-        opacity: 0.4;
-        transform: scale(1.05);
-    }
-}
-
-#subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-    opacity: 0.9;
-    animation: fadeIn 1s ease-out;
-    color: var(--text);
-}
-
-/* الأزرار */
+/* تحسينات للأزرار */
 .menu {
-    margin: 30px 0;
+    margin: 25px 0;
+    width: 100%;
 }
 
 .menu button {
     display: block;
-    width: 250px;
-    margin: 15px auto;
-    padding: 15px;
-    font-size: 1.1rem;
+    width: 100%;
+    max-width: 280px;
+    margin: 10px auto;
+    padding: 16px;
+    font-size: 1rem;
     border: none;
     border-radius: 12px;
     background: linear-gradient(45deg, #00b248, #00c853);
@@ -298,170 +185,68 @@ body {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     animation: glow 2s ease-in-out infinite;
     border: 2px solid transparent;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    min-height: 54px;
 }
 
-@keyframes glow {
-    0%, 100% { 
-        box-shadow: 
-            0 5px 15px rgba(0, 200, 83, 0.4),
-            0 0 30px rgba(0, 200, 83, 0.2);
-    }
-    50% { 
-        box-shadow: 
-            0 5px 25px rgba(0, 200, 83, 0.6),
-            0 0 50px rgba(0, 200, 83, 0.3),
-            0 0 75px rgba(0, 200, 83, 0.2);
-    }
+/* تحسين للضغط على الأزرار */
+.menu button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
 }
 
-.menu button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(45deg, #00c853, #5efc82);
-    animation: glow 0.5s ease-in-out infinite;
-}
-
-.menu button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
-    transition: 0.5s;
-}
-
-.menu button:hover::before {
-    left: 100%;
-}
-
-/* أزرار التحكم */
+/* تحسينات لأزرار التحكم */
 .controls {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     z-index: 1000;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .control-btn {
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text);
     border: none;
-    padding: 10px 15px;
-    border-radius: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s;
-    backdrop-filter: blur(10px);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     gap: 5px;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
 }
 
-.control-btn:hover {
-    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-    transform: scale(1.1);
+.control-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
 }
 
-/* قسم الاقتراحات */
-#suggestions {
-    background: var(--dark);
-    padding: 40px 20px;
-    text-align: center;
-    border-top: 3px solid var(--primary);
-}
-
-#suggestions h2 {
-    margin-bottom: 20px;
-    color: var(--primary);
-    font-size: 2rem;
-}
-
-#suggestions p {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    color: var(--text);
-}
-
-#suggestions form {
-    margin: 30px 0;
-}
-
-#suggestions input {
-    padding: 15px;
-    width: 300px;
-    max-width: 90%;
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    background: var(--glass);
-    color: var(--text);
-    font-size: 1rem;
-    margin-right: 10px;
-}
-
-#suggestions button {
-    padding: 15px 30px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-#suggestions button:hover {
-    background: var(--primary-dark);
-    transform: scale(1.05);
-}
-
-.contact-info {
-    margin-top: 30px;
-    padding: 20px;
-    background: var(--glass);
-    border-radius: 15px;
-    display: inline-block;
-}
-
-.whatsapp-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: #25D366;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: rgba(37, 211, 102, 0.1);
-    border-radius: 10px;
-    transition: all 0.3s;
-}
-
-.whatsapp-link:hover {
-    background: rgba(37, 211, 102, 0.2);
-    transform: scale(1.05);
-}
-
-/* الصفحات الداخلية */
+/* تحسينات للصفحات الداخلية */
 .page {
     display: none;
     position: fixed;
@@ -472,93 +257,36 @@ body {
     background: var(--dark);
     z-index: 10000;
     overflow-y: auto;
-    padding: 40px 20px;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px;
+    overscroll-behavior: contain;
+}
+
+.page.active {
+    display: block;
+    animation: pageFadeIn 0.3s ease-out;
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .page .content {
     background: var(--glass);
-    backdrop-filter: blur(20px);
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    max-width: 95%;
+    margin: 20px auto;
+    padding: 25px 20px;
+    border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text);
+    animation: contentSlideUp 0.4s ease-out;
+    position: relative;
 }
 
-.page h2 {
-    color: var(--primary);
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-}
-
-.page p {
-    line-height: 1.8;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-    color: var(--text);
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-.close-btn:hover {
-    background: var(--primary-dark);
-    transform: scale(1.1);
-}
-
-/* قائمة الوظائف */
-.functions-list {
-    margin: 30px 0;
-}
-
-.function-item {
-    background: rgba(0, 200, 83, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    margin: 15px 0;
-    border-left: 5px solid var(--primary);
-    transition: transform 0.3s;
-    color: var(--text);
-}
-
-.function-item:hover {
-    transform: translateX(10px);
-    background: rgba(0, 200, 83, 0.2);
-}
-
-/* زر تنزيل PDF */
-.pdf-download {
-    display: inline-block;
-    margin: 20px 0;
-    padding: 15px 30px;
-    background: linear-gradient(45deg, #ff3d00, #ff6d00);
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-.pdf-download:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(255, 61, 0, 0.3);
-}
-
-/* تأثيرات دخول */
-@keyframes fadeIn {
+@keyframes contentSlideUp {
     from {
         opacity: 0;
         transform: translateY(30px);
@@ -569,102 +297,235 @@ body {
     }
 }
 
-.fade-in {
-    animation: fadeIn 0.8s ease-out;
+.close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.2s;
+    z-index: 10001;
+    min-width: 44px;
+    min-height: 44px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
 }
 
-/* تأثير تغيير اللغة */
-.language-change {
-    animation: languageChange 0.5s ease-out;
+.close-btn:active {
+    transform: scale(0.95);
 }
 
-@keyframes languageChange {
-    0% { opacity: 0; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1); }
+/* تحسينات لقسم الاقتراحات */
+#suggestions {
+    background: var(--dark);
+    padding: 30px 15px;
+    text-align: center;
+    border-top: 3px solid var(--primary);
+    width: 100%;
 }
 
-/* استجابة للجوال */
+#suggestions form {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+#suggestions input {
+    padding: 14px;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    background: var(--glass);
+    color: var(--text);
+    font-size: 1rem;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 48px;
+}
+
+#suggestions button {
+    padding: 14px 28px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.2s;
+    min-height: 48px;
+    min-width: 150px;
+    touch-action: manipulation;
+}
+
+#suggestions button:active {
+    transform: scale(0.98);
+}
+
+/* تحسينات للروابط */
+.instagram-link, .whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 10px 0;
+    min-height: 44px;
+    transition: all 0.2s;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.instagram-link:active, .whatsapp-link:active {
+    transform: scale(0.98);
+}
+
+/* تحسينات للقوائم */
+.function-item {
+    background: rgba(0, 200, 83, 0.1);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 12px 0;
+    border-left: 5px solid var(--primary);
+    transition: transform 0.2s;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* تحسينات للخطوط والنصوص */
+p, span, div {
+    line-height: 1.5;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* تحسينات للاستجابة */
 @media (max-width: 768px) {
-    #title {
-        font-size: 2.5rem;
-        height: 60px;
-    }
-    
     .glass-box {
-        padding: 30px 20px;
-    }
-    
-    .menu button {
-        width: 100%;
-        max-width: 300px;
+        padding: 20px 15px;
+        margin: 5px;
     }
     
     .controls {
-        top: 60px;
+        top: 10px;
         right: 10px;
-        flex-direction: column;
+        padding: 6px;
     }
     
-    #suggestions input {
-        width: 100%;
-        margin: 0 0 10px 0;
-    }
-    
-    #suggestions button {
-        width: 100%;
+    .control-btn {
+        padding: 8px 10px;
+        font-size: 0.85rem;
     }
     
     .page .content {
-        padding: 30px 20px;
+        padding: 20px 15px;
+        margin: 15px auto;
+    }
+    
+    #welcome-message {
+        padding: 10px;
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 480px) {
-    #title {
-        font-size: 2rem;
-    }
-    
-    #subtitle {
-        font-size: 1.2rem;
+    .menu button {
+        padding: 14px;
+        font-size: 0.95rem;
+        max-width: 100%;
     }
     
     .glass-box {
-        padding: 20px 15px;
+        border-radius: 12px;
     }
     
+    #title {
+        font-size: 1.8rem;
+        min-height: 50px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* تحسينات للعروض الصغيرة جداً */
+@media (max-width: 360px) {
     .menu button {
         padding: 12px;
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    #title {
+        font-size: 1.6rem;
+    }
+    
+    .control-btn span:last-child {
+        display: none;
+    }
+    
+    .control-btn {
+        min-width: 40px;
+        min-height: 40px;
+        padding: 8px;
+    }
+}
+
+/* منع التكبير التلقائي على حقول الإدخال في iOS */
+input, textarea {
+    font-size: 16px !important;
+    transform: translateZ(0);
+}
+
+/* تحسينات للشريط العلوي في iOS */
+@supports (-webkit-touch-callout: none) {
+    .home {
+        min-height: -webkit-fill-available;
+    }
+    
+    .page {
+        min-height: -webkit-fill-available;
     }
 }
 </style>
 </head>
 <body>
 
-<!-- رسالة الترحيب -->
 <div id="welcome-message">
     🚀 Welcome to FARM 8OT - Revolutionizing Agriculture! 🌱
 </div>
 
-<!-- جسيمات الخلفية -->
 <div id="particles-js"></div>
 
-<!-- أزرار التحكم -->
 <div class="controls">
-    <button class="control-btn" onclick="toggleTheme()">
+    <button class="control-btn" onclick="toggleTheme()" aria-label="Toggle theme">
         <span>🌓</span>
         <span id="theme-text">Night Mode</span>
     </button>
-    <button class="control-btn" onclick="toggleLang()">
+    <button class="control-btn" onclick="toggleLang()" aria-label="Toggle language">
         <span>🌐</span>
         <span id="lang-text">AR</span>
     </button>
 </div>
 
-<!-- الصفحة الرئيسية -->
 <section class="home">
     <div class="glass-box fade-in">
-        <!-- العنوان مع تغيير التدرج حسب الثيم -->
         <h1 id="title">FARM 8OT</h1>
         <p id="subtitle">Revolution in the world of agriculture</p>
         
@@ -676,15 +537,13 @@ body {
             <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
         
-        <!-- رابط الإنستجرام -->
-        <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank" style="margin-top: 20px; display: inline-block; color: white; text-decoration: none; padding: 10px 20px; background: rgba(228,64,95,0.2); border-radius: 10px;">
+        <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank" style="margin-top: 20px; display: inline-block; color: white; text-decoration: none; padding: 12px 20px; background: rgba(228,64,95,0.2); border-radius: 10px;">
             <span>📷</span>
             <span id="instagram-text">Follow us on Instagram</span>
         </a>
     </div>
 </section>
 
-<!-- قسم الاقتراحات -->
 <section id="suggestions">
     <h2 id="suggest-title">Suggestions</h2>
     <p id="suggest-text">We believe in any suggestion that can develop and enhance our project.</p>
@@ -694,7 +553,6 @@ body {
         <button type="submit" id="send-btn">Send Suggestion</button>
     </form>
     
-    <!-- معلومات التواصل -->
     <div class="contact-info">
         <h3 id="contact-title">Contact Our Team</h3>
         <a href="https://wa.me/962798688787" class="whatsapp-link" target="_blank">
@@ -704,30 +562,25 @@ body {
     </div>
 </section>
 
-<!-- صفحة About -->
 <section id="about" class="page">
+    <button class="close-btn" onclick="closePage('about')" aria-label="Close">✕</button>
     <div class="content">
-        <button class="close-btn" onclick="closePage('about')">✕</button>
         <h2 id="about-page-title">About</h2>
-        <p id="about-text">Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming.</p>
+        <p id="about-text">Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way.</p>
     </div>
 </section>
 
-<!-- صفحة What it does -->
 <section id="what" class="page">
+    <button class="close-btn" onclick="closePage('what')" aria-label="Close">✕</button>
     <div class="content">
-        <button class="close-btn" onclick="closePage('what')">✕</button>
         <h2 id="what-title">What it does</h2>
-        <div class="functions-list" id="functions-content">
-            <!-- سيتم تعبئته بواسطة الجافاسكريبت -->
-        </div>
+        <div class="functions-list" id="functions-content"></div>
     </div>
 </section>
 
-<!-- صفحة Download -->
 <section id="download" class="page">
+    <button class="close-btn" onclick="closePage('download')" aria-label="Close">✕</button>
     <div class="content">
-        <button class="close-btn" onclick="closePage('download')">✕</button>
         <h2 id="download-title">Download PDF</h2>
         <p id="download-text">Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.</p>
         <a href="FARM8OT.pdf" class="pdf-download" download="FARM8OT.pdf" id="pdf-download-link">
@@ -738,6 +591,10 @@ body {
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
+// تحسينات للأداء على الجوال
+let isScrolling = false;
+let lastScrollTime = 0;
+
 // بيانات النصوص
 const textData = {
     en: {
@@ -800,24 +657,24 @@ const textData = {
     }
 };
 
-// تهيئة الجسيمات
+// تهيئة الجسيمات (مخففة للأداء)
 particlesJS("particles-js", {
     particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
+        number: { value: 40, density: { enable: true, value_area: 600 } },
         color: { value: "#00c853" },
         shape: { type: "circle" },
-        opacity: { value: 0.3, random: true },
-        size: { value: 3, random: true },
+        opacity: { value: 0.2, random: true },
+        size: { value: 2, random: true },
         line_linked: {
             enable: true,
-            distance: 150,
+            distance: 120,
             color: "#00c853",
-            opacity: 0.2,
+            opacity: 0.1,
             width: 1
         },
         move: {
             enable: true,
-            speed: 2,
+            speed: 1.5,
             direction: "none",
             random: true,
             out_mode: "out"
@@ -828,51 +685,29 @@ particlesJS("particles-js", {
 // متغيرات النظام
 let currentLang = "en";
 let currentTheme = "night";
-let subtitles = [
-    "Revolution in the world of agriculture",
-    "Smart Farming Solutions",
-    "Future of Agriculture",
-    "Jordanian Innovation"
-];
-let currentSubtitleIndex = 0;
+let isPageOpen = false;
 
-// تغيير النص الفرعي كل 30 ثانية
-function changeSubtitle() {
-    const subtitle = document.getElementById("subtitle");
-    currentSubtitleIndex = (currentSubtitleIndex + 1) % subtitles.length;
-    
-    subtitle.style.opacity = "0";
-    setTimeout(() => {
-        subtitle.textContent = subtitles[currentSubtitleIndex];
-        subtitle.style.opacity = "1";
-    }, 500);
-    
-    setTimeout(changeSubtitle, 30000);
-}
-
-// تبديل الثيم
+// تحسينات لتبديل الثيم
 function toggleTheme() {
     currentTheme = currentTheme === "night" ? "day" : "night";
     document.documentElement.setAttribute("data-theme", currentTheme);
     
-    // تحديث نص الثيم
     document.getElementById("theme-text").textContent = 
         currentTheme === "night" ? textData[currentLang].themeText : 
         (currentLang === "en" ? "Day Mode" : "وضع الليل");
     
-    // إعادة تحميل تأثيرات العنوان
-    const title = document.getElementById("title");
-    title.style.animation = 'none';
-    setTimeout(() => {
-        title.style.animation = 'titleGlow 3s infinite alternate, gradientMove 3s ease-in-out infinite';
-    }, 10);
+    // تأثير سلس
+    requestAnimationFrame(() => {
+        document.body.style.transition = 'background 0.3s, color 0.3s';
+    });
 }
 
-// تبديل اللغة مع انيميشن
+// تحسينات لتبديل اللغة
 function toggleLang() {
+    if (isPageOpen) return;
+    
     const content = document.querySelector('.glass-box');
     content.classList.remove('language-change');
-    void content.offsetWidth; // Trigger reflow
     
     currentLang = currentLang === "en" ? "ar" : "en";
     document.body.style.direction = currentLang === "ar" ? "rtl" : "ltr";
@@ -881,59 +716,66 @@ function toggleLang() {
     
     content.classList.add('language-change');
     
-    // تحديث النصوص في الثيم
     document.getElementById("theme-text").textContent = textData[currentLang].themeText;
     document.getElementById("lang-text").textContent = currentLang === "en" ? "AR" : "EN";
+}
+
+// تحسينات لفتح الصفحات
+function openPage(pageId) {
+    if (isPageOpen) return;
+    
+    isPageOpen = true;
+    document.body.classList.add('prevent-scroll');
+    
+    const page = document.getElementById(pageId);
+    page.classList.add('active');
+    
+    // تحسينات للتحميل السريع
+    if (pageId === 'what') {
+        updateFunctionsContent();
+    }
+    
+    // إضافة تأثير سلس
+    requestAnimationFrame(() => {
+        page.style.opacity = '1';
+    });
+}
+
+// تحسينات لإغلاق الصفحات
+function closePage(pageId) {
+    const page = document.getElementById(pageId);
+    page.classList.remove('active');
+    
+    isPageOpen = false;
+    document.body.classList.remove('prevent-scroll');
+    
+    // إضافة تأثير سلس
+    requestAnimationFrame(() => {
+        page.style.opacity = '0';
+    });
 }
 
 // تحديث جميع النصوص
 function updateAllTexts() {
     const data = textData[currentLang];
     
-    // تحديث رسالة الترحيب
     document.getElementById("welcome-message").textContent = data.welcome;
-    
-    // تحديث النصوص الرئيسية - العنوان ثابت FARM 8OT
     document.getElementById("title").textContent = "FARM 8OT";
     document.getElementById("subtitle").textContent = data.subtitle;
     document.getElementById("about-btn").textContent = data.aboutBtn;
     document.getElementById("what-btn").textContent = data.whatBtn;
     document.getElementById("download-btn").textContent = data.downloadBtn;
     document.getElementById("instagram-text").textContent = data.instagramText;
-    
-    // تحديث قسم الاقتراحات
     document.getElementById("suggest-title").textContent = data.suggestTitle;
     document.getElementById("suggest-text").textContent = data.suggestText;
     document.getElementById("suggest-input").placeholder = data.suggestPlaceholder;
     document.getElementById("send-btn").textContent = data.sendBtn;
     document.getElementById("contact-title").textContent = data.contactTitle;
-    
-    // تحديث الصفحات
     document.getElementById("about-page-title").textContent = data.aboutTitle;
     document.getElementById("about-text").textContent = data.aboutText;
     document.getElementById("what-title").textContent = data.whatTitle;
     document.getElementById("download-title").textContent = data.downloadTitle;
     document.getElementById("download-text").textContent = data.downloadText;
-    
-    // تحديث قائمة الوظائف
-    updateFunctionsContent();
-    
-    // تحديث النصوص الفرعية
-    if (currentLang === "ar") {
-        subtitles = [
-            "ثورة في عالم الزراعة",
-            "حلول الزراعة الذكية",
-            "مستقبل الزراعة",
-            "إبداع أردني"
-        ];
-    } else {
-        subtitles = [
-            "Revolution in the world of agriculture",
-            "Smart Farming Solutions",
-            "Future of Agriculture",
-            "Jordanian Innovation"
-        ];
-    }
 }
 
 // تحديث قائمة الوظائف
@@ -951,7 +793,7 @@ function updateFunctionsContent() {
     });
 }
 
-// إرسال الاقتراح
+// تحسينات لإرسال الاقتراحات
 function sendSuggestion() {
     const suggestion = document.getElementById("suggest-input").value;
     
@@ -965,63 +807,70 @@ function sendSuggestion() {
     const body = `Suggestion: ${suggestion}\n\nSent from FARM 8OT Website`;
     
     const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
+    
+    // فتح الرابط في نافذة جديدة
+    window.open(mailtoLink, '_blank');
     
     document.getElementById("suggest-input").value = "";
     
     setTimeout(() => {
         alert(currentLang === "en" 
-            ? "Thank you! Your email client will open with the suggestion. Please click send to submit your suggestion."
-            : "شكراً! سيتم فتح بريدك الإلكتروني مع الاقتراح. الرجاء الضغط على إرسال لتقديم اقتراحك.");
-    }, 500);
-}
-
-// فتح الصفحات
-function openPage(pageId) {
-    document.querySelector('.home').style.display = 'none';
-    document.getElementById('suggestions').style.display = 'none';
-    document.getElementById(pageId).style.display = 'block';
-    
-    if (pageId === 'what') {
-        updateFunctionsContent();
-    }
-}
-
-function closePage(pageId) {
-    document.getElementById(pageId).style.display = 'none';
-    document.querySelector('.home').style.display = 'flex';
-    document.getElementById('suggestions').style.display = 'block';
+            ? "Thank you! Your suggestion email is ready to send."
+            : "شكراً! بريد الاقتراح جاهز للإرسال.");
+    }, 300);
 }
 
 function open3DPage() {
+    if (isPageOpen) return;
     window.location.href = 'https://farmbot1238.github.io/3D/';
 }
 
-// إخفاء رسالة الترحيب بعد 5 ثواني
-setTimeout(() => {
-    document.getElementById('welcome-message').style.display = 'none';
-}, 5000);
-
-// تهيئة الموقع
+// تحسينات للتهيئة
 window.onload = function() {
-    // تعيين العنوان ثابتاً
+    // تعيين القيم الافتراضية
     document.getElementById("title").textContent = "FARM 8OT";
-    
-    // بدء تغيير النص الفرعي كل 30 ثانية
-    setTimeout(changeSubtitle, 30000);
-    
-    // تحديث جميع النصوص
     updateAllTexts();
-    
-    // تعيين الثيم الليلي افتراضياً
     document.documentElement.setAttribute("data-theme", "night");
     
-    // إضافة تأثيرات دخول للأزرار
-    const buttons = document.querySelectorAll('.menu button');
-    buttons.forEach((button, index) => {
-        button.style.animationDelay = `${index * 0.1}s`;
+    // تحسينات للأزرار
+    const buttons = document.querySelectorAll('button, a');
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', function(e) {
+            this.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        button.addEventListener('touchend', function(e) {
+            this.style.transform = 'scale(1)';
+        }, { passive: true });
     });
+    
+    // إخفاء رسالة الترحيب
+    setTimeout(() => {
+        document.getElementById('welcome-message').style.display = 'none';
+    }, 4000);
+    
+    // تحسينات للتمرير
+    document.addEventListener('touchmove', function(e) {
+        if (isPageOpen) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+    
+    // تحسينات لأداء الجوال
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+    }
 };
+
+// منع السلوك الافتراضي للمس الطويل
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// تحسينات للذاكرة
+window.addEventListener('beforeunload', function() {
+    particlesJS("particles-js", {});
+});
 </script>
 </body>
 </html>
