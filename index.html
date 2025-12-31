@@ -12,32 +12,32 @@
 :root {
     --primary: #00c853; /* أخضر */
     --secondary: #ffd600; /* أصفر */
-    --gradient: linear-gradient(45deg, #00c853, #ffd600);
-    --gradient-reverse: linear-gradient(45deg, #ffd600, #00c853);
+    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600); /* للتدرج في الثيم الداكن */
+    --light-gradient: linear-gradient(45deg, #333333, #666666); /* للتدرج في الثيم الفاتح */
     --dark: #121212;
     --light: #f5f5f5;
     --glass: rgba(0, 0, 0, 0.7);
     --text: #ffffff;
 }
 
-/* ثيم النهار */
+/* ثيم النهار (فاتح) */
 :root[data-theme="day"] {
     --primary: #00c853;
     --secondary: #ffd600;
-    --gradient: linear-gradient(45deg, #00c853, #ffd600);
-    --gradient-reverse: linear-gradient(45deg, #ffd600, #00c853);
+    --dark-gradient: linear-gradient(45deg, #333333, #666666); /* أسود/رمادي في النهار */
+    --light-gradient: linear-gradient(45deg, #333333, #666666);
     --dark: #f5f5f5;
     --light: #121212;
     --glass: rgba(255, 255, 255, 0.7);
     --text: #000000;
 }
 
-/* ثيم الليل */
+/* ثيم الليل (داكن) */
 :root[data-theme="night"] {
     --primary: #00c853;
     --secondary: #ffd600;
-    --gradient: linear-gradient(45deg, #00c853, #ffd600);
-    --gradient-reverse: linear-gradient(45deg, #ffd600, #00c853);
+    --dark-gradient: linear-gradient(45deg, #00c853, #ffd600); /* أخضر/أصفر في الليل */
+    --light-gradient: linear-gradient(45deg, #00c853, #ffd600);
     --dark: #121212;
     --light: #f5f5f5;
     --glass: rgba(0, 0, 0, 0.7);
@@ -197,11 +197,11 @@ body {
     50% { transform: translateY(-20px); }
 }
 
-/* العنوان فقط مع التدرج الأخضر للأصفر */
+/* العنوان مع تغيير التدرج حسب الثيم */
 #title {
     font-size: 3.5rem;
     margin-bottom: 15px;
-    background: var(--gradient);
+    background: var(--dark-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     height: 80px;
@@ -219,32 +219,33 @@ body {
 
 @keyframes titleGlow {
     0% {
-        text-shadow: 0 0 10px rgba(0,200,83,0.4),
-                     0 0 20px rgba(0,200,83,0.3),
-                     0 0 30px rgba(0,200,83,0.2);
+        text-shadow: 
+            0 0 10px rgba(0, 200, 83, 0.3),
+            0 0 20px rgba(0, 200, 83, 0.2),
+            0 0 30px rgba(0, 200, 83, 0.1);
     }
     100% {
-        text-shadow: 0 0 20px rgba(255,214,0,0.4),
-                     0 0 40px rgba(255,214,0,0.3),
-                     0 0 60px rgba(255,214,0,0.2);
+        text-shadow: 
+            0 0 15px rgba(0, 200, 83, 0.4),
+            0 0 30px rgba(0, 200, 83, 0.3),
+            0 0 45px rgba(0, 200, 83, 0.2);
     }
 }
 
+/* تأثير التدرج المتحرك */
 @keyframes gradientMove {
     0% {
         background-position: 0% 50%;
-        filter: hue-rotate(0deg);
     }
     50% {
         background-position: 100% 50%;
-        filter: hue-rotate(30deg);
     }
     100% {
         background-position: 0% 50%;
-        filter: hue-rotate(0deg);
     }
 }
 
+/* الظل الخلفي للتأثير */
 #title::after {
     content: '';
     position: absolute;
@@ -252,21 +253,21 @@ body {
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background: var(--gradient);
+    background: var(--dark-gradient);
     border-radius: 10px;
     z-index: -1;
-    filter: blur(20px);
-    opacity: 0.4;
+    filter: blur(15px);
+    opacity: 0.3;
     animation: titleShadow 3s ease-in-out infinite alternate;
 }
 
 @keyframes titleShadow {
     0% {
-        opacity: 0.3;
+        opacity: 0.2;
         transform: scale(0.95);
     }
     100% {
-        opacity: 0.7;
+        opacity: 0.4;
         transform: scale(1.05);
     }
 }
@@ -279,7 +280,7 @@ body {
     color: var(--text);
 }
 
-/* الأزرار بدون تدرج */
+/* الأزرار */
 .menu {
     margin: 30px 0;
 }
@@ -663,7 +664,7 @@ body {
 <!-- الصفحة الرئيسية -->
 <section class="home">
     <div class="glass-box fade-in">
-        <!-- العنوان مع التدرج الأخضر للأصفر فقط -->
+        <!-- العنوان مع تغيير التدرج حسب الثيم -->
         <h1 id="title">FARM 8OT</h1>
         <p id="subtitle">Revolution in the world of agriculture</p>
         
@@ -858,6 +859,13 @@ function toggleTheme() {
     document.getElementById("theme-text").textContent = 
         currentTheme === "night" ? textData[currentLang].themeText : 
         (currentLang === "en" ? "Day Mode" : "وضع الليل");
+    
+    // إعادة تحميل تأثيرات العنوان
+    const title = document.getElementById("title");
+    title.style.animation = 'none';
+    setTimeout(() => {
+        title.style.animation = 'titleGlow 3s infinite alternate, gradientMove 3s ease-in-out infinite';
+    }, 10);
 }
 
 // تبديل اللغة مع انيميشن
@@ -885,7 +893,7 @@ function updateAllTexts() {
     // تحديث رسالة الترحيب
     document.getElementById("welcome-message").textContent = data.welcome;
     
-    // تحديث النصوص الرئيسية - العنوان ثابت FARM 8OT مع التدرج
+    // تحديث النصوص الرئيسية - العنوان ثابت FARM 8OT
     document.getElementById("title").textContent = "FARM 8OT";
     document.getElementById("subtitle").textContent = data.subtitle;
     document.getElementById("about-btn").textContent = data.aboutBtn;
@@ -996,7 +1004,7 @@ setTimeout(() => {
 
 // تهيئة الموقع
 window.onload = function() {
-    // تعيين العنوان ثابتاً مع التدرج
+    // تعيين العنوان ثابتاً
     document.getElementById("title").textContent = "FARM 8OT";
     
     // بدء تغيير النص الفرعي كل 30 ثانية
