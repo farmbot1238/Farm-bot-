@@ -50,7 +50,9 @@ h1 { font-size:2rem; margin-bottom:15px; }
 /* الصفحات الداخلية */
 .page {
     display:none;
-    background: url('FARBOT2.jpeg') no-repeat center center/cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height:100vh; padding:40px; color: var(--white); overflow-y:auto;
 }
 .page .content {
@@ -314,8 +316,15 @@ function openPage(pageId){
     document.getElementById('suggestions').style.display='none';
     document.getElementById(pageId).style.display='block';
     
+    // تحديد الخلفية المناسبة لكل صفحة
+    const page = document.getElementById(pageId);
     if(pageId === 'what') {
+        // صفحة What it does - خلفية FARBOT3.jpeg
+        page.style.backgroundImage = "url('FARBOT3.jpeg')";
         updateFunctionsContent();
+    } else {
+        // باقي الصفحات - خلفية FARBOT2.jpeg
+        page.style.backgroundImage = "url('FARBOT2.jpeg')";
     }
 }
 
