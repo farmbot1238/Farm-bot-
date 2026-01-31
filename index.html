@@ -12,6 +12,8 @@
     --yellow: #ffeb3b;
     --black: #000;
     --hover-green: #4caf50;
+    --purple: #7b1fa2;
+    --hover-purple: #9c27b0;
 }
 /* عام */
 * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
@@ -66,6 +68,10 @@ h1 { font-size:2rem; margin-bottom:15px; }
 .threeD-title { font-size:2rem; text-align:center; margin-bottom:15px; }
 .threeD-title .farm { color: var(--yellow); }
 .threeD-title .bot { color: var(--green); }
+/* Teachable Machine Title */
+.teachable-title { font-size:2rem; text-align:center; margin-bottom:15px; }
+.teachable-title .teachable { color: var(--yellow); }
+.teachable-title .machine { color: var(--purple); }
 /* قائمة الوظائف */
 .functions-list { text-align: left; margin: 20px 0; }
 .function-item { margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
@@ -85,6 +91,27 @@ h1 { font-size:2rem; margin-bottom:15px; }
     background: #b71c1c;
 }
 .pdf-icon {
+    margin-right: 8px;
+}
+/* زر Teachable Machine */
+.teachable-btn {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 12px 25px;
+    background: var(--purple);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+    border: none;
+    cursor: pointer;
+}
+.teachable-btn:hover {
+    background: var(--hover-purple);
+    box-shadow: 0 0 15px var(--hover-purple);
+}
+.teachable-icon {
     margin-right: 8px;
 }
 /* رابط الإنستجرام */
@@ -118,6 +145,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
             <button onclick="openPage('what')" id="what-btn">What it does</button>
             <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'">Contact</button>
             <button onclick="open3DPage()">3D</button>
+            <button onclick="openPage('teachable')" id="teachable-btn">Teachable Machine Model</button>
             <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
         <!-- رابط الإنستجرام -->
@@ -167,6 +195,36 @@ h1 { font-size:2rem; margin-bottom:15px; }
     </div>
 </section>
 
+<!-- صفحة Teachable Machine الجديدة -->
+<section class="page" id="teachable">
+    <div class="content">
+        <h2 class="teachable-title"><span class="teachable">Teachable</span> <span class="machine">Machine</span></h2>
+        <p id="teachable-text">Experience our AI-powered plant disease detection model. This model uses machine learning to identify various plant diseases and provide recommendations.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button onclick="openTeachableModel()" class="teachable-btn">
+                <span class="teachable-icon">🤖</span>
+                <span id="teachable-btn-text">Open Teachable Machine Model</span>
+            </button>
+        </div>
+        
+        <div id="teachable-info">
+            <h3 id="features-title">Features:</h3>
+            <div class="functions-list">
+                <div class="function-item" id="feature1">Real-time plant disease detection</div>
+                <div class="function-item" id="feature2">Multiple disease classification</div>
+                <div class="function-item" id="feature3">Image and camera input support</div>
+                <div class="function-item" id="feature4">Detailed analysis and recommendations</div>
+                <div class="function-item" id="feature5">User-friendly interface</div>
+            </div>
+        </div>
+        
+        <p id="teachable-note">Note: The model will open in a new window. Make sure to allow camera access if you want to use live detection.</p>
+        
+        <button onclick="closePage('teachable')" id="exit-teachable-btn">Exit</button>
+    </div>
+</section>
+
 <section class="page" id="download">
     <div class="content">
         <h2 id="download-title">Download Farm Bot PDF</h2>
@@ -194,6 +252,7 @@ const textData = {
         whatBtn: "What it does",
         contactBtn: "Contact",
         threeDBtn: "3D",
+        teachableBtn: "Teachable Machine Model",
         downloadBtn: "Download PDF",
         instagramText: "Follow us on Instagram",
         
@@ -222,6 +281,19 @@ const textData = {
         // صفحة 3D
         threeDText: "Here you can view the 3D model of Farm Bot.",
         
+        // صفحة Teachable Machine
+        teachableText: "Experience our AI-powered plant disease detection model. This model uses machine learning to identify various plant diseases and provide recommendations.",
+        teachableBtnText: "Open Teachable Machine Model",
+        featuresTitle: "Features:",
+        teachableFeatures: [
+            "Real-time plant disease detection",
+            "Multiple disease classification",
+            "Image and camera input support",
+            "Detailed analysis and recommendations",
+            "User-friendly interface"
+        ],
+        teachableNote: "Note: The model will open in a new window. Make sure to allow camera access if you want to use live detection.",
+        
         // صفحة Download
         downloadTitle: "Download Farm Bot PDF",
         downloadText: "Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.",
@@ -239,6 +311,7 @@ const textData = {
         whatBtn: "ماذا يفعل",
         contactBtn: "تواصل",
         threeDBtn: "3D",
+        teachableBtn: "نموذج Teachable Machine",
         downloadBtn: "تحميل PDF",
         instagramText: "تابعنا على الإنستجرام",
         
@@ -266,6 +339,19 @@ const textData = {
         
         // صفحة 3D
         threeDText: "هنا يمكنك عرض نموذج المزرعة الذكية ثلاثي الأبعاد.",
+        
+        // صفحة Teachable Machine
+        teachableText: "جرب نموذجنا للكشف عن أمراض النباتات المدعوم بالذكاء الاصطناعي. يستخدم هذا النموذج التعلم الآلي لتحديد أمراض النباتات المختلفة وتقديم التوصيات.",
+        teachableBtnText: "فتح نموذج Teachable Machine",
+        featuresTitle: "المميزات:",
+        teachableFeatures: [
+            "الكشف عن أمراض النباتات في الوقت الفعلي",
+            "تصنيف متعدد للأمراض",
+            "دعم إدخال الصور والكاميرا",
+            "تحليل مفصل وتوصيات",
+            "واجهة سهلة الاستخدام"
+        ],
+        teachableNote: "ملاحظة: سيتم فتح النموذج في نافذة جديدة. تأكد من السماح بالوصول إلى الكاميرا إذا كنت تريد استخدام الكشف المباشر.",
         
         // صفحة Download
         downloadTitle: "تحميل ملف PDF للمزرعة الذكية",
@@ -322,6 +408,10 @@ function openPage(pageId){
         // صفحة What it does - خلفية FARBOT3.jpeg
         page.style.backgroundImage = "url('FARBOT3.jpeg')";
         updateFunctionsContent();
+    } else if(pageId === 'teachable') {
+        // صفحة Teachable Machine - خلفية خاصة أو نفس باقي الصفحات
+        page.style.backgroundImage = "url('FARBOT2.jpeg')";
+        updateTeachableContent();
     } else {
         // باقي الصفحات - خلفية FARBOT2.jpeg
         page.style.backgroundImage = "url('FARBOT2.jpeg')";
@@ -350,6 +440,26 @@ function updateFunctionsContent() {
     }
 }
 
+function updateTeachableContent() {
+    const currentLang = lang;
+    const data = textData[currentLang];
+    
+    // تحديث النصوص
+    document.getElementById('teachable-text').innerText = data.teachableText;
+    document.getElementById('teachable-btn-text').innerText = data.teachableBtnText;
+    document.getElementById('features-title').innerText = data.featuresTitle;
+    document.getElementById('teachable-note').innerText = data.teachableNote;
+    
+    // تحديث القائمة
+    const features = data.teachableFeatures;
+    for(let i = 0; i < features.length; i++) {
+        const featureId = 'feature' + (i + 1);
+        if(document.getElementById(featureId)) {
+            document.getElementById(featureId).innerText = features[i];
+        }
+    }
+}
+
 function updateAllTexts() {
     const currentLang = lang;
     const data = textData[currentLang];
@@ -358,6 +468,7 @@ function updateAllTexts() {
     document.getElementById("subtitle").innerText = data.subtitle;
     document.getElementById("about-btn").innerText = data.aboutBtn;
     document.getElementById("what-btn").innerText = data.whatBtn;
+    document.getElementById("teachable-btn").innerText = data.teachableBtn;
     document.getElementById("download-btn").innerText = data.downloadBtn;
     document.getElementById("instagram-text").innerText = data.instagramText;
     
@@ -377,6 +488,13 @@ function updateAllTexts() {
     document.getElementById("threeD-text").innerText = data.threeDText;
     document.getElementById("exit-3d-btn").innerText = data.exitBtn;
     
+    // تحديث Teachable Machine
+    document.getElementById("teachable-text").innerText = data.teachableText;
+    document.getElementById("teachable-btn-text").innerText = data.teachableBtnText;
+    document.getElementById("features-title").innerText = data.featuresTitle;
+    document.getElementById("teachable-note").innerText = data.teachableNote;
+    document.getElementById("exit-teachable-btn").innerText = data.exitBtn;
+    
     document.getElementById("download-title").innerText = data.downloadTitle;
     document.getElementById("download-text").innerText = data.downloadText;
     document.getElementById("download-btn-text").innerText = data.downloadBtnText;
@@ -386,10 +504,19 @@ function updateAllTexts() {
     if(document.getElementById('what').style.display === 'block') {
         updateFunctionsContent();
     }
+    
+    if(document.getElementById('teachable').style.display === 'block') {
+        updateTeachableContent();
+    }
 }
 
 function open3DPage(){
     window.location.href = 'https://farmbot1238.github.io/3D/';
+}
+
+function openTeachableModel(){
+    // فتح رابط Teachable Machine في نافذة جديدة
+    window.open('https://farmbot1238.github.io/tomato/', '_blank');
 }
 
 let lang = "en";
