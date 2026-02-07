@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farm Bot</title>
+<title id="pageTitle">Farm Bot</title>
 <style>
 :root {
     --glass: rgba(0,0,0,0.55);
@@ -15,10 +15,9 @@
     --purple: #7b1fa2;
     --hover-purple: #9c27b0;
 }
-/* عام */
 * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
 body, html { height: 100%; scroll-behavior: smooth; }
-/* الصفحة الرئيسية */
+
 .home {
     background: url('FARBOT.jpeg') no-repeat center center/cover;
     height: 100vh;
@@ -31,14 +30,9 @@ h1 { font-size:2rem; margin-bottom:15px; }
 .menu button {
     display:block; width:200px; margin:10px auto; padding:12px; font-size:1rem;
     border:none; border-radius:10px; background: var(--green); color: var(--white); cursor:pointer; transition:0.3s;
-    position: relative;
-    overflow: hidden;
 }
-.menu button:hover { 
-    background: var(--hover-green);
-    box-shadow: 0 0 15px var(--hover-green);
-}
-/* قسم الاقتراحات */
+.menu button:hover { background: var(--hover-green); box-shadow: 0 0 15px var(--hover-green); }
+
 #suggestions {
     background: var(--black); padding:30px; border-radius:15px 15px 0 0; margin:0; width:100%;
     color: var(--white); text-align:center;
@@ -49,12 +43,11 @@ h1 { font-size:2rem; margin-bottom:15px; }
 #suggestions input { width:250px; }
 #suggestions button { background: var(--green); color: var(--white); cursor:pointer; }
 #suggestions button:hover { background: var(--hover-green); }
-/* الصفحات الداخلية */
+
 .page {
     display:none;
+    background: url('FARBOT2.jpeg') no-repeat center center/cover;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     height:100vh; padding:40px; color: var(--white); overflow-y:auto;
 }
 .page .content {
@@ -62,20 +55,16 @@ h1 { font-size:2rem; margin-bottom:15px; }
 }
 .page button { margin-top:20px; padding:10px 20px; background: var(--green); border:none; border-radius:8px; color: var(--white); cursor:pointer; }
 .page button:hover { background: var(--hover-green); }
-/* زر اللغة */
+
 .lang-toggle { position:absolute; top:20px; right:20px; background: var(--glass); color: var(--white); border:none; padding:8px 15px; border-radius:10px; cursor:pointer; }
-/* 3D Title */
 .threeD-title { font-size:2rem; text-align:center; margin-bottom:15px; }
 .threeD-title .farm { color: var(--yellow); }
 .threeD-title .bot { color: var(--green); }
-/* Teachable Machine Title */
 .teachable-title { font-size:2rem; text-align:center; margin-bottom:15px; }
 .teachable-title .teachable { color: var(--yellow); }
 .teachable-title .machine { color: var(--purple); }
-/* قائمة الوظائف */
 .functions-list { text-align: left; margin: 20px 0; }
 .function-item { margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
-/* زر تنزيل PDF */
 .pdf-download-btn {
     display: inline-block;
     margin: 15px 0;
@@ -87,13 +76,8 @@ h1 { font-size:2rem; margin-bottom:15px; }
     font-weight: bold;
     transition: background 0.3s;
 }
-.pdf-download-btn:hover {
-    background: #b71c1c;
-}
-.pdf-icon {
-    margin-right: 8px;
-}
-/* زر Teachable Machine */
+.pdf-download-btn:hover { background: #b71c1c; }
+.pdf-icon { margin-right: 8px; }
 .teachable-btn {
     display: inline-block;
     margin: 15px 0;
@@ -107,14 +91,8 @@ h1 { font-size:2rem; margin-bottom:15px; }
     border: none;
     cursor: pointer;
 }
-.teachable-btn:hover {
-    background: var(--hover-purple);
-    box-shadow: 0 0 15px var(--hover-purple);
-}
-.teachable-icon {
-    margin-right: 8px;
-}
-/* رابط الإنستجرام */
+.teachable-btn:hover { background: var(--hover-purple); box-shadow: 0 0 15px var(--hover-purple); }
+.teachable-icon { margin-right: 8px; }
 .instagram-link {
     display: inline-block;
     margin-top: 20px;
@@ -123,18 +101,12 @@ h1 { font-size:2rem; margin-bottom:15px; }
     font-size: 1.1rem;
     transition: color 0.3s;
 }
-.instagram-link:hover {
-    color: #e4405f;
-}
-.instagram-icon {
-    margin-right: 8px;
-    font-size: 1.2rem;
-}
+.instagram-link:hover { color: #e4405f; }
+.instagram-icon { margin-right: 8px; font-size: 1.2rem; }
 </style>
 </head>
 <body>
 
-<!-- الصفحة الرئيسية -->
 <section class="home" id="home">
     <button class="lang-toggle" onclick="toggleLang()">AR</button>
     <div class="glass-box">
@@ -143,35 +115,32 @@ h1 { font-size:2rem; margin-bottom:15px; }
         <div class="menu">
             <button onclick="openPage('about')" id="about-btn">About</button>
             <button onclick="openPage('what')" id="what-btn">What it does</button>
-            <button onclick="window.location.href='https://farmbot1238.github.io/DONE/'">Contact</button>
-            <button onclick="open3DPage()">3D</button>
+            <button id="contact-btn">Contact</button>
+            <button onclick="open3DPage()" id="threeD-btn">3D</button>
             <button onclick="openPage('teachable')" id="teachable-btn">Teachable Machine Model</button>
             <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
-        <!-- رابط الإنستجرام -->
-        <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank">
+        <a href="#" id="instagram-link" class="instagram-link" target="_blank">
             <span class="instagram-icon">📷</span>
             <span id="instagram-text">Follow us on Instagram</span>
         </a>
     </div>
 </section>
 
-<!-- قسم الاقتراحات -->
 <div id="suggestions">
     <h2 id="suggest-title">Suggestions</h2>
     <p id="suggest-text">We believe in any suggestion that can develop and enhance our project.</p>
-    <p><strong id="phone-text">Phone:</strong> +962 7XXXXXXXX</p>
+    <p><strong id="phone-text">Phone:</strong> <span id="phone-number">+962 7XXXXXXXX</span></p>
     <form onsubmit="event.preventDefault(); sendSuggestion();">
         <input type="text" id="suggest-input" placeholder="Write your suggestion..." required>
         <button type="submit" id="send-btn">Send</button>
     </form>
 </div>
 
-<!-- باقي الصفحات تبقى كما هي -->
 <section class="page" id="about">
     <div class="content">
         <h2 id="about-page-title">About</h2>
-        <p id="about-text">Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.</p>
+        <p id="about-text">Loading...</p>
         <button onclick="closePage('about')" id="exit-about-btn">Exit</button>
     </div>
 </section>
@@ -180,362 +149,426 @@ h1 { font-size:2rem; margin-bottom:15px; }
     <div class="content">
         <h2 id="what-title">What it does</h2>
         <div class="functions-list" id="functions-content">
-            <!-- المحتوى سيتم تعبئته عبر الجافاسكريبت -->
+            Loading...
         </div>
         <button onclick="closePage('what')" id="exit-what-btn">Exit</button>
     </div>
 </section>
 
-<section class="page" id="threeD">
-    <div class="content">
-        <h2 class="threeD-title"><span class="farm">FARM</span> <span class="bot">8OT</span></h2>
-        <p id="threeD-text">Here you can view the 3D model of Farm Bot.</p>
-        <div id="threeDContainer" style="width:100%; height:400px;"></div>
-        <button onclick="closePage('threeD')" id="exit-3d-btn">Exit</button>
-    </div>
-</section>
-
-<!-- صفحة Teachable Machine الجديدة -->
 <section class="page" id="teachable">
     <div class="content">
-        <h2 class="teachable-title"><span class="teachable">Teachable</span> <span class="machine">Machine</span></h2>
-        <p id="teachable-text">Experience our AI-powered plant disease detection model. This model uses machine learning to identify various plant diseases and provide recommendations.</p>
-        
+        <h2 class="teachable-title" id="teachable-page-title">
+            <span class="teachable">Teachable</span> <span class="machine">Machine</span>
+        </h2>
+        <p id="teachable-text">Loading...</p>
         <div style="text-align: center; margin: 30px 0;">
             <button onclick="openTeachableModel()" class="teachable-btn">
                 <span class="teachable-icon">🤖</span>
                 <span id="teachable-btn-text">Open Teachable Machine Model</span>
             </button>
         </div>
-        
         <div id="teachable-info">
             <h3 id="features-title">Features:</h3>
-            <div class="functions-list">
-                <div class="function-item" id="feature1">Real-time plant disease detection</div>
-                <div class="function-item" id="feature2">Multiple disease classification</div>
-                <div class="function-item" id="feature3">Image and camera input support</div>
-                <div class="function-item" id="feature4">Detailed analysis and recommendations</div>
-                <div class="function-item" id="feature5">User-friendly interface</div>
+            <div class="functions-list" id="teachable-features">
+                Loading...
             </div>
         </div>
-        
-        <p id="teachable-note">Note: The model will open in a new window. Make sure to allow camera access if you want to use live detection.</p>
-        
+        <p id="teachable-note">Loading...</p>
         <button onclick="closePage('teachable')" id="exit-teachable-btn">Exit</button>
     </div>
 </section>
 
 <section class="page" id="download">
     <div class="content">
-        <h2 id="download-title">Download Farm Bot PDF</h2>
-        <p id="download-text">Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.</p>
-        
-        <a href="FARM8OT.pdf" id="pdf-download-link" class="pdf-download-btn" download="FARM8OT.pdf">
+        <h2 id="download-title">Download</h2>
+        <p id="download-text">Loading...</p>
+        <a href="#" id="pdf-download-link" class="pdf-download-btn" download>
             <span class="pdf-icon">📄</span>
             <span id="download-btn-text">Download Farm Bot PDF</span>
         </a>
-        
-        <p id="file-info">File size: 1.2 MB | Format: PDF</p>
-        
+        <p id="file-info">Loading...</p>
         <button onclick="closePage('download')" id="exit-download-btn">Exit</button>
     </div>
 </section>
 
 <script>
-// بيانات جميع النصوص باللغتين
-const textData = {
-    en: {
-        // الصفحة الرئيسية
-        title: "FARM 8OT",
-        subtitle: "Revolution in the world of agriculture",
-        aboutBtn: "About",
-        whatBtn: "What it does",
-        contactBtn: "Contact",
-        threeDBtn: "3D",
-        teachableBtn: "Teachable Machine Model",
-        downloadBtn: "Download PDF",
-        instagramText: "Follow us on Instagram",
-        
-        // قسم الاقتراحات
-        suggestTitle: "Suggestions",
-        suggestText: "We believe in any suggestion that can develop and enhance our project.",
-        phoneText: "Phone:",
-        suggestInput: "Write your suggestion...",
-        sendBtn: "Send",
-        
-        // صفحة About
-        aboutPageTitle: "About",
-        aboutText: "Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Haitham Al-Maaytah and Abdulrahman Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.",
-        
-        // صفحة What it does
-        whatTitle: "What it does",
-        functions: [
-            "Crop Monitoring & Growth Tracking",
-            "Harvest Readiness Identification", 
-            "Harmful Plant Detection & Automated Removal",
-            "Autonomous Operation & Decision-Making",
-            "Remote Control & Monitoring",
-            "Automated Reporting & Data Analysis"
-        ],
-        
-        // صفحة 3D
-        threeDText: "Here you can view the 3D model of Farm Bot.",
-        
-        // صفحة Teachable Machine
-        teachableText: "Experience our AI-powered plant disease detection model. This model uses machine learning to identify various plant diseases and provide recommendations.",
-        teachableBtnText: "Open Teachable Machine Model",
-        featuresTitle: "Features:",
-        teachableFeatures: [
-            "Real-time plant disease detection",
-            "Multiple disease classification",
-            "Image and camera input support",
-            "Detailed analysis and recommendations",
-            "User-friendly interface"
-        ],
-        teachableNote: "Note: The model will open in a new window. Make sure to allow camera access if you want to use live detection.",
-        
-        // صفحة Download
-        downloadTitle: "Download Farm Bot PDF",
-        downloadText: "Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.",
-        downloadBtnText: "Download Farm Bot PDF",
-        fileInfo: "File size: 1.2 MB | Format: PDF",
-        
-        // أزرار الخروج
-        exitBtn: "Exit"
-    },
-    ar: {
-        // الصفحة الرئيسية
-        title: "FARM 8OT",
-        subtitle: "ثورة في عالم الزراعة",
-        aboutBtn: "حول",
-        whatBtn: "ماذا يفعل",
-        contactBtn: "تواصل",
-        threeDBtn: "3D",
-        teachableBtn: "نموذج Teachable Machine",
-        downloadBtn: "تحميل PDF",
-        instagramText: "تابعنا على الإنستجرام",
-        
-        // قسم الاقتراحات
-        suggestTitle: "اقتراحات",
-        suggestText: "نحن نؤمن بأي اقتراح يمكن أن يطور ويعزز مشروعنا.",
-        phoneText: "هاتف:",
-        suggestInput: "اكتب اقتراحك...",
-        sendBtn: "إرسال",
-        
-        // صفحة About
-        aboutPageTitle: "حول",
-        aboutText: "المزرعة الذكية هو روبوت زراعي ذكي تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب هيثم المعايطة وعبدالرحمن المعايطة. تم تصميمه لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة حديثة وفعالة. فهو يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد. كما أنه يساعد في الحفاظ على صحة النباتات من خلال اكتشاف النباتات الضارة وإزالتها تلقائيًا. المزرعة الذكية قادر على العمل بشكل مستقل واتخاذ القرارات الزراعية الدقيقة بناءً على البيانات المحيطة. يمكن أيضًا التحكم فيه ومراقبته عن بُعد، مما يوفر للمزارعين تقارير مفصلة عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. يساهم في زيادة الإنتاجية وتقليل هدر الموارد، ويعمل بشكل مستمر طوال اليوم بكفاءة عالية، ويمثل تكاملاً مثاليًا بين التكنولوجيا الحديثة والزراعة التقليدية. المزرعة الذكية هو الشريك الزراعي المثالي لتحقيق زراعة أكثر ذكاءً وكفاءة، وتوفير الوقت والجهد، وتعزيز دقة مراقبة المحاصيل، وجعل العمليات الزراعية أكثر سلاسة وإدارة، ويمثل خطوة نحو مستقبل الزراعة الذكية والمستدامة.",
-        
-        // صفحة What it does
-        whatTitle: "ماذا يفعل",
-        functions: [
-            "مراقبة المحاصيل وتتبع النمو",
-            "تحديد النباتات الجاهزة للحصاد",
-            "كشف النباتات الضارة وإزالتها آلياً",
-            "التشغيل المستقل واتخاذ القرارات",
-            "التحكم والمراقبة عن بُعد", 
-            "إعداد التقارير الآلية وتحليل البيانات"
-        ],
-        
-        // صفحة 3D
-        threeDText: "هنا يمكنك عرض نموذج المزرعة الذكية ثلاثي الأبعاد.",
-        
-        // صفحة Teachable Machine
-        teachableText: "جرب نموذجنا للكشف عن أمراض النباتات المدعوم بالذكاء الاصطناعي. يستخدم هذا النموذج التعلم الآلي لتحديد أمراض النباتات المختلفة وتقديم التوصيات.",
-        teachableBtnText: "فتح نموذج Teachable Machine",
-        featuresTitle: "المميزات:",
-        teachableFeatures: [
-            "الكشف عن أمراض النباتات في الوقت الفعلي",
-            "تصنيف متعدد للأمراض",
-            "دعم إدخال الصور والكاميرا",
-            "تحليل مفصل وتوصيات",
-            "واجهة سهلة الاستخدام"
-        ],
-        teachableNote: "ملاحظة: سيتم فتح النموذج في نافذة جديدة. تأكد من السماح بالوصول إلى الكاميرا إذا كنت تريد استخدام الكشف المباشر.",
-        
-        // صفحة Download
-        downloadTitle: "تحميل ملف PDF للمزرعة الذكية",
-        downloadText: "قم بتحميل وثيقة PDF الشاملة لمعرفة المزيد عن ميزات ومواصفات وتفاصيل المزرعة الذكية التقنية.",
-        downloadBtnText: "تحميل ملف PDF للمزرعة الذكية",
-        fileInfo: "حجم الملف: 1.2 ميجابايت | الصيغة: PDF",
-        
-        // أزرار الخروج
-        exitBtn: "خروج"
-    }
-};
+// إعدادات Supabase
+const SUPABASE_URL = 'https://etwthswhhplfnvejhofu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_7nzi8jmfH7ONhR-7GJKxOg_xKS77RnY';
 
-// دالة إرسال الاقتراح إلى الإيميل
-function sendSuggestion() {
-    const suggestion = document.getElementById('suggest-input').value;
+// بيانات الترجمة
+let textData = { en: {}, ar: {} };
+let currentLang = 'en';
+let websiteSections = [];
+let websiteFiles = [];
+
+// دالة بسيطة لتحميل البيانات
+async function loadWebsiteData() {
+    console.log('بدء تحميل البيانات من Supabase...');
     
-    if (suggestion.trim() === '') {
-        alert('Please write your suggestion first');
+    // إنشاء عميل Supabase
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    try {
+        // 1. تحميل النصوص
+        const { data: texts, error: textsError } = await supabase
+            .from('website_texts')
+            .select('*');
+        
+        if (textsError) {
+            console.error('خطأ في تحميل النصوص:', textsError);
+            throw textsError;
+        }
+        
+        console.log('تم تحميل النصوص:', texts?.length || 0);
+        
+        // 2. تحميل الأقسام
+        const { data: sections, error: sectionsError } = await supabase
+            .from('website_sections')
+            .select('*')
+            .order('order_index');
+        
+        if (sectionsError) {
+            console.error('خطأ في تحميل الأقسام:', sectionsError);
+            // نستمر حتى بدون أقسام
+        } else {
+            websiteSections = sections || [];
+            console.log('تم تحميل الأقسام:', websiteSections.length);
+        }
+        
+        // 3. تحميل الملفات
+        const { data: files, error: filesError } = await supabase
+            .from('website_files')
+            .select('*');
+        
+        if (filesError) {
+            console.error('خطأ في تحميل الملفات:', filesError);
+            // نستمر حتى بدون ملفات
+        } else {
+            websiteFiles = files || [];
+            console.log('تم تحميل الملفات:', websiteFiles.length);
+        }
+        
+        // تنظيم النصوص
+        textData = { en: {}, ar: {} };
+        
+        if (texts && texts.length > 0) {
+            texts.forEach(item => {
+                if (item.key) {
+                    // الإنجليزية
+                    textData.en[item.key] = item.value_en || item.value || '';
+                    // العربية
+                    textData.ar[item.key] = item.value_ar || item.value || item.value_en || '';
+                }
+            });
+        }
+        
+        console.log('بيانات الترجمة:', textData);
+        
+        // تحديث الواجهة
+        updateWebsiteContent();
+        
+    } catch (error) {
+        console.error('خطأ عام في تحميل البيانات:', error);
+        // استخدام بيانات افتراضية
+        loadDefaultData();
+    }
+}
+
+// تحديث محتوى الموقع
+function updateWebsiteContent() {
+    // اللغة الحالية
+    const lang = currentLang;
+    
+    // تحديث الصفحة الرئيسية
+    updateElement('title', textData[lang].main_title);
+    updateElement('subtitle', textData[lang].main_subtitle);
+    updateElement('about-btn', textData[lang].about_btn);
+    updateElement('what-btn', textData[lang].what_btn);
+    updateElement('contact-btn', textData[lang].contact_btn);
+    updateElement('threeD-btn', textData[lang].threeD_btn);
+    updateElement('teachable-btn', textData[lang].teachable_btn);
+    updateElement('download-btn', textData[lang].download_btn);
+    updateElement('instagram-text', textData[lang].instagram_text);
+    
+    // تحديث الروابط
+    if (textData.en.contact_url) {
+        document.getElementById('contact-btn').onclick = () => window.open(textData.en.contact_url, '_blank');
+    }
+    
+    if (textData.en.instagram_url) {
+        document.getElementById('instagram-link').href = textData.en.instagram_url;
+    }
+    
+    // تحديث صفحة About
+    updateElement('about-page-title', textData[lang].about_title);
+    updateElement('about-text', textData[lang].about_text);
+    updateElement('exit-about-btn', textData[lang].exit_btn);
+    
+    // تحديث صفحة What it does
+    updateElement('what-title', textData[lang].what_title);
+    updateElement('exit-what-btn', textData[lang].exit_btn);
+    
+    // تحديث صفحة Teachable Machine
+    updateElement('teachable-text', textData[lang].teachable_text);
+    updateElement('teachable-btn-text', textData[lang].teachable_btn_text);
+    updateElement('features-title', textData[lang].features_title);
+    updateElement('teachable-note', textData[lang].teachable_note);
+    updateElement('exit-teachable-btn', textData[lang].exit_btn);
+    
+    // تحديث صفحة Download
+    updateElement('download-title', textData[lang].download_title);
+    updateElement('download-text', textData[lang].download_text);
+    updateElement('download-btn-text', textData[lang].download_btn_text);
+    updateElement('file-info', textData[lang].file_info);
+    updateElement('exit-download-btn', textData[lang].exit_btn);
+    
+    // تحديث قسم الاقتراحات
+    updateElement('suggest-title', textData[lang].suggest_title);
+    updateElement('suggest-text', textData[lang].suggest_text);
+    updateElement('phone-text', textData[lang].phone_text);
+    updateElement('phone-number', textData[lang].contact_phone);
+    updateElement('send-btn', textData[lang].send_btn);
+    document.getElementById('suggest-input').placeholder = textData[lang].suggest_placeholder || 'Write your suggestion...';
+    
+    // تحديث الأقسام
+    updateSections();
+    
+    // تحديث الملفات
+    const pdfFile = websiteFiles.find(f => f.file_type === 'pdf');
+    if (pdfFile) {
+        document.getElementById('pdf-download-link').href = pdfFile.file_url;
+        document.getElementById('pdf-download-link').download = pdfFile.file_name;
+    }
+}
+
+function updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element && value !== undefined && value !== null) {
+        element.textContent = value;
+    }
+}
+
+function updateSections() {
+    // صفحة What it does
+    const whatContainer = document.getElementById('functions-content');
+    if (whatContainer) {
+        whatContainer.innerHTML = '';
+        
+        const whatSections = websiteSections.filter(s => s.page === 'what');
+        
+        if (whatSections.length === 0) {
+            whatContainer.innerHTML = '<p>No functions available</p>';
+        } else {
+            whatSections.forEach(section => {
+                const div = document.createElement('div');
+                div.className = 'function-item';
+                
+                const title = currentLang === 'en' ? section.title_en : (section.title_ar || section.title_en);
+                const content = currentLang === 'en' ? section.content_en : (section.content_ar || section.content_en);
+                
+                div.innerHTML = `
+                    <h3>${title}</h3>
+                    <p>${content}</p>
+                `;
+                whatContainer.appendChild(div);
+            });
+        }
+    }
+    
+    // صفحة Teachable Machine
+    const teachableContainer = document.getElementById('teachable-features');
+    if (teachableContainer) {
+        teachableContainer.innerHTML = '';
+        
+        const teachableSections = websiteSections.filter(s => s.page === 'teachable');
+        
+        if (teachableSections.length === 0) {
+            teachableContainer.innerHTML = '<div class="function-item">No features available</div>';
+        } else {
+            teachableSections.forEach(section => {
+                const div = document.createElement('div');
+                div.className = 'function-item';
+                
+                const title = currentLang === 'en' ? section.title_en : (section.title_ar || section.title_en);
+                div.textContent = title;
+                teachableContainer.appendChild(div);
+            });
+        }
+    }
+}
+
+// بيانات افتراضية للطوارئ
+function loadDefaultData() {
+    console.log('استخدام بيانات افتراضية');
+    
+    textData = {
+        en: {
+            main_title: 'FARM 8OT',
+            main_subtitle: 'Revolution in the world of agriculture',
+            about_btn: 'About',
+            what_btn: 'What it does',
+            contact_btn: 'Contact',
+            threeD_btn: '3D',
+            teachable_btn: 'Teachable Machine Model',
+            download_btn: 'Download PDF',
+            instagram_text: 'Follow us on Instagram',
+            about_title: 'About',
+            what_title: 'What it does',
+            teachable_title_part1: 'Teachable',
+            teachable_title_part2: 'Machine',
+            teachable_text: 'Experience our AI-powered plant disease detection model...',
+            teachable_btn_text: 'Open Teachable Machine Model',
+            features_title: 'Features:',
+            teachable_note: 'Note: The model will open in a new window...',
+            download_title: 'Download Farm Bot PDF',
+            download_text: 'Download our comprehensive PDF document...',
+            download_btn_text: 'Download Farm Bot PDF',
+            file_info: 'File size: 1.2 MB | Format: PDF',
+            suggest_title: 'Suggestions',
+            suggest_text: 'We believe in any suggestion that can develop and enhance our project.',
+            phone_text: 'Phone:',
+            contact_phone: '+962 7XXXXXXXX',
+            suggest_placeholder: 'Write your suggestion...',
+            send_btn: 'Send',
+            exit_btn: 'Exit'
+        },
+        ar: {
+            main_title: 'FARM 8OT',
+            main_subtitle: 'ثورة في عالم الزراعة',
+            about_btn: 'حول',
+            what_btn: 'ماذا يفعل',
+            contact_btn: 'تواصل',
+            threeD_btn: '3D',
+            teachable_btn: 'نموذج Teachable Machine',
+            download_btn: 'تحميل PDF',
+            instagram_text: 'تابعنا على الإنستجرام',
+            about_title: 'حول',
+            what_title: 'ماذا يفعل',
+            teachable_title_part1: 'Teachable',
+            teachable_title_part2: 'Machine',
+            teachable_text: 'جرب نموذجنا للكشف عن أمراض النباتات المدعوم بالذكاء الاصطناعي...',
+            teachable_btn_text: 'فتح نموذج Teachable Machine',
+            features_title: 'المميزات:',
+            teachable_note: 'ملاحظة: سيتم فتح النموذج في نافذة جديدة...',
+            download_title: 'تحميل ملف PDF للمزرعة الذكية',
+            download_text: 'قم بتحميل وثيقة PDF الشاملة...',
+            download_btn_text: 'تحميل ملف PDF للمزرعة الذكية',
+            file_info: 'حجم الملف: 1.2 ميجابايت | الصيغة: PDF',
+            suggest_title: 'اقتراحات',
+            suggest_text: 'نحن نؤمن بأي اقتراح يمكن أن يطور ويعزز مشروعنا.',
+            phone_text: 'هاتف:',
+            contact_phone: '+962 7XXXXXXXX',
+            suggest_placeholder: 'اكتب اقتراحك...',
+            send_btn: 'إرسال',
+            exit_btn: 'خروج'
+        }
+    };
+    
+    websiteSections = [
+        { page: 'what', title_en: 'Crop Monitoring & Growth Tracking', content_en: 'Monitors crops and tracks their growth continuously.', title_ar: 'مراقبة المحاصيل وتتبع النمو', content_ar: 'يراقب المحاصيل ويتتبع نموها باستمرار.', order_index: 1 },
+        { page: 'what', title_en: 'Harvest Readiness Identification', content_en: 'Identifies plants that are ready for harvest automatically.', title_ar: 'تحديد النباتات الجاهزة للحصاد', content_ar: 'يحدد النباتات الجاهزة للحصاد تلقائيًا.', order_index: 2 }
+    ];
+    
+    websiteFiles = [
+        { file_name: 'FARM8OT.pdf', file_url: 'FARM8OT.pdf', file_type: 'pdf' }
+    ];
+    
+    updateWebsiteContent();
+}
+
+// وظائف التنقل
+function openPage(pageId) {
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('suggestions').style.display = 'none';
+    document.querySelectorAll('.page').forEach(page => {
+        page.style.display = 'none';
+    });
+    
+    const page = document.getElementById(pageId);
+    page.style.display = 'block';
+    
+    // تحديث الأقسام إذا كانت الصفحة مفتوحة
+    if (pageId === 'what' || pageId === 'teachable') {
+        updateSections();
+    }
+}
+
+function closePage(pageId) {
+    document.getElementById(pageId).style.display = 'none';
+    document.getElementById('home').style.display = 'flex';
+    document.getElementById('suggestions').style.display = 'block';
+}
+
+function toggleLang() {
+    const langBtn = document.querySelector('.lang-toggle');
+    
+    if (currentLang === 'en') {
+        currentLang = 'ar';
+        langBtn.textContent = 'EN';
+        document.body.style.direction = 'rtl';
+    } else {
+        currentLang = 'en';
+        langBtn.textContent = 'AR';
+        document.body.style.direction = 'ltr';
+    }
+    
+    updateWebsiteContent();
+}
+
+async function sendSuggestion() {
+    const suggestion = document.getElementById('suggest-input').value.trim();
+    
+    if (!suggestion) {
+        alert(currentLang === 'en' ? 'Please write your suggestion first' : 'الرجاء كتابة اقتراحك أولاً');
         return;
     }
     
-    // إعداد بيانات الإيميل
-    const email = 'farm8ot@gmail.com';
-    const subject = 'New Suggestion for FARM 8OT';
-    const body = `Suggestion: ${suggestion}\n\nSent from FARM 8OT Website`;
-    
-    // إنشاء رابط mailto
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // فتح بريد المستخدم الافتراضي
-    window.location.href = mailtoLink;
-    
-    // تفريغ الحقل
-    document.getElementById('suggest-input').value = '';
-    
-    // إظهار رسالة تأكيد
-    setTimeout(() => {
-        if (lang === 'en') {
-            alert('Thank you! Your email client will open with the suggestion. Please click send to submit your suggestion.');
-        } else {
-            alert('شكراً! سيتم فتح بريدك الإلكتروني مع الاقتراح. الرجاء الضغط على إرسال لتقديم اقتراحك.');
-        }
-    }, 500);
-}
-
-function openPage(pageId){
-    document.getElementById('home').style.display='none';
-    document.getElementById('suggestions').style.display='none';
-    document.getElementById(pageId).style.display='block';
-    
-    // تحديد الخلفية المناسبة لكل صفحة
-    const page = document.getElementById(pageId);
-    if(pageId === 'what') {
-        // صفحة What it does - خلفية FARBOT3.jpeg
-        page.style.backgroundImage = "url('FARBOT3.jpeg')";
-        updateFunctionsContent();
-    } else if(pageId === 'teachable') {
-        // صفحة Teachable Machine - خلفية خاصة أو نفس باقي الصفحات
-        page.style.backgroundImage = "url('FARBOT2.jpeg')";
-        updateTeachableContent();
-    } else {
-        // باقي الصفحات - خلفية FARBOT2.jpeg
-        page.style.backgroundImage = "url('FARBOT2.jpeg')";
+    try {
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        const { error } = await supabase
+            .from('website_suggestions')
+            .insert([{ suggestion: suggestion }]);
+        
+        if (error) throw error;
+        
+        alert(currentLang === 'en' ? 'Thank you for your suggestion!' : 'شكراً لاقتراحك!');
+        document.getElementById('suggest-input').value = '';
+        
+    } catch (error) {
+        console.error('Error saving suggestion:', error);
+        
+        // استخدام الإيميل كبديل
+        const email = 'farm8ot@gmail.com';
+        const subject = 'New Suggestion for FARM 8OT';
+        const body = `Suggestion: ${suggestion}\n\nSent from FARM 8OT Website`;
+        
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
 }
 
-function closePage(pageId){
-    document.getElementById(pageId).style.display='none';
-    document.getElementById('home').style.display='flex';
-    document.getElementById('suggestions').style.display='block';
+function open3DPage() {
+    const url = textData.en.threeD_url || 'https://farmbot1238.github.io/3D/';
+    window.open(url, '_blank');
 }
 
-function updateFunctionsContent() {
-    const container = document.getElementById('functions-content');
-    const currentLang = lang;
-    
-    container.innerHTML = '';
-    
-    const functions = textData[currentLang].functions;
-    
-    for(let i = 0; i < functions.length; i++) {
-        const functionItem = document.createElement('div');
-        functionItem.className = 'function-item';
-        functionItem.textContent = functions[i];
-        container.appendChild(functionItem);
-    }
+function openTeachableModel() {
+    const url = textData.en.teachable_url || 'https://farmbot1238.github.io/tomato/';
+    window.open(url, '_blank');
 }
 
-function updateTeachableContent() {
-    const currentLang = lang;
-    const data = textData[currentLang];
-    
-    // تحديث النصوص
-    document.getElementById('teachable-text').innerText = data.teachableText;
-    document.getElementById('teachable-btn-text').innerText = data.teachableBtnText;
-    document.getElementById('features-title').innerText = data.featuresTitle;
-    document.getElementById('teachable-note').innerText = data.teachableNote;
-    
-    // تحديث القائمة
-    const features = data.teachableFeatures;
-    for(let i = 0; i < features.length; i++) {
-        const featureId = 'feature' + (i + 1);
-        if(document.getElementById(featureId)) {
-            document.getElementById(featureId).innerText = features[i];
-        }
-    }
-}
-
-function updateAllTexts() {
-    const currentLang = lang;
-    const data = textData[currentLang];
-    
-    document.getElementById("title").innerText = data.title;
-    document.getElementById("subtitle").innerText = data.subtitle;
-    document.getElementById("about-btn").innerText = data.aboutBtn;
-    document.getElementById("what-btn").innerText = data.whatBtn;
-    document.getElementById("teachable-btn").innerText = data.teachableBtn;
-    document.getElementById("download-btn").innerText = data.downloadBtn;
-    document.getElementById("instagram-text").innerText = data.instagramText;
-    
-    document.getElementById("suggest-title").innerText = data.suggestTitle;
-    document.getElementById("suggest-text").innerText = data.suggestText;
-    document.getElementById("phone-text").innerText = data.phoneText;
-    document.getElementById("suggest-input").placeholder = data.suggestInput;
-    document.getElementById("send-btn").innerText = data.sendBtn;
-    
-    document.getElementById("about-page-title").innerText = data.aboutPageTitle;
-    document.getElementById("about-text").innerText = data.aboutText;
-    document.getElementById("exit-about-btn").innerText = data.exitBtn;
-    
-    document.getElementById("what-title").innerText = data.whatTitle;
-    document.getElementById("exit-what-btn").innerText = data.exitBtn;
-    
-    document.getElementById("threeD-text").innerText = data.threeDText;
-    document.getElementById("exit-3d-btn").innerText = data.exitBtn;
-    
-    // تحديث Teachable Machine
-    document.getElementById("teachable-text").innerText = data.teachableText;
-    document.getElementById("teachable-btn-text").innerText = data.teachableBtnText;
-    document.getElementById("features-title").innerText = data.featuresTitle;
-    document.getElementById("teachable-note").innerText = data.teachableNote;
-    document.getElementById("exit-teachable-btn").innerText = data.exitBtn;
-    
-    document.getElementById("download-title").innerText = data.downloadTitle;
-    document.getElementById("download-text").innerText = data.downloadText;
-    document.getElementById("download-btn-text").innerText = data.downloadBtnText;
-    document.getElementById("file-info").innerText = data.fileInfo;
-    document.getElementById("exit-download-btn").innerText = data.exitBtn;
-    
-    if(document.getElementById('what').style.display === 'block') {
-        updateFunctionsContent();
-    }
-    
-    if(document.getElementById('teachable').style.display === 'block') {
-        updateTeachableContent();
-    }
-}
-
-function open3DPage(){
-    window.location.href = 'https://farmbot1238.github.io/3D/';
-}
-
-function openTeachableModel(){
-    // فتح رابط Teachable Machine في نافذة جديدة
-    window.open('https://farmbot1238.github.io/tomato/', '_blank');
-}
-
-let lang = "en";
-function toggleLang(){
-    if(lang === "en"){
-        lang = "ar";
-        document.querySelector('.lang-toggle').innerText = "EN";
-        document.body.style.direction = "rtl";
-    } else {
-        lang = "en";
-        document.querySelector('.lang-toggle').innerText = "AR";
-        document.body.style.direction = "ltr";
-    }
-    
-    updateAllTexts();
-}
-
+// بدء التحميل
 document.addEventListener('DOMContentLoaded', function() {
-    updateAllTexts();
+    // تحميل مكتبة Supabase أولاً
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/@supabase/supabase-js@2';
+    script.onload = loadWebsiteData;
+    script.onerror = function() {
+        console.error('Failed to load Supabase library');
+        loadDefaultData();
+    };
+    document.head.appendChild(script);
 });
 </script>
 </body>
