@@ -151,6 +151,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
     overflow: hidden;
     border: 2px solid transparent;
     transition: transform 0.3s, border-color 0.3s;
+    cursor: pointer;
 }
 .gallery-item:hover {
     transform: scale(1.05);
@@ -161,6 +162,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
     height: 200px;
     object-fit: cover;
     display: block;
+    pointer-events: none; /* عشان الضغط يشتغل على الحاوية */
 }
 .gallery-caption {
     padding: 10px;
@@ -168,6 +170,50 @@ h1 { font-size:2rem; margin-bottom:15px; }
     font-weight: bold;
     background: rgba(255,255,255,0.1);
 }
+
+/* ===== خفية التكبير (Lightbox) ===== */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.lightbox.active {
+    display: flex;
+}
+.lightbox-img {
+    max-width: 90%;
+    max-height: 80%;
+    object-fit: contain;
+    border: 3px solid var(--yellow);
+    border-radius: 5px;
+}
+.lightbox-caption {
+    margin-top: 15px;
+    color: var(--white);
+    font-size: 1.2rem;
+    text-align: center;
+}
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: var(--white);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.lightbox-close:hover {
+    color: var(--yellow);
+}
+/* ================================ */
 </style>
 </head>
 <body>
@@ -183,11 +229,9 @@ h1 { font-size:2rem; margin-bottom:15px; }
             <button onclick="openPage('what')" id="what-btn">What it does</button>
             <button onclick="open3DPage()">3D</button>
             <button onclick="openPage('teachable')" id="teachable-btn">Teachable Machine Model</button>
-            <!-- زر المعرض هنا تحت نموذج التدريب -->
             <button onclick="openPage('gallery')" id="gallery-btn">Gallery</button>
             <button onclick="openPage('download')" id="download-btn">Download PDF</button>
         </div>
-        <!-- رابط الإنستجرام -->
         <a href="https://www.instagram.com/farm8ot?igsh=MTVjcWQwY2pxY3Y2bg==" class="instagram-link" target="_blank">
             <span class="instagram-icon">📷</span>
             <span id="instagram-text">Follow us on Instagram</span>
@@ -219,9 +263,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
 <section class="page" id="what">
     <div class="content">
         <h2 id="what-title">What it does</h2>
-        <div class="functions-list" id="functions-content">
-            <!-- المحتوى سيتم تعبئته عبر الجافاسكريبت -->
-        </div>
+        <div class="functions-list" id="functions-content"></div>
         <button onclick="closePage('what')" id="exit-what-btn">Exit</button>
     </div>
 </section>
@@ -230,9 +272,7 @@ h1 { font-size:2rem; margin-bottom:15px; }
 <section class="page" id="gallery">
     <div class="content">
         <h2 class="gallery-title" id="gallery-title">📸 Image Gallery</h2>
-        <div class="gallery-grid" id="gallery-grid">
-            <!-- هنا سيتم إضافة الصور عبر الجافاسكريبت -->
-        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
         <button onclick="closePage('gallery')" id="exit-gallery-btn">Exit</button>
     </div>
 </section>
@@ -294,11 +334,17 @@ h1 { font-size:2rem; margin-bottom:15px; }
     </div>
 </section>
 
+<!-- ===== نافذة التكبير (Lightbox) ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
 <script>
 // بيانات جميع النصوص باللغتين
 const textData = {
     en: {
-        // الصفحة الرئيسية
         title: "FARM 8OT",
         subtitle: "Revolution in the world of agriculture",
         aboutBtn: "About",
@@ -308,19 +354,13 @@ const textData = {
         teachableBtn: "Teachable Machine Model",
         downloadBtn: "Download PDF",
         instagramText: "Follow us on Instagram",
-        
-        // قسم الاقتراحات
         suggestTitle: "Suggestions",
         suggestText: "We believe in any suggestion that can develop and enhance our project.",
         phoneText: "Phone:",
         suggestInput: "Write your suggestion...",
         sendBtn: "Send",
-        
-        // صفحة About (تم تعديل النص هنا)
         aboutPageTitle: "About",
         aboutText: "Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Abdulrahman Al-Maaytah and Haitham Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.",
-        
-        // صفحة What it does
         whatTitle: "What it does",
         functions: [
             "Crop Monitoring & Growth Tracking",
@@ -330,15 +370,9 @@ const textData = {
             "Remote Control & Monitoring",
             "Automated Reporting & Data Analysis"
         ],
-        
-        // صفحة المعرض
         galleryTitle: "📸 Image Gallery",
         exitGalleryBtn: "Exit",
-        
-        // صفحة 3D
         threeDText: "Here you can view the 3D model of Farm Bot.",
-        
-        // صفحة Teachable Machine
         teachableText: "Experience our AI-powered plant disease detection model. This model uses machine learning to identify various plant diseases and provide recommendations.",
         teachableBtnText: "Open Teachable Machine Model",
         featuresTitle: "Features:",
@@ -350,18 +384,13 @@ const textData = {
             "User-friendly interface"
         ],
         teachableNote: "Note: The model will open in a new window. Make sure to allow camera access if you want to use live detection.",
-        
-        // صفحة Download
         downloadTitle: "Download Farm Bot PDF",
         downloadText: "Download our comprehensive PDF document to learn more about Farm Bot features, specifications, and technical details.",
         downloadBtnText: "Download Farm Bot PDF",
         fileInfo: "File size: 1.2 MB | Format: PDF",
-        
-        // أزرار الخروج العامة
         exitBtn: "Exit"
     },
     ar: {
-        // الصفحة الرئيسية
         title: "FARM 8OT",
         subtitle: "ثورة في عالم الزراعة",
         aboutBtn: "حول",
@@ -371,19 +400,13 @@ const textData = {
         teachableBtn: "نموذج Teachable Machine",
         downloadBtn: "تحميل PDF",
         instagramText: "تابعنا على الإنستجرام",
-        
-        // قسم الاقتراحات
         suggestTitle: "اقتراحات",
         suggestText: "نحن نؤمن بأي اقتراح يمكن أن يطور ويعزز مشروعنا.",
         phoneText: "هاتف:",
         suggestInput: "اكتب اقتراحك...",
         sendBtn: "إرسال",
-        
-        // صفحة About (تم تعديل النص هنا)
         aboutPageTitle: "حول",
         aboutText: "المزرعة الذكية هو روبوت زراعي ذكي تم تصميمه وبناؤه بالكامل في الأردن من قبل الطلاب عبدالرحمن المعايطة وهيثم المعايطة. تم تصميمه لمساعدة المزارعين وتحسين العمليات الزراعية بطريقة حديثة وفعالة. فهو يراقب المحاصيل ويتتبع نموها ويحدد النباتات الجاهزة للحصاد. كما أنه يساعد في الحفاظ على صحة النباتات من خلال اكتشاف النباتات الضارة وإزالتها تلقائيًا. المزرعة الذكية قادر على العمل بشكل مستقل واتخاذ القرارات الزراعية الدقيقة بناءً على البيانات المحيطة. يمكن أيضًا التحكم فيه ومراقبته عن بُعد، مما يوفر للمزارعين تقارير مفصلة عن حالة الأرض والمحاصيل، مما يسهل التخطيط واتخاذ القرارات. يساهم في زيادة الإنتاجية وتقليل هدر الموارد، ويعمل بشكل مستمر طوال اليوم بكفاءة عالية، ويمثل تكاملاً مثاليًا بين التكنولوجيا الحديثة والزراعة التقليدية. المزرعة الذكية هو الشريك الزراعي المثالي لتحقيق زراعة أكثر ذكاءً وكفاءة، وتوفير الوقت والجهد، وتعزيز دقة مراقبة المحاصيل، وجعل العمليات الزراعية أكثر سلاسة وإدارة، ويمثل خطوة نحو مستقبل الزراعة الذكية والمستدامة.",
-        
-        // صفحة What it does
         whatTitle: "ماذا يفعل",
         functions: [
             "مراقبة المحاصيل وتتبع النمو",
@@ -393,15 +416,9 @@ const textData = {
             "التحكم والمراقبة عن بُعد", 
             "إعداد التقارير الآلية وتحليل البيانات"
         ],
-
-        // صفحة المعرض
         galleryTitle: "📸 معرض الصور",
         exitGalleryBtn: "خروج",
-        
-        // صفحة 3D
         threeDText: "هنا يمكنك عرض نموذج المزرعة الذكية ثلاثي الأبعاد.",
-        
-        // صفحة Teachable Machine
         teachableText: "جرب نموذجنا للكشف عن أمراض النباتات المدعوم بالذكاء الاصطناعي. يستخدم هذا النموذج التعلم الآلي لتحديد أمراض النباتات المختلفة وتقديم التوصيات.",
         teachableBtnText: "فتح نموذج Teachable Machine",
         featuresTitle: "المميزات:",
@@ -413,42 +430,27 @@ const textData = {
             "واجهة سهلة الاستخدام"
         ],
         teachableNote: "ملاحظة: سيتم فتح النموذج في نافذة جديدة. تأكد من السماح بالوصول إلى الكاميرا إذا كنت تريد استخدام الكشف المباشر.",
-        
-        // صفحة Download
         downloadTitle: "تحميل ملف PDF للمزرعة الذكية",
         downloadText: "قم بتحميل وثيقة PDF الشاملة لمعرفة المزيد عن ميزات ومواصفات وتفاصيل المزرعة الذكية التقنية.",
         downloadBtnText: "تحميل ملف PDF للمزرعة الذكية",
         fileInfo: "حجم الملف: 1.2 ميجابايت | الصيغة: PDF",
-        
-        // أزرار الخروج العامة
         exitBtn: "خروج"
     }
 };
 
-// دالة إرسال الاقتراح إلى الإيميل
+// دالة إرسال الاقتراح
 function sendSuggestion() {
     const suggestion = document.getElementById('suggest-input').value;
-    
     if (suggestion.trim() === '') {
         alert('Please write your suggestion first');
         return;
     }
-    
-    // إعداد بيانات الإيميل
     const email = 'farm8ot@gmail.com';
     const subject = 'New Suggestion for FARM 8OT';
     const body = `Suggestion: ${suggestion}\n\nSent from FARM 8OT Website`;
-    
-    // إنشاء رابط mailto
     const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // فتح بريد المستخدم الافتراضي
     window.location.href = mailtoLink;
-    
-    // تفريغ الحقل
     document.getElementById('suggest-input').value = '';
-    
-    // إظهار رسالة تأكيد
     setTimeout(() => {
         if (lang === 'en') {
             alert('Thank you! Your email client will open with the suggestion. Please click send to submit your suggestion.');
@@ -463,7 +465,6 @@ function openPage(pageId){
     document.getElementById('suggestions').style.display='none';
     document.getElementById(pageId).style.display='block';
     
-    // تحديد الخلفية المناسبة لكل صفحة
     const page = document.getElementById(pageId);
     if(pageId === 'what') {
         page.style.backgroundImage = "url('FARBOT3.jpeg')";
@@ -485,12 +486,11 @@ function closePage(pageId){
     document.getElementById('suggestions').style.display='block';
 }
 
-// دالة تحميل صور المعرض
+// دالة تحميل صور المعرض مع إضافة حدث النقر للتكبير
 function loadGalleryImages() {
     const galleryGrid = document.getElementById('gallery-grid');
     galleryGrid.innerHTML = '';
 
-    // قائمة الصور - أضف المزيد هنا بنفس النمط
     const images = [
         { src: 'F81.jpeg', alt: 'Gallery Image 1' },
         { src: 'F82.jpeg', alt: 'Gallery Image 2' },
@@ -501,6 +501,7 @@ function loadGalleryImages() {
     images.forEach((image, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
+        galleryItem.setAttribute('onclick', `openLightbox('${image.src}', '${lang === 'en' ? 'Image ' + (index + 1) : 'صورة ' + (index + 1)}')`);
         
         const imgElement = document.createElement('img');
         imgElement.src = image.src;
@@ -517,14 +518,33 @@ function loadGalleryImages() {
     });
 }
 
+// دوال التكبير (Lightbox)
+function openLightbox(imgSrc, caption) {
+    document.getElementById('lightbox-img').src = imgSrc;
+    document.getElementById('lightbox-caption').innerText = caption;
+    document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox(event) {
+    // منع إغلاق اللايت بوكس إذا ضغط المستخدم على الصورة نفسها
+    if (event.target.classList.contains('lightbox-img')) {
+        return;
+    }
+    document.getElementById('lightbox').classList.remove('active');
+}
+
+// إغلاق اللايت بوكس عند الضغط على زر ESC
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+});
+
 function updateFunctionsContent() {
     const container = document.getElementById('functions-content');
     const currentLang = lang;
-    
     container.innerHTML = '';
-    
     const functions = textData[currentLang].functions;
-    
     for(let i = 0; i < functions.length; i++) {
         const functionItem = document.createElement('div');
         functionItem.className = 'function-item';
@@ -537,13 +557,11 @@ function updateTeachableContent() {
     const currentLang = lang;
     const data = textData[currentLang];
     
-    // تحديث النصوص
     document.getElementById('teachable-text').innerText = data.teachableText;
     document.getElementById('teachable-btn-text').innerText = data.teachableBtnText;
     document.getElementById('features-title').innerText = data.featuresTitle;
     document.getElementById('teachable-note').innerText = data.teachableNote;
     
-    // تحديث القائمة
     const features = data.teachableFeatures;
     for(let i = 0; i < features.length; i++) {
         const featureId = 'feature' + (i + 1);
@@ -629,7 +647,6 @@ function toggleLang(){
         document.querySelector('.lang-toggle').innerText = "AR";
         document.body.style.direction = "ltr";
     }
-    
     updateAllTexts();
 }
 
