@@ -163,7 +163,6 @@ h1 { font-size:2rem; margin-bottom:15px; }
         <h1 id="title">FARM 8OT</h1>
         <p id="subtitle">Revolution in the world of agriculture</p>
         <div class="menu">
-            <!-- تم نقل زر الذكاء الاصطناعي ليكون الأول (بدون أي تعديل في شكله أو أنيميشن) -->
             <button onclick="openAIPage()" id="ai-btn">🤖 AI Assistant</button>
             <button onclick="openPage('about')" id="about-btn">About</button>
             <button onclick="openPage('what')" id="what-btn">What it does</button>
@@ -230,7 +229,7 @@ const textData = {
         aboutBtn:"About", whatBtn:"What it does", galleryBtn:"Gallery", teachableBtn:"Teachable Machine Model", downloadBtn:"Download PDF", aiBtn:"🤖 AI Assistant",
         instagramText:"Follow us on Instagram",
         suggestTitle:"Suggestions", suggestText:"We believe in any suggestion that can develop and enhance our project.", phoneText:"Phone:", suggestInput:"Write your suggestion...", sendBtn:"Send",
-        aboutPageTitle:"About", aboutText:"Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Abdulrahman Al-Maaytah and Haitham Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.",
+        aboutPageTitle:"About", aboutText:"Farm Bot is an intelligent agricultural robot fully designed and built in Jordan by the students Abdulrahman Al-Maaytah and Haitham Al-Maaytah. It is designed to assist farmers and improve farming processes in a modern and efficient way. It monitors crops, tracks their growth, and identifies plants ready for harvest. It also helps maintain plant health by detecting harmful plants and removing them automatically. Farm Bot is capable of operating independently and making accurate agricultural decisions based on surrounding data. It can also be controlled and monitored remotely, providing farmers with detailed reports on the condition of the land and crops, which facilitates planning and decision-making. It contributes to increasing productivity and reducing resource waste, operates continuously throughout the day with high efficiency, and represents an ideal integration of modern technology with traditional farming. Farm Bot is the perfect farming partner for achieving smarter and more efficient agriculture, saving time and effort, enhancing crop monitoring accuracy, making farming processes more smoother and more manageable, and serving as a step toward the future of smart and sustainable agriculture.",
         whatTitle:"What it does", functions:["Crop Monitoring & Growth Tracking","Harvest Readiness Identification","Harmful Plant Detection & Automated Removal","Autonomous Operation & Decision-Making","Remote Control & Monitoring","Automated Reporting & Data Analysis"],
         galleryTitle:"📸 Image Gallery", exitGalleryBtn:"Exit",
         threeDText:"Here you can view the 3D model of Farm Bot.",
@@ -332,14 +331,27 @@ function openPage(id) {
     document.getElementById('home').style.display='none'; 
     document.getElementById('suggestions').style.display='none'; 
     document.getElementById(id).style.display='block';
-    if(id=='what') updateFunctionsContent(); 
-    if(id=='gallery') loadGalleryImages();
-    if(id=='threeD') { document.getElementById('threeD').style.backgroundImage = "url('FARBOT2.jpeg')"; }
-    if(id=='teachable') { document.getElementById('teachable').style.backgroundImage = "url('FARBOT2.jpeg')"; updateTeachableContent(); }
+    
+    if(id=='what') {
+        updateFunctionsContent();
+        document.getElementById('what').style.backgroundImage = "url('FARBOT2.jpeg')";
+    }
+    if(id=='gallery') {
+        loadGalleryImages();
+        document.getElementById('gallery').style.backgroundImage = "url('FARBOT2.jpeg')";
+    }
+    if(id=='threeD') { 
+        document.getElementById('threeD').style.backgroundImage = "url('FARBOT2.jpeg')"; 
+    }
+    if(id=='teachable') { 
+        document.getElementById('teachable').style.backgroundImage = "url('FARBOT2.jpeg')"; 
+        updateTeachableContent(); 
+    }
     if(id!='threeD' && id!='teachable' && id!='what' && id!='gallery') {
         document.getElementById(id).style.backgroundImage = "url('FARBOT2.jpeg')";
     }
 }
+
 function closePage(id) { 
     document.getElementById(id).style.display='none'; 
     document.getElementById('home').style.display='flex'; 
@@ -350,7 +362,6 @@ function closePage(id) {
 function openAIPage() {
     document.getElementById('home').style.display = 'none';
     document.getElementById('suggestions').style.display = 'none';
-    // إخفاء كل الصفحات المفتوحة
     const pages = ['about', 'what', 'gallery', 'threeD', 'teachable', 'download'];
     pages.forEach(p => {
         const el = document.getElementById(p);
@@ -371,8 +382,10 @@ function sendSuggestion() {
     window.location.href = `mailto:farm8ot@gmail.com?subject=Suggestion&body=${encodeURIComponent(s)}`;
     alert(lang=='en'?'Email opened':'تم فتح البريد');
 }
-function open3DPage(){ window.location.href = 'https://farmbot1238.github.io/3D/'; }
-function openTeachableModel(){ window.open('https://farmbot1238.github.io/tomato/', '_blank'); }
+
+function open3DPage(){ window.location.href = '3d/index.html'; }
+function openTeachableModel(){ window.open('tomato/index.html', '_blank'); }
+
 function toggleLang() {
     lang = lang=='en'?'ar':'en';
     document.querySelector('.lang-toggle').innerText = lang=='en'?'AR':'EN';
