@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- العنوان ثابت - ما بيتغير أبداً ✅ -->
+  <title>FARM 8OT - Plant Health & Pollination</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background-image: url('FARBOT4.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      max-width: 1000px;
+      width: 95%;
+      text-align: center;
+      backdrop-filter: blur(5px);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    /* تخصيص شريط التمرير */
+    .container::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    
+    .container::-webkit-scrollbar-thumb {
+      background: rgba(76, 175, 80, 0.5);
+      border-radius: 10px;
+    }
+    
+    .container::-webkit-scrollbar-thumb:hover {
+      background: rgba(76, 175, 80, 0.8);
+    }
+    
+    /* زر تبديل اللغة - أعلى اليمين */
+    .language-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(76, 175, 80, 0.2);
+      color: white;
+      border: 1px solid #4CAF50;
+      padding: 8px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .language-switch:hover {
+      background: rgba(76, 175, 80, 0.4);
+    }
+    
+    /* زر العودة للموقع الأول */
+    .back-home-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(76, 175, 80, 0.2);
+      color: white;
+      border: 1px solid #4CAF50;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 100;
+    }
+    
+    .back-home-button:hover {
+      background: rgba(76, 175, 80, 0.4);
+      transform: translateX(-3px);
+    }
+    
+    .back-home-button:before {
+      content: "←";
+      font-size: 18px;
+    }
+    
+    /* اسم الموقع - ثابت ما بيتغير ✅ */
+    .site-title {
+      color: white;
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+      letter-spacing: 4px;
+    }
+    
+    .site-subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+      font-style: italic;
+    }
+    
+    /* ========== كبسة الشرح القابلة للطي ========== */
+    .about-toggle-button {
+      background: rgba(76, 175, 80, 0.15);
+      border: 2px solid #4CAF50;
+      color: white;
+      padding: 15px 25px;
+      width: 100%;
+      border-radius: 60px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .about-toggle-button:hover {
+      background: rgba(76, 175, 80, 0.3);
+      border-color: #45a049;
+    }
+    
+    .toggle-icon {
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+    
+    .toggle-icon.rotated {
+      transform: rotate(180deg);
+    }
+    
+    .about-section {
+      display: none;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      animation: slideDown 0.5s ease;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .about-section.show {
+      display: block;
+    }
+    
+    .about-title {
+      color: #4CAF50;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-top: 20px;
+    }
+    
+    .about-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      border-left: 5px solid #4CAF50;
+      text-align: left;
+    }
+    
+    .about-card.disease-card {
+      border-left-color: #F44336;
+      background: rgba(244, 67, 54, 0.05);
+    }
+    
+    .about-card.pollination-card {
+      border-left-color: #9C27B0;
+      background: rgba(156, 39, 176, 0.05);
+    }
+    
+    .about-card-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .about-card-icon {
+      font-size: 36px;
+    }
+    
+    .about-card-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .about-card-disease-title {
+      color: #FF5252;
+    }
+    
+    .about-card-pollination-title {
+      color: #E1BEE7;
+    }
+    
+    .about-card-description {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.8;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    
+    .about-features {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0 0 0;
+    }
+    
+    .about-features li {
+      padding: 8px 0;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .about-features li:before {
+      content: "✓";
+      color: #4CAF50;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .disease-features li:before {
+      color: #FF5252;
+      content: "⚠️";
+    }
+    
+    .pollination-features li:before {
+      color: #9C27B0;
+      content: "🎵";
+    }
+    
+    .about-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+    
+    .stat-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    /* ===================================== */
+    
+    /* القائمة الرئيسية */
+    .main-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .main-menu-button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 20px 50px;
+      font-size: 24px;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+      min-width: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .main-menu-button:hover {
+      background: #45a049;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(76, 175, 80, 0.6);
+    }
+    
+    .menu-description {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    
+    /* شاشة الاختيار */
+    .choice-screen {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .action-button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+      min-width: 200px;
+    }
+    
+    .action-button:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+    }
+    
+    .upload-button {
+      background: #FF9800;
+    }
+    
+    .upload-button:hover {
+      background: #F57C00;
+    }
+    
+    .back-button-choice {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .back-button-choice:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* حاوية الكاميرا */
+    .webcam-container {
+      margin: 20px auto;
+      width: 320px;
+      height: 320px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .webcam-container.active {
+      display: flex;
+    }
+    
+    /* حاوية رفع الصورة */
+    .upload-container {
+      margin: 20px auto;
+      width: 320px;
+      height: 320px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      position: relative;
+    }
+    
+    .upload-container.active {
+      display: flex;
+    }
+    
+    .upload-preview {
+      max-width: 100%;
+      max-height: 100%;
+      display: none;
+    }
+    
+    .upload-preview.active {
+      display: block;
+    }
+    
+    #fileInput {
+      display: none;
+    }
+    
+    .file-label {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+    }
+    
+    .file-label:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* نتائج الكشف */
+    .results-container {
+      display: none;
+      margin-top: 30px;
+    }
+    
+    .results-container.active {
+      display: block;
+    }
+    
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .result-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      color: white;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .result-card.plant {
+      background: rgba(76, 175, 80, 0.15);
+      border-color: #4CAF50;
+    }
+    
+    .result-card.health {
+      background: rgba(76, 175, 80, 0.15);
+      border-color: #4CAF50;
+    }
+    
+    .result-card.health.diseased {
+      background: rgba(244, 67, 54, 0.15);
+      border-color: #F44336;
+    }
+    
+    .result-title {
+      font-size: 16px;
+      margin-bottom: 10px;
+      opacity: 0.8;
+    }
+    
+    .result-value {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .result-details {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    
+    .health-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    /* بطاقة التلقيح */
+    .pollination-card {
+      background: rgba(156, 39, 176, 0.2);
+      border: 2px solid #9C27B0;
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 25px;
+      color: white;
+      box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);
+    }
+    
+    .pollination-title {
+      color: #E1BEE7;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .pollination-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .frequency-badge {
+      background: #4CAF50;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      color: white;
+      font-size: 16px;
+    }
+    
+    .time-badge {
+      background: #2196F3;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .besttime-badge {
+      background: #FF9800;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .plant-emoji-big {
+      font-size: 32px;
+    }
+    
+    /* إشعارات */
+    .notification {
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .notification.warning {
+      border-left-color: #FFC107;
+      background: rgba(255, 193, 7, 0.1);
+    }
+    
+    .notification.danger {
+      border-left-color: #F44336;
+      background: rgba(244, 67, 54, 0.1);
+    }
+    
+    .notification.pollination {
+      border-left-color: #9C27B0;
+      background: rgba(156, 39, 176, 0.1);
+    }
+    
+    .controls-container {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .control-button {
+      background: rgba(76, 175, 80, 0.2);
+      color: white;
+      border: 1px solid #4CAF50;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .control-button:hover {
+      background: rgba(76, 175, 80, 0.4);
+    }
+    
+    .status-message {
+      color: #4CAF50;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    
+    /* تخصيص للنباتات */
+    .tomato-plant .plant-type {
+      color: #FF5252;
+    }
+    
+    .pepper-plant .plant-type {
+      color: #4CAF50;
+    }
+    
+    .potato-plant .plant-type {
+      color: #FFB74D;
+    }
+    
+    .zucchini-plant .plant-type {
+      color: #FFC107;
+    }
+    
+    .nothing-plant .plant-type {
+      color: #90A4AE;
+    }
+    
+    /* نافذة حل المشكلة */
+    .solution-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .solution-modal.active {
+      display: flex;
+    }
+    
+    .solution-content {
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      border: 2px solid #4CAF50;
+      box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+    }
+    
+    .solution-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .solution-title {
+      color: #4CAF50;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .close-button {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .solution-section {
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+    }
+    
+    .section-title {
+      color: #4CAF50;
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* دعم اللغة العربية */
+    html[dir="rtl"] .back-home-button:before {
+      content: "→";
+    }
+    
+    html[dir="rtl"] .language-switch {
+      left: 20px;
+      right: auto;
+    }
+    
+    html[dir="rtl"] .back-home-button {
+      right: 20px;
+      left: auto;
+    }
+    
+    html[dir="rtl"] .back-home-button:before {
+      content: "→";
+    }
+    
+    html[dir="rtl"] .about-card {
+      border-left: none;
+      border-right: 5px solid #4CAF50;
+      text-align: right;
+    }
+    
+    html[dir="rtl"] .about-card.disease-card {
+      border-right-color: #F44336;
+      border-left: none;
+    }
+    
+    html[dir="rtl"] .about-card.pollination-card {
+      border-right-color: #9C27B0;
+      border-left: none;
+    }
+    
+    html[dir="rtl"] .toggle-icon.rotated {
+      transform: rotate(-180deg);
+    }
+    
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .site-title {
+        font-size: 36px;
+      }
+      
+      .main-menu-button {
+        min-width: 280px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- ✅ زر تبديل اللغة - أعلى اليمين -->
+    <button id="languageSwitch" class="language-switch" onclick="toggleLanguage()">
+      <span id="langIcon">🇺🇸</span>
+      <span id="langText">English</span>
+    </button>
+    
+    <!-- ✅ زر العودة للموقع الأول -->
+    <a href="https://farmbot1238.github.io/Farm-bot-/" class="back-home-button" id="backHomeButton">← Back to Home</a>
+    
+    <!-- ✅ العنوان ثابت - ما بيتغير أبداً FARM 8OT -->
+    <div class="site-title">FARM 8OT</div>
+    <div class="site-subtitle" id="siteSubtitle">Teachable Machine</div>
+    
+    <!-- ========== كبسة الشرح القابلة للطي ========== -->
+    <button id="aboutToggleButton" class="about-toggle-button" onclick="toggleAboutSection()">
+      <span id="aboutButtonText">📋 About FARM 8OT</span>
+      <span id="toggleIcon" class="toggle-icon">▼</span>
+    </button>
+    
+    <div id="aboutSection" class="about-section">
+      <div class="about-title" id="aboutTitle">
+        <span>🌿</span> About FARM 8OT <span>🌿</span>
+      </div>
+      
+      <div class="about-grid">
+        <!-- بطاقة النباتات المريضة -->
+        <div class="about-card disease-card" id="diseaseCard">
+          <div class="about-card-header">
+            <span class="about-card-icon">🦠</span>
+            <span class="about-card-title about-card-disease-title" id="diseaseCardTitle">Diseased Plants Detection</span>
+          </div>
+          <div class="about-card-description" id="diseaseDescription">
+            Identify plant diseases instantly using AI. Upload a photo or use your camera to detect if your tomato, potato, or pepper plants are healthy or diseased. Get immediate treatment solutions and prevention tips.
+          </div>
+          <ul class="about-features disease-features" id="diseaseFeatures">
+            <li>Detect diseases in Tomato, Potato, Pepper</li>
+            <li>Healthy vs Diseased classification</li>
+            <li>Instant treatment solutions</li>
+            <li>Prevention tips and best practices</li>
+          </ul>
+        </div>
+        
+        <!-- بطاقة دليل التلقيح -->
+        <div class="about-card pollination-card" id="pollinationAboutCard">
+          <div class="about-card-header">
+            <span class="about-card-icon">🎵</span>
+            <span class="about-card-title about-card-pollination-title" id="pollinationCardTitle">Acoustic Pollination Guide</span>
+          </div>
+          <div class="about-card-description" id="pollinationDescription">
+            Boost your crop yield with sound! Our system identifies your plant (Tomato, Pepper, Zucchini) and provides the exact sound frequency, duration, and optimal time for acoustic pollination. Based on scientific research on buzz pollination.
+          </div>
+          <ul class="about-features pollination-features" id="pollinationFeatures">
+            <li>Identify Tomato, Pepper, Zucchini plants</li>
+            <li>Optimal frequency: 100-400 Hz range</li>
+            <li>Precise timing and duration</li>
+            <li>Morning pollination window</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- إحصائيات سريعة -->
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-number">4</div>
+          <div class="stat-label" id="statPlants">Plant Types</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">2</div>
+          <div class="stat-label" id="statModes">Detection Modes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">🌿🎵</div>
+          <div class="stat-label" id="statAI">AI Powered</div>
+        </div>
+      </div>
+    </div>
+    <!-- ============================================= -->
+    
+    <!-- القائمة الرئيسية -->
+    <div id="mainMenu" class="main-menu">
+      <button class="main-menu-button" onclick="selectDiseasedMode()" id="diseasedBtn">
+        🦠 Diseased Plants
+      </button>
+      <div class="menu-description" id="diseasedDesc">
+        Detect plant diseases and get treatment solutions
+      </div>
+      
+      <button class="main-menu-button" onclick="selectPollinationMode()" style="background: #9C27B0; box-shadow: 0 8px 25px rgba(156, 39, 176, 0.4);" id="pollinationBtn">
+        🎵 Pollination Guide
+      </button>
+      <div class="menu-description" id="pollinationDesc">
+        Identify plants and get optimal sound frequencies for pollination
+      </div>
+    </div>
+    
+    <!-- شاشة الاختيار -->
+    <div id="choiceScreen" class="choice-screen">
+      <p style="color: white; margin-bottom: 20px; font-size: 20px;" id="modeTitle">Choose detection method</p>
+      <button class="action-button camera-button" onclick="chooseCamera()" id="cameraBtn">📷 Camera Detection</button>
+      <button class="action-button upload-button" onclick="chooseUpload()" id="uploadBtn">📁 Upload Image</button>
+      <button class="back-button-choice" onclick="backToMainMenu()" id="backBtn">Main Menu</button>
+    </div>
+    
+    <!-- حاوية الكاميرا -->
+    <div id="webcam-container" class="webcam-container">
+      <div id="webcam-placeholder">Camera is starting...</div>
+    </div>
+    
+    <!-- حاوية رفع الصورة -->
+    <div id="upload-container" class="upload-container">
+      <div id="upload-placeholder" class="upload-placeholder">
+        <label for="fileInput" class="file-label" id="fileLabel">
+          Click to upload plant image
+        </label>
+        <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+      </div>
+      <img id="upload-preview" class="upload-preview" alt="Preview">
+    </div>
+    
+    <!-- رسالة الحالة -->
+    <div id="statusMessage" class="status-message"></div>
+    
+    <!-- عناصر التحكم -->
+    <div id="controlsContainer" class="controls-container" style="display: none;">
+      <button class="control-button" onclick="restartDetection()" id="restartBtn">Restart</button>
+      <button class="control-button" onclick="clearResults()" id="clearBtn">Clear</button>
+      <button class="control-button" onclick="backToMainMenu()" id="menuBtn">Main Menu</button>
+    </div>
+    
+    <!-- نتائج الكشف -->
+    <div id="resultsContainer" class="results-container">
+      <div class="results-grid">
+        <!-- نتيجة التعرف على النبتة -->
+        <div id="plantResult" class="result-card plant">
+          <div class="result-title" id="plantTitle">🌱 Plant Type</div>
+          <div id="plantType" class="result-value plant-type">Detecting...</div>
+          <div id="plantConfidence" class="result-details">Confidence: 0.00</div>
+        </div>
+        
+        <!-- نتيجة فحص الصحة أو التلقيح -->
+        <div id="healthResult" class="result-card health">
+          <div id="healthIcon" class="health-icon">🩺</div>
+          <div class="result-title" id="resultSubTitle">🏥 Health Status</div>
+          <div id="healthStatus" class="result-value">Checking...</div>
+          <div id="healthConfidence" class="result-details">Confidence: 0.00</div>
+        </div>
+      </div>
+      
+      <!-- زر حل المشكلة (للأمراض) -->
+      <div id="solutionButtonContainer" style="display: none; margin-top: 20px;">
+        <button class="action-button" style="background: #4CAF50;" onclick="showSolution()" id="solutionBtn">
+          🔧 Show Treatment Solutions
+        </button>
+      </div>
+      
+      <!-- بطاقة التلقيح -->
+      <div id="pollinationCard" class="pollination-card" style="display: none;">
+        <div class="pollination-title">
+          <span class="plant-emoji-big" id="pollinationEmoji">🎵</span>
+          <span id="pollinationPlantName">Plant</span> <span id="pollinationGuideText">Pollination Guide</span>
+        </div>
+        <div id="pollinationContent"></div>
+      </div>
+      
+      <!-- إشعار النتيجة -->
+      <div id="notification" class="notification">
+        <div id="notificationText">Analysis in progress...</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- نافذة حل المشكلة -->
+  <div id="solutionModal" class="solution-modal">
+    <div class="solution-content">
+      <div class="solution-header">
+        <h2 class="solution-title" id="solutionPlantTitle">Treatment Guide</h2>
+        <button class="close-button" onclick="closeSolution()" id="closeBtn">✕</button>
+      </div>
+      <div class="solution-body" id="solutionContent"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // ============================================
+    // روابط النماذج
+    // ============================================
+    
+    // 1. نموذج التعرف على النبتة (للأمراض - Tomato, Potato, Pepper)
+    const DISEASE_PLANT_MODEL_URL = "https://farmbot1238.github.io/tomato/";
+    
+    // 2. نموذج فحص الصحة
+    const HEALTH_MODEL_URL = "https://teachablemachine.withgoogle.com/models/cFNqCcqIp/";
+    
+    // 3. نموذج التعرف على النبتة (للتلقيح - Tomato, Pepper, Zucchini)
+    const POLLINATION_PLANT_MODEL_URL = "https://teachablemachine.withgoogle.com/models/BHRn8BcvX/";
+    
+    // ============================================
+    // ✅ معلومات التلقيح الحقيقية
+    // ============================================
+    const pollinationData = {
+      'tomato': {
+        emoji: '🍅',
+        name: 'Tomato',
+        nameAr: 'طماطم',
+        frequency: '200–400 Hz (Optimal: 250–300 Hz)',
+        frequencyAr: '٢٠٠–٤٠٠ هرتز (الأفضل: ٢٥٠–٣٠٠ هرتز)',
+        time: '5–10 seconds per flower, 30–60 seconds per plant',
+        timeAr: '٥–١٠ ثواني لكل زهرة، ٣٠–٦٠ ثانية لكل نبتة',
+        bestTime: '9:00 AM – 11:30 AM',
+        bestTimeAr: '٩:٠٠ صباحاً – ١١:٣٠ صباحاً',
+        description: 'Tomato plants benefit from buzz pollination. Flowers are fully open and pollen is ready to release during this time. Best results achieved with consistent vibration exposure at 250–300 Hz.',
+        descriptionAr: 'نباتات الطماطم تستفيد من التلقيح الاهتزازي. الزهور تكون مفتوحة بالكامل وحبوب اللقاح جاهزة للتحرر في هذا الوقت. أفضل النتائج تتحقق مع التعرض المستمر للاهتزاز بتردد ٢٥٠–٣٠٠ هرتز.'
+      },
+      'pepper': {
+        emoji: '🌶️',
+        name: 'Pepper',
+        nameAr: 'فلفل',
+        frequency: '150–300 Hz',
+        frequencyAr: '١٥٠–٣٠٠ هرتز',
+        time: '5–8 seconds per flower, 20–40 seconds per plant',
+        timeAr: '٥–٨ ثواني لكل زهرة، ٢٠–٤٠ ثانية لكل نبتة',
+        bestTime: '8:30 AM – 11:00 AM',
+        bestTimeAr: '٨:٣٠ صباحاً – ١١:٠٠ صباحاً',
+        description: 'Pepper plants are self-pollinating but sound waves significantly increase fruit set. Less vibration-dependent than tomatoes, but acoustic stimulation at 150–300 Hz improves pollination success rate.',
+        descriptionAr: 'نباتات الفلفل ذاتية التلقيح لكن الموجات الصوتية تزيد من عقد الثمار بشكل ملحوظ. أقل اعتماداً على الاهتزاز من الطماطم، لكن التحفيز الصوتي بتردد ١٥٠–٣٠٠ هرتز يحسن معدل نجاح التلقيح.'
+      },
+      'zucchini': {
+        emoji: '🥒',
+        name: 'Zucchini',
+        nameAr: 'كوسا',
+        frequency: '100–250 Hz',
+        frequencyAr: '١٠٠–٢٥٠ هرتز',
+        time: '10–15 seconds per female flower only',
+        timeAr: '١٠–١٥ ثانية للزهرة الأنثى فقط',
+        bestTime: '6:00 AM – 9:00 AM ⚠️ Female flower closes after this time',
+        bestTimeAr: '٦:٠٠ صباحاً – ٩:٠٠ صباحاً ⚠️ الزهرة الأنثى تُغلق بعد هذا الوقت',
+        description: 'Requires cross-pollination between male and female flowers. A male flower must be open on the same day. Only the female flower needs vibration treatment. Pollination window is very narrow — apply early morning.',
+        descriptionAr: 'يتطلب تلقيحاً تبادلياً بين الأزهار المذكرة والمؤنثة. يجب أن تكون زهرة ذكر مفتوحة في نفس اليوم. فقط الزهرة الأنثى تحتاج للعلاج بالاهتزاز. نافذة التلقيح ضيقة جداً — يُطبق في الصباح الباكر.'
+      },
+      'nothing': {
+        emoji: '🌫️',
+        name: 'No Plant Detected',
+        nameAr: 'لا يوجد نبات',
+        frequency: '—',
+        frequencyAr: '—',
+        time: '—',
+        timeAr: '—',
+        bestTime: '—',
+        bestTimeAr: '—',
+        description: 'Please capture a clear image of the plant leaf.',
+        descriptionAr: 'يرجى التقاط صورة واضحة لورقة النبات.'
+      }
+    };
+    
+    // قواعد البيانات لحلول الأمراض
+    const diseaseSolutions = {
+      'tomato': {
+        title: "🍅 Tomato Disease Solutions",
+        titleAr: "🍅 حلول أمراض الطماطم",
+        commonDiseases: ["Early Blight", "Late Blight", "Bacterial Spot", "Tomato Mosaic Virus"],
+        commonDiseasesAr: ["اللفحة المبكرة", "اللفحة المتأخرة", "البقع البكتيرية", "فيروس موزاييك الطماطم"],
+        treatments: [
+          "Remove affected leaves immediately",
+          "Apply copper-based fungicide",
+          "Improve air circulation",
+          "Water at soil level, not leaves",
+          "Rotate crops annually"
+        ],
+        treatmentsAr: [
+          "إزالة الأوراق المصابة فوراً",
+          "استخدام مبيد فطري نحاسي",
+          "تحسين دوران الهواء",
+          "الري عند مستوى التربة وليس الأوراق",
+          "تدوير المحاصيل سنوياً"
+        ],
+        prevention: [
+          "Use disease-resistant varieties",
+          "Space plants 24-36 inches apart",
+          "Avoid overhead watering",
+          "Apply mulch around plants",
+          "Clean garden tools regularly"
+        ],
+        preventionAr: [
+          "استخدام أصناف مقاومة للأمراض",
+          "ترك مسافة ٦٠-٩٠ سم بين النباتات",
+          "تجنب الري العلوي",
+          "وضع نشارة حول النباتات",
+          "تنظيف أدوات الحديقة بانتظام"
+        ]
+      },
+      'potato': {
+        title: "🥔 Potato Disease Solutions",
+        titleAr: "🥔 حلول أمراض البطاطا",
+        commonDiseases: ["Potato Blight", "Common Scab", "Blackleg", "Potato Virus Y"],
+        commonDiseasesAr: ["لفحة البطاطا", "الجرب الشائع", "الساق الأسود", "فيروس واي البطاطا"],
+        treatments: [
+          "Remove and destroy infected plants",
+          "Apply approved fungicides",
+          "Improve soil drainage",
+          "Avoid planting in infected soil for 3-4 years",
+          "Use certified disease-free seed potatoes"
+        ],
+        treatmentsAr: [
+          "إزالة وتدمير النباتات المصابة",
+          "استخدام مبيدات فطرية معتمدة",
+          "تحسين تصريف التربة",
+          "تجنب الزراعة في تربة مصابة لمدة ٣-٤ سنوات",
+          "استخدام بذار بطاطا معتمد وخالٍ من الأمراض"
+        ],
+        prevention: [
+          "Practice crop rotation",
+          "Plant in well-drained soil",
+          "Harvest potatoes when mature",
+          "Store in cool, dry conditions",
+          "Remove volunteer potatoes"
+        ],
+        preventionAr: [
+          "ممارسة تدوير المحاصيل",
+          "الزراعة في تربة جيدة التصريف",
+          "حصاد البطاطا عند النضج",
+          "التخزين في ظروف باردة وجافة",
+          "إزالة نباتات البطاطا التلقائية"
+        ]
+      },
+      'pepper': {
+        title: "🌶️ Pepper Disease Solutions",
+        titleAr: "🌶️ حلول أمراض الفلفل",
+        commonDiseases: ["Bacterial Leaf Spot", "Phytophthora Blight", "Powdery Mildew", "Blossom End Rot"],
+        commonDiseasesAr: ["تبقع الأوراق البكتيري", "لفحة فيتوفثورا", "البياض الدقيقي", "عفن الطرف الزهري"],
+        treatments: [
+          "Remove infected plants immediately",
+          "Apply appropriate fungicides",
+          "Maintain consistent soil moisture",
+          "Apply calcium nitrate for blossom end rot",
+          "Improve air circulation"
+        ],
+        treatmentsAr: [
+          "إزالة النباتات المصابة فوراً",
+          "استخدام مبيدات فطرية مناسبة",
+          "الحفاظ على رطوبة التربة منتظمة",
+          "استخدام نترات الكالسيوم لعفن الطرف الزهري",
+          "تحسين دوران الهواء"
+        ],
+        prevention: [
+          "Water early in the day",
+          "Use drip irrigation",
+          "Space plants 18-24 inches apart",
+          "Avoid working with wet plants",
+          "Use mulch to prevent soil splash"
+        ],
+        preventionAr: [
+          "الري في الصباح الباكر",
+          "استخدام الري بالتنقيط",
+          "ترك مسافة ٤٥-٦٠ سم بين النباتات",
+          "تجنب العمل مع النباتات المبللة",
+          "استخدام النشارة لمنع تطاير التربة"
+        ]
+      }
+    };
+    
+    // ============================================
+    // نظام تبديل اللغة
+    // ============================================
+    let currentLanguage = 'en'; // 'en' or 'ar'
+    
+    // ترجمة النصوص
+    const translations = {
+      'en': {
+        // زر اللغة
+        langSwitch: 'English',
+        langIcon: '🇺🇸',
+        
+        // العنوان الثابت FARM 8OT ما بيتغير ✅
+        subtitle: 'Teachable Machine',
+        
+        // ===== كبسة الشرح About =====
+        aboutButton: '📋 About FARM 8OT',
+        
+        aboutTitle: '🌿 About FARM 8OT 🌿',
+        diseaseCardTitle: '🦠 Diseased Plants Detection',
+        diseaseDescription: 'Identify plant diseases instantly using AI. Upload a photo or use your camera to detect if your tomato, potato, or pepper plants are healthy or diseased. Get immediate treatment solutions and prevention tips.',
+        diseaseFeatures: [
+          'Detect diseases in Tomato, Potato, Pepper',
+          'Healthy vs Diseased classification',
+          'Instant treatment solutions',
+          'Prevention tips and best practices'
+        ],
+        pollinationCardTitle: '🎵 Acoustic Pollination Guide',
+        pollinationDescription: 'Boost your crop yield with sound! Our system identifies your plant (Tomato, Pepper, Zucchini) and provides the exact sound frequency, duration, and optimal time for acoustic pollination. Based on scientific research on buzz pollination.',
+        pollinationFeatures: [
+          'Identify Tomato, Pepper, Zucchini plants',
+          'Optimal frequency: 100-400 Hz range',
+          'Precise timing and duration',
+          'Morning pollination window'
+        ],
+        statPlants: 'Plant Types',
+        statModes: 'Detection Modes',
+        statAI: 'AI Powered',
+        // ===========================
+        
+        // أزرار القائمة الرئيسية
+        diseasedBtn: '🦠 Diseased Plants',
+        diseasedDesc: 'Detect plant diseases and get treatment solutions',
+        pollinationBtn: '🎵 Pollination Guide',
+        pollinationDesc: 'Identify plants and get optimal sound frequencies for pollination',
+        
+        // شاشة الاختيار
+        modeTitle: 'Choose detection method',
+        cameraBtn: '📷 Camera Detection',
+        uploadBtn: '📁 Upload Image',
+        backBtn: 'Main Menu',
+        
+        // عناصر التحكم
+        restartBtn: 'Restart',
+        clearBtn: 'Clear',
+        menuBtn: 'Main Menu',
+        
+        // نتائج الكشف
+        plantTitle: '🌱 Plant Type',
+        confidence: 'Confidence',
+        healthTitle: '🏥 Health Status',
+        pollinationTitle: '🎵 Pollination Guide',
+        
+        // زر حل المشكلة
+        solutionBtn: '🔧 Show Treatment Solutions',
+        
+        // إشعارات
+        analysisProgress: 'Analysis in progress...',
+        noPlantDetected: 'No plant detected in the image.',
+        
+        // العودة للموقع
+        backHome: 'Back to Home',
+        
+        // نص الكاميرا
+        cameraStarting: 'Camera is starting...',
+        fileLabel: 'Click to upload plant image',
+        detecting: 'Detecting...',
+        waitingForImage: 'Waiting for image...',
+        willCheckAfter: 'Will check after plant detection',
+        readyToIdentify: 'Ready to identify plant',
+        
+        // نافذة الحلول
+        treatmentGuide: 'Treatment Guide',
+        commonDiseases: 'Common Diseases',
+        treatments: 'Treatments',
+        prevention: 'Prevention',
+        
+        // حالة الصحة
+        healthy: 'healthy',
+        diseased: 'diseased',
+        plantIdentified: 'Plant Identified',
+        healthCheckFailed: 'Health check failed',
+        analysisComplete: 'Analysis complete!'
+      },
+      'ar': {
+        // زر اللغة
+        langSwitch: 'العربية',
+        langIcon: '🇸🇦',
+        
+        // العنوان الثابت FARM 8OT ما بيتغير ✅
+        subtitle: 'تيتشبل مشين',
+        
+        // ===== كبسة الشرح About =====
+        aboutButton: '📋 حول FARM 8OT',
+        
+        aboutTitle: '🌿 حول FARM 8OT 🌿',
+        diseaseCardTitle: '🦠 كشف النباتات المريضة',
+        diseaseDescription: 'حدد أمراض النباتات فوراً باستخدام الذكاء الاصطناعي. ارفع صورة أو استخدم الكاميرا للكشف ما إذا كانت نباتات الطماطم، البطاطا، أو الفلفل سليمة أم مريضة. احصل على حلول علاج فورية ونصائح وقائية.',
+        diseaseFeatures: [
+          'كشف الأمراض في الطماطم، البطاطا، الفلفل',
+          'تصنيف سليم / مريض',
+          'حلول علاج فورية',
+          'نصائح وقائية وأفضل الممارسات'
+        ],
+        pollinationCardTitle: '🎵 دليل التلقيح الصوتي',
+        pollinationDescription: 'عزز إنتاج محاصيلك بالصوت! نظامنا يتعرف على نباتك (طماطم، فلفل، كوسا) ويوفر لك التردد الصوتي المناسب، المدة، والوقت الأمثل للتلقيح الصوتي. مبني على أبحاث علمية حول التلقيح الاهتزازي.',
+        pollinationFeatures: [
+          'التعرف على الطماطم، الفلفل، الكوسا',
+          'التردد الأمثل: ١٠٠-٤٠٠ هرتز',
+          'توقيت ومدة دقيقة',
+          'نافذة التلقيح الصباحية'
+        ],
+        statPlants: 'أنواع النباتات',
+        statModes: 'طرق الكشف',
+        statAI: 'مدعوم بالذكاء الاصطناعي',
+        // ===========================
+        
+        // أزرار القائمة الرئيسية
+        diseasedBtn: '🦠 النباتات المريضة',
+        diseasedDesc: 'الكشف عن أمراض النباتات والحصول على حلول العلاج',
+        pollinationBtn: '🎵 دليل التلقيح',
+        pollinationDesc: 'التعرف على النباتات والحصول على الترددات الصوتية المثلى للتلقيح',
+        
+        // شاشة الاختيار
+        modeTitle: 'اختر طريقة الكشف',
+        cameraBtn: '📷 كاميرا',
+        uploadBtn: '📁 رفع صورة',
+        backBtn: 'القائمة الرئيسية',
+        
+        // عناصر التحكم
+        restartBtn: 'إعادة تشغيل',
+        clearBtn: 'مسح',
+        menuBtn: 'القائمة الرئيسية',
+        
+        // نتائج الكشف
+        plantTitle: '🌱 نوع النبات',
+        confidence: 'نسبة الثقة',
+        healthTitle: '🏥 الحالة الصحية',
+        pollinationTitle: '🎵 دليل التلقيح',
+        
+        // زر حل المشكلة
+        solutionBtn: '🔧 عرض حلول العلاج',
+        
+        // إشعارات
+        analysisProgress: 'جاري التحليل...',
+        noPlantDetected: 'لا يوجد نبات في الصورة.',
+        
+        // العودة للموقع
+        backHome: 'العودة للرئيسية',
+        
+        // نص الكاميرا
+        cameraStarting: 'جاري تشغيل الكاميرا...',
+        fileLabel: 'اضغط لرفع صورة النبات',
+        detecting: 'جاري الكشف...',
+        waitingForImage: 'بانتظار الصورة...',
+        willCheckAfter: 'سيتم الفحص بعد الكشف عن النبات',
+        readyToIdentify: 'جاهز للتعرف على النبات',
+        
+        // نافذة الحلول
+        treatmentGuide: 'دليل العلاج',
+        commonDiseases: 'الأمراض الشائعة',
+        treatments: 'العلاجات',
+        prevention: 'الوقاية',
+        
+        // حالة الصحة
+        healthy: 'سليم',
+        diseased: 'مريض',
+        plantIdentified: 'تم التعرف على النبات',
+        healthCheckFailed: 'فشل فحص الصحة',
+        analysisComplete: 'اكتمل التحليل!'
+      }
+    };
+    
+    // حالة إظهار/إخفاء قسم الشرح
+    let aboutVisible = false;
+    
+    // دالة تبديل إظهار قسم الشرح
+    function toggleAboutSection() {
+      aboutVisible = !aboutVisible;
+      const aboutSection = document.getElementById('aboutSection');
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (aboutVisible) {
+        aboutSection.classList.add('show');
+        toggleIcon.classList.add('rotated');
+      } else {
+        aboutSection.classList.remove('show');
+        toggleIcon.classList.remove('rotated');
+      }
+    }
+    
+    // دالة تبديل اللغة
+    function toggleLanguage() {
+      if (currentLanguage === 'en') {
+        currentLanguage = 'ar';
+        document.documentElement.dir = 'rtl';
+        document.documentElement.lang = 'ar';
+      } else {
+        currentLanguage = 'en';
+        document.documentElement.dir = 'ltr';
+        document.documentElement.lang = 'en';
+      }
+      
+      updateUILanguage();
+    }
+    
+    // تحديث واجهة المستخدم حسب اللغة
+    function updateUILanguage() {
+      const t = translations[currentLanguage];
+      
+      // ✅ العنوان FARM 8OT ثابت - ما بيتغير
+      document.getElementById('siteSubtitle').textContent = t.subtitle;
+      
+      // زر اللغة
+      document.getElementById('langIcon').textContent = t.langIcon;
+      document.getElementById('langText').textContent = t.langSwitch;
+      
+      // زر العودة للموقع
+      document.getElementById('backHomeButton').innerHTML = (currentLanguage === 'ar' ? '→ ' : '← ') + t.backHome;
+      
+      // ===== تحديث كبسة الشرح About =====
+      document.getElementById('aboutButtonText').textContent = t.aboutButton;
+      document.getElementById('aboutTitle').innerHTML = t.aboutTitle;
+      document.getElementById('diseaseCardTitle').textContent = t.diseaseCardTitle;
+      document.getElementById('diseaseDescription').textContent = t.diseaseDescription;
+      
+      // تحديث قائمة ميزات الأمراض
+      const diseaseFeaturesList = document.getElementById('diseaseFeatures');
+      diseaseFeaturesList.innerHTML = t.diseaseFeatures.map(f => `<li>${f}</li>`).join('');
+      
+      document.getElementById('pollinationCardTitle').textContent = t.pollinationCardTitle;
+      document.getElementById('pollinationDescription').textContent = t.pollinationDescription;
+      
+      // تحديث قائمة ميزات التلقيح
+      const pollinationFeaturesList = document.getElementById('pollinationFeatures');
+      pollinationFeaturesList.innerHTML = t.pollinationFeatures.map(f => `<li>${f}</li>`).join('');
+      
+      // تحديث الإحصائيات
+      document.getElementById('statPlants').textContent = t.statPlants;
+      document.getElementById('statModes').textContent = t.statModes;
+      document.getElementById('statAI').textContent = t.statAI;
+      // ===================================
+      
+      // القائمة الرئيسية
+      document.getElementById('diseasedBtn').innerHTML = t.diseasedBtn;
+      document.getElementById('diseasedDesc').textContent = t.diseasedDesc;
+      document.getElementById('pollinationBtn').innerHTML = t.pollinationBtn;
+      document.getElementById('pollinationDesc').textContent = t.pollinationDesc;
+      
+      // شاشة الاختيار
+      document.getElementById('modeTitle').textContent = t.modeTitle;
+      document.getElementById('cameraBtn').innerHTML = t.cameraBtn;
+      document.getElementById('uploadBtn').innerHTML = t.uploadBtn;
+      document.getElementById('backBtn').textContent = t.backBtn;
+      
+      // عناصر التحكم
+      document.getElementById('restartBtn').textContent = t.restartBtn;
+      document.getElementById('clearBtn').textContent = t.clearBtn;
+      document.getElementById('menuBtn').textContent = t.menuBtn;
+      
+      // نتائج الكشف
+      document.getElementById('plantTitle').innerHTML = t.plantTitle;
+      document.getElementById('resultSubTitle').innerHTML = t.healthTitle;
+      document.getElementById('solutionBtn').innerHTML = t.solutionBtn;
+      
+      // نص الكاميرا
+      document.getElementById('webcam-placeholder').textContent = t.cameraStarting;
+      document.getElementById('fileLabel').textContent = t.fileLabel;
+      
+      // إذا كان هناك نص في مكان الكشف
+      const plantTypeEl = document.getElementById('plantType');
+      if (plantTypeEl.textContent === 'Detecting...' || plantTypeEl.textContent === 'جاري الكشف...' || plantTypeEl.textContent === t.detecting) {
+        plantTypeEl.textContent = t.detecting;
+      }
+      
+      // تحديث بطاقة التلقيح إذا كانت ظاهرة
+      updatePollinationCardLanguage();
+      
+      // تحديث نافذة الحلول إذا كانت مفتوحة
+      if (document.getElementById('solutionModal').classList.contains('active')) {
+        showSolution();
+      }
+    }
+    
+    // تحديث بطاقة التلقيح حسب اللغة
+    function updatePollinationCardLanguage() {
+      if (!currentDetection) return;
+      
+      const plantName = currentDetection.plantType.toLowerCase();
+      let plantKey = 'nothing';
+      if (plantName.includes('tomato')) plantKey = 'tomato';
+      else if (plantName.includes('pepper')) plantKey = 'pepper';
+      else if (plantName.includes('zucchini')) plantKey = 'zucchini';
+      
+      const info = pollinationData[plantKey];
+      const t = translations[currentLanguage];
+      
+      document.getElementById('pollinationGuideText').textContent = t.pollinationTitle;
+      
+      if (currentLanguage === 'en') {
+        document.getElementById('pollinationPlantName').textContent = info.name;
+        document.getElementById('pollinationContent').innerHTML = `
+          <div class="pollination-detail">
+            <span style="font-size: 18px;">🎵 ${t.optimalFrequency}</span>
+            <span class="frequency-badge">${info.frequency}</span>
+          </div>
+          <div class="pollination-detail">
+            <span style="font-size: 18px;">⏱️ ${t.recommendedDuration}</span>
+            <span class="time-badge">${info.time}</span>
+          </div>
+          <div class="pollination-detail">
+            <span style="font-size: 18px;">🌅 ${t.bestTime}</span>
+            <span class="besttime-badge">${info.bestTime}</span>
+          </div>
+          <p style="margin-top: 20px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.9); background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+            ${info.description}
+          </p>
+        `;
+      } else {
+        document.getElementById('pollinationPlantName').textContent = info.nameAr;
+        document.getElementById('pollinationContent').innerHTML = `
+          <div class="pollination-detail">
+            <span style="font-size: 18px;">🎵 ${t.optimalFrequency}</span>
+            <span class="frequency-badge">${info.frequencyAr}</span>
+          </div>
+          <div class="pollination-detail">
+            <span style="font-size: 18px;">⏱️ ${t.recommendedDuration}</span>
+            <span class="time-badge">${info.timeAr}</span>
+          </div>
+          <div class="pollination-detail">
+            <span style="font-size: 18px;">🌅 ${t.bestTime}</span>
+            <span class="besttime-badge">${info.bestTimeAr}</span>
+          </div>
+          <p style="margin-top: 20px; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.9); background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+            ${info.descriptionAr}
+          </p>
+        `;
+      }
+    }
+    
+    // متغيرات النظام
+    let plantModel, healthModel, pollinationModel, webcam;
+    let currentMode = 'main';
+    let currentAppMode = ''; // 'disease' or 'pollination'
+    let uploadedImage = null;
+    let plantModelLoaded = false;
+    let healthModelLoaded = false;
+    let pollinationModelLoaded = false;
+    let currentDetection = null;
+    let currentPlantType = '';
+    let isPlantDiseased = false;
+    
+    // تحميل النماذج عند بدء التحميل
+    window.onload = function() {
+      console.log("FARM 8OT - Plant System Ready");
+    };
+    
+    // اختيار وضع الأمراض
+    function selectDiseasedMode() {
+      currentAppMode = 'disease';
+      document.getElementById('mainMenu').style.display = 'none';
+      document.getElementById('choiceScreen').style.display = 'flex';
+      document.getElementById('modeTitle').innerHTML = translations[currentLanguage].modeTitle;
+      updateStatus("Loading disease detection models...");
+      loadDiseaseModels();
+    }
+    
+    // اختيار وضع التلقيح
+    function selectPollinationMode() {
+      currentAppMode = 'pollination';
+      document.getElementById('mainMenu').style.display = 'none';
+      document.getElementById('choiceScreen').style.display = 'flex';
+      document.getElementById('modeTitle').innerHTML = translations[currentLanguage].modeTitle;
+      updateStatus("Loading pollination detection models...");
+      loadPollinationModels();
+    }
+    
+    // تحميل نماذج الأمراض
+    async function loadDiseaseModels() {
+      updateStatus("Loading plant detection model...");
+      
+      try {
+        plantModel = await tmImage.load(
+          DISEASE_PLANT_MODEL_URL + "model.json",
+          DISEASE_PLANT_MODEL_URL + "metadata.json"
+        );
+        plantModelLoaded = true;
+        console.log("✅ Disease plant model loaded");
+        
+        updateStatus("Loading health check model...");
+        healthModel = await tmImage.load(
+          HEALTH_MODEL_URL + "model.json",
+          HEALTH_MODEL_URL + "metadata.json"
+        );
+        healthModelLoaded = true;
+        console.log("✅ Health model loaded");
+        
+        updateStatus("✅ Models loaded successfully!");
+        
+      } catch (err) {
+        console.error("❌ Error loading disease models:", err);
+        updateStatus("❌ Error loading models");
+        alert("Failed to load disease detection models.");
+      }
+    }
+    
+    // تحميل نماذج التلقيح
+    async function loadPollinationModels() {
+      updateStatus("Loading pollination plant model...");
+      
+      try {
+        pollinationModel = await tmImage.load(
+          POLLINATION_PLANT_MODEL_URL + "model.json",
+          POLLINATION_PLANT_MODEL_URL + "metadata.json"
+        );
+        pollinationModelLoaded = true;
+        console.log("✅ Pollination plant model loaded");
+        updateStatus("✅ Model loaded successfully!");
+        
+      } catch (err) {
+        console.error("❌ Error loading pollination model:", err);
+        updateStatus("❌ Error loading model");
+        alert("Failed to load pollination detection model.");
+      }
+    }
+    
+    // العودة للقائمة الرئيسية
+    function backToMainMenu() {
+      document.getElementById('mainMenu').style.display = 'flex';
+      document.getElementById('choiceScreen').style.display = 'none';
+      document.getElementById('webcam-container').classList.remove('active');
+      document.getElementById('upload-container').classList.remove('active');
+      document.getElementById('controlsContainer').style.display = 'none';
+      document.getElementById('resultsContainer').classList.remove('active');
+      document.getElementById('solutionButtonContainer').style.display = 'none';
+      document.getElementById('pollinationCard').style.display = 'none';
+      
+      currentAppMode = '';
+      currentMode = 'main';
+      updateStatus("");
+      
+      if (webcam) {
+        webcam.stop();
+        webcam = null;
+      }
+    }
+    
+    // اختيار الكاميرا
+    function chooseCamera() {
+      document.getElementById('choiceScreen').style.display = 'none';
+      document.getElementById('webcam-container').classList.add('active');
+      document.getElementById('upload-container').classList.remove('active');
+      document.getElementById('controlsContainer').style.display = 'flex';
+      document.getElementById('resultsContainer').classList.add('active');
+      document.getElementById('solutionButtonContainer').style.display = 'none';
+      document.getElementById('pollinationCard').style.display = 'none';
+      currentMode = 'camera';
+      updateStatus(translations[currentLanguage].cameraStarting);
+      
+      initCamera();
+    }
+    
+    // اختيار رفع الصورة
+    function chooseUpload() {
+      document.getElementById('choiceScreen').style.display = 'none';
+      document.getElementById('upload-container').classList.add('active');
+      document.getElementById('webcam-container').classList.remove('active');
+      document.getElementById('controlsContainer').style.display = 'flex';
+      document.getElementById('resultsContainer').classList.add('active');
+      document.getElementById('solutionButtonContainer').style.display = 'none';
+      document.getElementById('pollinationCard').style.display = 'none';
+      currentMode = 'upload';
+      updateStatus(translations[currentLanguage].readyToIdentify);
+      
+      document.getElementById('plantType').textContent = translations[currentLanguage].waitingForImage;
+      if (currentAppMode === 'disease') {
+        document.getElementById('healthStatus').textContent = translations[currentLanguage].willCheckAfter;
+      } else {
+        document.getElementById('healthStatus').textContent = translations[currentLanguage].readyToIdentify;
+      }
+    }
+    
+    async function initCamera() {
+      if (currentAppMode === 'disease' && (!plantModelLoaded || !healthModelLoaded)) {
+        updateStatus("Loading models, please wait...");
+        await loadDiseaseModels();
+      } else if (currentAppMode === 'pollination' && !pollinationModelLoaded) {
+        updateStatus("Loading model, please wait...");
+        await loadPollinationModels();
+      }
+      
+      try {
+        const flip = true;
+        webcam = new tmImage.Webcam(320, 320, flip);
+        await webcam.setup();
+        await webcam.play();
+        
+        window.requestAnimationFrame(cameraLoop);
+        
+        const webcamContainer = document.getElementById('webcam-container');
+        const canvasElements = webcamContainer.getElementsByTagName('canvas');
+        if (canvasElements.length > 0) {
+          for (let i = 0; i < canvasElements.length; i++) {
+            webcamContainer.removeChild(canvasElements[i]);
+          }
+        }
+        webcamContainer.appendChild(webcam.canvas);
+        
+        document.getElementById('webcam-placeholder').style.display = 'none';
+        document.getElementById('plantType').textContent = translations[currentLanguage].detecting;
+        
+      } catch (err) {
+        console.error("❌ Error starting webcam:", err);
+        updateStatus("❌ Error starting camera");
+        alert("Failed to start webcam. Please check camera permissions.");
+        backToMainMenu();
+      }
+    }
+    
+    async function cameraLoop() {
+      if (currentMode === 'camera' && webcam) {
+        webcam.update();
+        await detectFromWebcam();
+        window.requestAnimationFrame(cameraLoop);
+      }
+    }
+    
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('upload-preview');
+        preview.src = e.target.result;
+        preview.classList.add('active');
+        uploadedImage = preview;
+        
+        document.getElementById('upload-placeholder').style.display = 'none';
+        updateStatus("🔍 Analyzing uploaded image...");
+        
+        analyzeUploadedImage();
+      }
+      reader.readAsDataURL(file);
+    }
+    
+    async function analyzeUploadedImage() {
+      if (!uploadedImage) return;
+      
+      await new Promise(resolve => {
+        if (uploadedImage.complete) {
+          resolve();
+        } else {
+          uploadedImage.onload = resolve;
+        }
+      });
+      
+      await detectFromImage(uploadedImage);
+    }
+    
+    async function detectFromWebcam() {
+      if (!webcam) return;
+      
+      if (currentAppMode === 'disease' && plantModelLoaded) {
+        try {
+          const prediction = await plantModel.predict(webcam.canvas);
+          processDiseaseDetection(prediction, webcam.canvas);
+        } catch (err) {
+          console.error("❌ Error detecting from webcam:", err);
+        }
+      } else if (currentAppMode === 'pollination' && pollinationModelLoaded) {
+        try {
+          const prediction = await pollinationModel.predict(webcam.canvas);
+          processPollinationDetection(prediction);
+        } catch (err) {
+          console.error("❌ Error detecting from webcam:", err);
+        }
+      }
+    }
+    
+    async function detectFromImage(imageElement) {
+      if (currentAppMode === 'disease' && plantModelLoaded) {
+        try {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = 224;
+          canvas.height = 224;
+          ctx.drawImage(imageElement, 0, 0, 224, 224);
+          
+          const prediction = await plantModel.predict(canvas);
+          processDiseaseDetection(prediction, canvas);
+        } catch (err) {
+          console.error("❌ Error detecting from image:", err);
+          alert("Error analyzing image.");
+        }
+      } else if (currentAppMode === 'pollination' && pollinationModelLoaded) {
+        try {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = 224;
+          canvas.height = 224;
+          ctx.drawImage(imageElement, 0, 0, 224, 224);
+          
+          const prediction = await pollinationModel.predict(canvas);
+          processPollinationDetection(prediction);
+        } catch (err) {
+          console.error("❌ Error detecting from image:", err);
+          alert("Error analyzing image.");
+        }
+      }
+    }
+    
+    // معالجة كشف الأمراض
+    async function processDiseaseDetection(prediction, sourceCanvas) {
+      if (!prediction || prediction.length === 0) return;
+      
+      let bestPrediction = prediction[0];
+      for (let i = 1; i < prediction.length; i++) {
+        if (prediction[i].probability > bestPrediction.probability) {
+          bestPrediction = prediction[i];
+        }
+      }
+      
+      updatePlantResult(bestPrediction.className, bestPrediction.probability);
+      
+      if (bestPrediction.className !== "There is nothing" && bestPrediction.probability > 0.3) {
+        updateStatus("🌿 Plant detected! Checking health status...");
+        await checkPlantHealth(sourceCanvas, bestPrediction.className);
+      } else {
+        updateHealthResult(translations[currentLanguage].noPlantDetected, 0);
+        updateNotification(translations[currentLanguage].noPlantDetected, "warning");
+        document.getElementById('solutionButtonContainer').style.display = 'none';
+      }
+    }
+    
+    // فحص صحة النبتة
+    async function checkPlantHealth(canvas, plantType) {
+      if (!healthModelLoaded) {
+        updateHealthResult(translations[currentLanguage].healthCheckFailed, 0);
+        return;
+      }
+      
+      try {
+        const healthPrediction = await healthModel.predict(canvas);
+        
+        let bestHealthPrediction = healthPrediction[0];
+        for (let i = 1; i < healthPrediction.length; i++) {
+          if (healthPrediction[i].probability > bestHealthPrediction.probability) {
+            bestHealthPrediction = healthPrediction[i];
+          }
+        }
+        
+        updateHealthResult(bestHealthPrediction.className, bestHealthPrediction.probability);
+        
+        currentPlantType = plantType.toLowerCase();
+        isPlantDiseased = bestHealthPrediction.className.toLowerCase().includes('diseased');
+        
+        if (bestHealthPrediction.className.toLowerCase().includes('healthy')) {
+          updateNotification(`✅ ${plantType} ${translations[currentLanguage].healthy}!`, "success");
+          document.getElementById('solutionButtonContainer').style.display = 'none';
+        } else if (isPlantDiseased) {
+          updateNotification(`⚠️ ${plantType} ${translations[currentLanguage].diseased}!`, "danger");
+          document.getElementById('solutionButtonContainer').style.display = 'block';
+        }
+        
+        updateStatus(translations[currentLanguage].analysisComplete);
+        
+      } catch (err) {
+        console.error("❌ Error checking plant health:", err);
+        updateHealthResult(translations[currentLanguage].healthCheckFailed, 0);
+        updateNotification("❌ Could not check plant health.", "warning");
+        document.getElementById('solutionButtonContainer').style.display = 'none';
+      }
+    }
+    
+    // معالجة كشف التلقيح
+    function processPollinationDetection(prediction) {
+      if (!prediction || prediction.length === 0) return;
+      
+      let bestPrediction = prediction[0];
+      for (let i = 1; i < prediction.length; i++) {
+        if (prediction[i].probability > bestPrediction.probability) {
+          bestPrediction = prediction[i];
+        }
+      }
+      
+      const plantName = bestPrediction.className.toLowerCase();
+      updatePlantResult(bestPrediction.className, bestPrediction.probability);
+      
+      currentDetection = {
+        plantType: bestPrediction.className,
+        plantConfidence: bestPrediction.probability
+      };
+      
+      // تحديث واجهة التلقيح
+      document.getElementById('resultSubTitle').innerHTML = translations[currentLanguage].pollinationTitle;
+      document.getElementById('healthIcon').innerHTML = '🎵';
+      
+      let plantKey = 'nothing';
+      if (plantName.includes('tomato')) plantKey = 'tomato';
+      else if (plantName.includes('pepper')) plantKey = 'pepper';
+      else if (plantName.includes('zucchini')) plantKey = 'zucchini';
+      
+      const pollinationInfo = pollinationData[plantKey];
+      
+      document.getElementById('pollinationCard').style.display = 'block';
+      document.getElementById('pollinationEmoji').textContent = pollinationInfo.emoji;
+      
+      updatePollinationCardLanguage();
+      
+      updateHealthResult(translations[currentLanguage].plantIdentified, bestPrediction.probability);
+      updateNotification(`🎵 ${currentLanguage === 'en' ? pollinationInfo.name : pollinationInfo.nameAr} ${translations[currentLanguage].plantIdentified}!`, "pollination");
+      updateStatus(translations[currentLanguage].analysisComplete);
+    }
+    
+    // تحديث نتيجة النبتة
+    function updatePlantResult(plantType, confidence) {
+      const plantResult = document.getElementById('plantResult');
+      const plantTypeElement = document.getElementById('plantType');
+      
+      plantTypeElement.textContent = plantType;
+      document.getElementById('plantConfidence').innerHTML = `${translations[currentLanguage].confidence}: ${confidence.toFixed(2)}`;
+      
+      plantResult.classList.remove('tomato-plant', 'pepper-plant', 'potato-plant', 'zucchini-plant', 'nothing-plant');
+      
+      if (plantType.toLowerCase().includes('tomato')) {
+        plantResult.classList.add('tomato-plant');
+      } else if (plantType.toLowerCase().includes('pepper')) {
+        plantResult.classList.add('pepper-plant');
+      } else if (plantType.toLowerCase().includes('potato')) {
+        plantResult.classList.add('potato-plant');
+      } else if (plantType.toLowerCase().includes('zucchini')) {
+        plantResult.classList.add('zucchini-plant');
+      } else if (plantType.toLowerCase().includes('nothing')) {
+        plantResult.classList.add('nothing-plant');
+      }
+    }
+    
+    // تحديث نتيجة الصحة
+    function updateHealthResult(healthStatus, confidence) {
+      const healthResult = document.getElementById('healthResult');
+      const healthIcon = document.getElementById('healthIcon');
+      
+      document.getElementById('healthStatus').textContent = healthStatus;
+      document.getElementById('healthConfidence').innerHTML = `${translations[currentLanguage].confidence}: ${confidence.toFixed(2)}`;
+      
+      if (healthStatus.toLowerCase().includes('healthy')) {
+        healthIcon.textContent = "✅";
+        healthResult.classList.remove('diseased');
+      } else if (healthStatus.toLowerCase().includes('diseased')) {
+        healthIcon.textContent = "⚠️";
+        healthResult.classList.add('diseased');
+      }
+    }
+    
+    // عرض حل المشكلة
+    function showSolution() {
+      let plantKey = '';
+      if (currentPlantType.includes('tomato')) plantKey = 'tomato';
+      else if (currentPlantType.includes('potato')) plantKey = 'potato';
+      else if (currentPlantType.includes('pepper')) plantKey = 'pepper';
+      
+      if (!diseaseSolutions[plantKey]) {
+        alert("No treatment information available.");
+        return;
+      }
+      
+      const solution = diseaseSolutions[plantKey];
+      const t = translations[currentLanguage];
+      
+      if (currentLanguage === 'en') {
+        document.getElementById('solutionPlantTitle').textContent = solution.title;
+        
+        let content = `
+          <div class="solution-section">
+            <div class="section-title">🦠 ${t.commonDiseases}</div>
+            <ul style="color: white; list-style-type: none; padding-left: 0;">
+              ${solution.commonDiseases.map(d => `<li style="padding: 5px 0;">• ${d}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="solution-section">
+            <div class="section-title">💊 ${t.treatments}</div>
+            <ul style="color: white; list-style-type: none; padding-left: 0;">
+              ${solution.treatments.map(t => `<li style="padding: 5px 0;">✅ ${t}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="solution-section">
+            <div class="section-title">🛡️ ${t.prevention}</div>
+            <ul style="color: white; list-style-type: none; padding-left: 0;">
+              ${solution.prevention.map(p => `<li style="padding: 5px 0;">✓ ${p}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+        document.getElementById('solutionContent').innerHTML = content;
+      } else {
+        document.getElementById('solutionPlantTitle').textContent = solution.titleAr;
+        
+        let content = `
+          <div class="solution-section">
+            <div class="section-title">🦠 ${t.commonDiseases}</div>
+            <ul style="color: white; list-style-type: none; padding-right: 20px;">
+              ${solution.commonDiseasesAr.map(d => `<li style="padding: 5px 0;">• ${d}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="solution-section">
+            <div class="section-title">💊 ${t.treatments}</div>
+            <ul style="color: white; list-style-type: none; padding-right: 20px;">
+              ${solution.treatmentsAr.map(t => `<li style="padding: 5px 0;">✅ ${t}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="solution-section">
+            <div class="section-title">🛡️ ${t.prevention}</div>
+            <ul style="color: white; list-style-type: none; padding-right: 20px;">
+              ${solution.preventionAr.map(p => `<li style="padding: 5px 0;">✓ ${p}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+        document.getElementById('solutionContent').innerHTML = content;
+      }
+      
+      document.getElementById('solutionModal').classList.add('active');
+    }
+    
+    function closeSolution() {
+      document.getElementById('solutionModal').classList.remove('active');
+    }
+    
+    function updateNotification(message, type = 'info') {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      
+      notificationText.textContent = message;
+      notification.classList.remove('warning', 'danger', 'pollination');
+      
+      if (type === 'warning') notification.classList.add('warning');
+      else if (type === 'danger') notification.classList.add('danger');
+      else if (type === 'pollination') notification.classList.add('pollination');
+    }
+    
+    function updateStatus(message) {
+      document.getElementById('statusMessage').textContent = message;
+    }
+    
+    function restartDetection() {
+      if (currentMode === 'camera') {
+        if (webcam) {
+          webcam.stop();
+          webcam = null;
+        }
+        initCamera();
+      } else if (currentMode === 'upload') {
+        document.getElementById('upload-preview').classList.remove('active');
+        document.getElementById('upload-placeholder').style.display = 'block';
+        document.getElementById('fileInput').value = '';
+        uploadedImage = null;
+        updatePlantResult(translations[currentLanguage].waitingForImage, 0);
+        if (currentAppMode === 'disease') {
+          updateHealthResult(translations[currentLanguage].willCheckAfter, 0);
+          document.getElementById('solutionButtonContainer').style.display = 'none';
+        } else {
+          document.getElementById('pollinationCard').style.display = 'none';
+        }
+      }
+    }
+    
+    function clearResults() {
+      updatePlantResult(translations[currentLanguage].detecting, 0);
+      if (currentAppMode === 'disease') {
+        updateHealthResult(translations[currentLanguage].willCheckAfter, 0);
+        document.getElementById('solutionButtonContainer').style.display = 'none';
+      } else {
+        document.getElementById('pollinationCard').style.display = 'none';
+      }
+      updateNotification(translations[currentLanguage].analysisProgress, "info");
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    document.getElementById('solutionModal').addEventListener('click', function(e) {
+      if (e.target === this) closeSolution();
+    });
+  </script>
+</body>
+</html>
