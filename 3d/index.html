@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FARM 8OT 3D</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --text: #ffffff;
+      --primary-green: #4CAF50;
+      --dark-green: #2E7D32;
+      --light-green: #81C784;
+      --bright-green: #00E676;
+      --bg-dark: rgba(0, 0, 0, 0.6);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, Segoe UI, Arial;
+      background: url('FARBOT4.jpeg') no-repeat center center/cover;
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    /* العنوان الرئيسي */
+    .main-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 10px 0 30px 0;
+      color: var(--primary-green);
+      text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+      text-align: center;
+    }
+    
+    /* أزرار التبديل */
+    .tabs-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--primary-green);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .tab-btn {
+      padding: 14px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      overflow: hidden;
+      min-width: 160px;
+      text-align: center;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    
+    .tab-btn:hover {
+      color: white;
+      background: rgba(76, 175, 80, 0.2);
+      border-color: var(--primary-green);
+      transform: translateY(-2px);
+    }
+    
+    .tab-btn.active {
+      color: white;
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+      transform: translateY(-2px);
+      border-color: var(--primary-green);
+    }
+    
+    /* ألوان الأزرار النشطة (كلها أخضر بدرجات مختلفة) */
+    #tab-drone.active {
+      background: linear-gradient(135deg, var(--bright-green), var(--primary-green));
+    }
+    
+    #tab-robot.active {
+      background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    }
+    
+    #tab-remote.active {
+      background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+    }
+    
+    /* حاوية النموذج */
+    .model-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    /* عنوان النموذج الحالي */
+    .current-model-title {
+      font-size: 28px;
+      margin: 0 0 25px 0;
+      padding: 10px 0;
+      text-align: center;
+      width: 100%;
+      color: var(--primary-green);
+      text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+      transition: all 0.3s ease;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    
+    /* حاوية النموذج */
+    .model-container {
+      width: 100%;
+      height: 550px;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        inset 0 0 100px rgba(0,0,0,0.5),
+        0 15px 40px rgba(0,0,0,0.5);
+      border: 2px solid var(--primary-green);
+      transition: all 0.5s ease;
+    }
+    
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+    }
+    
+    /* تأثيرات للشاشات الصغيرة */
+    @media (max-width: 768px) {
+      .main-title { font-size: 26px; margin-bottom: 20px; }
+      .tabs-container { 
+        flex-direction: column; 
+        width: 90%; 
+        gap: 10px;
+      }
+      .tab-btn { 
+        width: 100%; 
+        padding: 16px;
+        font-size: 15px;
+        min-width: unset;
+      }
+      .model-container { height: 450px; }
+      .current-model-title { 
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .model-wrapper { min-height: 500px; }
+    }
+    
+    @media (max-width: 480px) {
+      .model-container { height: 350px; }
+      .main-title { font-size: 22px; }
+      .current-model-title { font-size: 20px; }
+    }
+    
+    /* تأثير ظهور النموذج */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0.5; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* مؤشر التحميل */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--primary-green);
+      font-size: 18px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px 30px;
+      border-radius: 10px;
+      border: 1px solid var(--primary-green);
+    }
+  </style>
+</head>
+<body>
+  <h1 class="main-title">FARM BOT 3D</h1>
+  
+  <div class="tabs-container">
+    <button class="tab-btn active" id="tab-drone">DRONE FARM 8OT</button>
+    <button class="tab-btn" id="tab-robot">ROBOT FARM 80T</button>
+    <button class="tab-btn" id="tab-remote">REMOTE FARM 80T</button>
+  </div>
+  
+  <div class="model-wrapper">
+    <h2 id="model-title" class="current-model-title">DRONE FARM 8OT</h2>
+    
+    <div class="model-container fade-in">
+      <div id="loading" class="loading" style="display: none;">جاري التحميل...</div>
+      <model-viewer
+        id="model-viewer"
+        src="DR.glb"
+        alt="Drone Farm 8OT"
+        auto-rotate
+        camera-controls
+        shadow-intensity="1"
+        exposure="1">
+      </model-viewer>
+    </div>
+  </div>
+
+  <script>
+    // الحصول على العناصر
+    const modelViewer = document.getElementById('model-viewer');
+    const modelTitle = document.getElementById('model-title');
+    const modelContainer = document.querySelector('.model-container');
+    const tabDrone = document.getElementById('tab-drone');
+    const tabRobot = document.getElementById('tab-robot');
+    const tabRemote = document.getElementById('tab-remote');
+    const loading = document.getElementById('loading');
+    
+    // معلومات النماذج (بدون نص إضافي)
+    const models = {
+      drone: {
+        file: 'DR.glb',
+        name: 'DRONE FARM 8OT',
+        alt: 'Drone Farm 8OT'
+      },
+      robot: {
+        file: '3R.glb',
+        name: 'ROBOT FARM 80T',
+        alt: 'Robot Farm 80T'
+      },
+      remote: {
+        file: 'RE.glb',
+        name: 'REMOTE FARM 80T',
+        alt: 'Remote Farm 80T'
+      }
+    };
+    
+    // دالة للتبديل بين النماذج
+    function switchModel(modelType) {
+      const model = models[modelType];
+      
+      // تحديث الأزرار
+      [tabDrone, tabRobot, tabRemote].forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.getElementById(`tab-${modelType}`).classList.add('active');
+      
+      // تحديث العنوان فقط
+      modelTitle.textContent = model.name;
+      
+      // إظهار مؤشر التحميل
+      loading.style.display = 'block';
+      modelContainer.classList.remove('fade-in');
+      
+      // تغيير النموذج
+      setTimeout(() => {
+        modelViewer.src = model.file;
+        modelViewer.alt = model.alt;
+        
+        // إخفاء التحميل بعد تحميل النموذج
+        setTimeout(() => {
+          loading.style.display = 'none';
+          modelContainer.classList.add('fade-in');
+        }, 800);
+      }, 300);
+    }
+    
+    // أحداث النقر على الأزرار
+    tabDrone.addEventListener('click', () => switchModel('drone'));
+    tabRobot.addEventListener('click', () => switchModel('robot'));
+    tabRemote.addEventListener('click', () => switchModel('remote'));
+    
+    // إخفاء التحميل عند اكتمال تحميل النموذج
+    modelViewer.addEventListener('load', () => {
+      loading.style.display = 'none';
+    });
+    
+    // عند وجود خطأ في تحميل النموذج
+    modelViewer.addEventListener('error', () => {
+      loading.textContent = 'حدث خطأ في تحميل النموذج';
+      setTimeout(() => {
+        loading.style.display = 'none';
+      }, 2000);
+    });
+    
+    // عرض النموذج الأول (الدرون) عند تحميل الصفحة
+    window.addEventListener('load', () => {
+      modelContainer.classList.add('fade-in');
+      switchModel('drone');
+    });
+  </script>
+</body>
+</html>
