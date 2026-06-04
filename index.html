@@ -6,8 +6,9 @@
     <title>FARM 8OT — Intelligent Agricultural Robot | Jordan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
     <style>
         :root {
             --bg-deep: #020208;
@@ -23,6 +24,7 @@
             --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             --font-display: 'Orbitron', 'Space Grotesk', sans-serif;
             --font-body: 'Inter', 'Space Grotesk', sans-serif;
+            --font-ar: 'Cairo', 'Inter', sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -33,6 +35,20 @@
             overflow-x: hidden;
             line-height: 1.7;
         }
+        body.lang-ar {
+            font-family: var(--font-ar);
+            direction: rtl;
+        }
+        body.lang-ar .nav-links { flex-direction: row-reverse; }
+        body.lang-ar .nav-inner { flex-direction: row-reverse; }
+        body.lang-ar .hero-content { text-align: center; }
+        body.lang-ar .section-label { text-align: right; }
+        body.lang-ar .section-title { text-align: right; }
+        body.lang-ar .section-desc { text-align: right; margin-left: auto; }
+        body.lang-ar .read-more-btn { margin-left: 0; margin-right: 0; }
+        body.lang-ar .hero-buttons { flex-direction: row-reverse; }
+        body.lang-ar .scroll-indicator span { letter-spacing: 0; }
+
         #particleCanvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events: none; }
 
         .nav {
@@ -54,13 +70,31 @@
         .nav-links a:hover::after { width:100%; }
         .nav-cta { padding:0.5rem 1.2rem; border:1px solid rgba(255,255,255,0.3); border-radius:50px; color:#fff; text-decoration:none; font-size:0.8rem; font-weight:600; transition:0.3s; }
         .nav-cta:hover { border-color:#fff; background:rgba(255,255,255,0.05); }
+
+        /* Language toggle */
+        .lang-toggle {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: 0.3s;
+            font-family: var(--font-body);
+        }
+        .lang-toggle:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
+
         .menu-toggle { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; background:none; border:none; padding:5px; }
         .menu-toggle span { display:block; width:24px; height:2px; background:#fff; border-radius:2px; }
 
         .hero {
             position: relative; z-index: 1; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; overflow: hidden;
         }
-        .hero-video-wrapper { position: absolute; top: -20%; left: 0; width: 100%; height: 140%; }
+        .hero-video-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .hero-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.45) contrast(1.1); }
         .hero-overlay { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 20%, rgba(2,2,8,0.85) 90%); z-index: 0; }
         .hero-content { position:relative; z-index:1; max-width:900px; text-align:center; }
@@ -84,6 +118,31 @@
         .section-title { font-family:var(--font-display); font-size:clamp(1.8rem, 5vw, 2.8rem); color:#fff; margin-bottom:0.8rem; line-height:1.2; }
         .section-desc { color:var(--text-secondary); max-width:600px; font-size:0.95rem; }
 
+        .truncated-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .truncated-text.expanded {
+            -webkit-line-clamp: unset;
+            overflow: visible;
+        }
+        .read-more-btn {
+            background: transparent;
+            border: 1px solid var(--green-particle);
+            color: var(--green-particle);
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .read-more-btn:hover { background: var(--green-particle); color: #000; }
+
         .innovations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
         .innovation-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 20px; padding: 2rem; transition: 0.3s; display: flex; flex-direction: column; }
         .innovation-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
@@ -100,7 +159,7 @@
         }
         .innovation-card:hover img { filter: brightness(1.1); transform: scale(1.02); }
         .innovation-card h3 { font-family: var(--font-display); color: #fff; font-size: 1.2rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-card); padding-bottom: 0.6rem; }
-        .innovation-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; flex: 1; }
+        .innovation-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
 
         .team-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:2rem; max-width:800px; margin:2.5rem auto 0; }
         .team-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:20px; padding:2rem 1.5rem; text-align:center; }
@@ -169,14 +228,17 @@
     <nav class="nav" id="navbar">
         <div class="nav-inner">
             <a href="#" class="nav-logo"><span class="logo-dot"></span>FARM 8OT</a>
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+            <div style="display:flex; align-items:center; gap:1rem;">
+                <button class="lang-toggle" id="langToggle">🇸🇦 العربية</button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+            </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#about">What is FARM8OT?</a></li>
-                <li><a href="#innovations">Innovations</a></li>
-                <li><a href="#versions">Versions</a></li>
-                <li><a href="#models">3D Models</a></li>
-                <li><a href="#team">Team</a></li>
-                <li><a href="#instagram" class="nav-cta">Instagram</a></li>
+                <li><a href="#about" data-key="navAbout">What is FARM8OT?</a></li>
+                <li><a href="#innovations" data-key="navInnovations">Innovations</a></li>
+                <li><a href="#versions" data-key="navVersions">Versions</a></li>
+                <li><a href="#models" data-key="navModels">3D Models</a></li>
+                <li><a href="#team" data-key="navTeam">Team</a></li>
+                <li><a href="#instagram" class="nav-cta" data-key="navInsta">Instagram</a></li>
             </ul>
         </div>
     </nav>
@@ -190,61 +252,72 @@
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content reveal">
-            <div class="hero-badge"><span class="badge-dot"></span> Designed & Built in Jordan</div>
+            <div class="hero-badge"><span class="badge-dot"></span> <span data-key="heroBadge">Designed & Built in Jordan</span></div>
             <h1 class="hero-title">FARM<br><span class="highlight">8OT</span></h1>
-            <p class="hero-subtitle">Simulating bee buzzing through sound waves.</p>
+            <p class="hero-subtitle" data-key="heroSubtitle">Simulating bee buzzing through sound waves.</p>
             <div class="hero-buttons">
-                <a href="#about" class="btn-primary">Discover More</a>
-                <a href="#innovations" class="btn-outline">View Innovations</a>
+                <a href="#about" class="btn-primary" data-key="heroBtn1">Discover More</a>
+                <a href="#innovations" class="btn-outline" data-key="heroBtn2">View Innovations</a>
             </div>
         </div>
-        <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><span>Scroll</span><div class="scroll-line"></div></div>
+        <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><span data-key="scroll">Scroll</span><div class="scroll-line"></div></div>
     </section>
 
     <section class="section" id="about">
-        <div class="section-label reveal">// What is FARM8OT?</div>
-        <h2 class="section-title reveal">Redefining Pollination<br>With Sound & AI</h2>
-        <p class="section-desc reveal" style="max-width:800px; margin-bottom:1.5rem;">
-            FARM8OT is an intelligent agricultural system developed to address the decline in pollination efficiency in certain crops due to the reduction of bee populations and natural pollinators caused by intensive pesticide use and environmental factors. The project mimics the natural vibrations produced by bees during pollination using artificial intelligence, robotics, and drones. The system identifies plants with flowers ready for pollination through image analysis, then directs a drone equipped with targeted sound‑wave vibrations to stimulate pollen transfer within the flower. FARM8OT increases crop productivity, reduces the need for manual pollination, and offers an innovative solution supporting the future of smart agriculture and food sustainability.
-        </p>
+        <div class="section-label reveal" data-key="aboutLabel">// What is FARM8OT?</div>
+        <h2 class="section-title reveal" data-key="aboutTitle">Redefining Pollination<br>With Sound & AI</h2>
+        <div class="truncated-text reveal" id="aboutText">
+            <p data-key="aboutDesc">
+                FARM8OT is an intelligent agricultural system developed to address the decline in pollination efficiency in certain crops due to the reduction of bee populations and natural pollinators caused by intensive pesticide use and environmental factors. The project mimics the natural vibrations produced by bees during pollination using artificial intelligence, robotics, and drones. The system identifies plants with flowers ready for pollination through image analysis, then directs a drone equipped with targeted sound‑wave vibrations to stimulate pollen transfer within the flower. FARM8OT increases crop productivity, reduces the need for manual pollination, and offers an innovative solution supporting the future of smart agriculture and food sustainability.
+            </p>
+        </div>
+        <button class="read-more-btn reveal" id="readMoreAboutBtn" data-key="readMore">Read More</button>
     </section>
 
     <section class="section" id="innovations">
-        <div class="section-label reveal">// Key Innovations</div>
-        <h2 class="section-title reveal">Breakthrough Technologies<br>Behind Farm 8OT</h2>
+        <div class="section-label reveal" data-key="innLabel">// Key Innovations</div>
+        <h2 class="section-title reveal" data-key="innTitle">Breakthrough Technologies<br>Behind Farm 8OT</h2>
         <div class="innovations-grid reveal">
-            <div class="innovation-card">
-                <!-- الصورة الأولى: الجزء السفلي هو المهم، تم ضبط object-position ليكون bottom center -->
+            <div class="innovation-card" id="innovation1">
                 <img src="https://j.top4top.io/p_3807xcjfc1.jpeg" alt="Computer Vision AI" loading="lazy" style="object-position: bottom center;">
-                <h3>🧠 Sipeed Maix RISC‑V Edge AI</h3>
-                <p>
-                    The innovative core of the project lies in its custom‑designed computer vision system. A dedicated AI camera and processor were developed as an integrated standalone unit on a single board using the Sipeed Maix RISC‑V Edge controller, delivering an exceptional computing power of 1 TOPS. The key innovation is the ability to process and analyze data locally at the edge with extreme speed, eliminating the need for external cloud servers. This enables the robot to run advanced Ultralytics YOLOv8 algorithms efficiently, granting the system immediate autonomous capability to identify plant species and accurately determine plant age based solely on visual input.
-                </p>
+                <h3 data-key="inn1Title">🧠 Sipeed Maix RISC‑V Edge AI</h3>
+                <div class="truncated-text" id="innovationText1">
+                    <p data-key="inn1Desc">
+                        The innovative core of the project lies in its custom‑designed computer vision system. A dedicated AI camera and processor were developed as an integrated standalone unit on a single board using the Sipeed Maix RISC‑V Edge controller, delivering an exceptional computing power of 1 TOPS. The key innovation is the ability to process and analyze data locally at the edge with extreme speed, eliminating the need for external cloud servers. This enables the robot to run advanced Ultralytics YOLOv8 algorithms efficiently, granting the system immediate autonomous capability to identify plant species and accurately determine plant age based solely on visual input.
+                    </p>
+                </div>
+                <button class="read-more-btn" id="readMoreBtn1" data-key="readMore">Read More</button>
             </div>
-            <div class="innovation-card">
+            <div class="innovation-card" id="innovation2">
                 <img src="https://k.top4top.io/p_3807kj4bo2.jpeg" alt="Suspension System" loading="lazy">
-                <h3>🚀 Advanced All‑Terrain Suspension</h3>
-                <p>
-                    The second innovation is the advanced mechanical design of the robot's chassis, specifically the six‑wheel suspension system. Inspired by NASA's Perseverance rover rocker‑bogie mechanism, this custom‑engineered suspension equally distributes weight across all six wheels and provides exceptional stability during motion. It ensures continuous ground contact even when traversing rough agricultural terrain and uneven slopes. This innovative engineering grants the robot superior kinematic flexibility and the ability to overcome obstacles smoothly, guaranteeing uninterrupted field operation while protecting the control boards and AI camera from excessive vibration.
-                </p>
+                <h3 data-key="inn2Title">🚀 Advanced All‑Terrain Suspension</h3>
+                <div class="truncated-text" id="innovationText2">
+                    <p data-key="inn2Desc">
+                        The second innovation is the advanced mechanical design of the robot's chassis, specifically the six‑wheel suspension system. Inspired by NASA's Perseverance rover rocker‑bogie mechanism, this custom‑engineered suspension equally distributes weight across all six wheels and provides exceptional stability during motion. It ensures continuous ground contact even when traversing rough agricultural terrain and uneven slopes. This innovative engineering grants the robot superior kinematic flexibility and the ability to overcome obstacles smoothly, guaranteeing uninterrupted field operation while protecting the control boards and AI camera from excessive vibration.
+                    </p>
+                </div>
+                <button class="read-more-btn" id="readMoreBtn2" data-key="readMore">Read More</button>
             </div>
-            <div class="innovation-card">
+            <div class="innovation-card" id="innovation3">
                 <img src="https://h.top4top.io/p_380712iua1.jpeg" alt="Sound Wave Technology" loading="lazy">
-                <h3>🔊 Targeted Sound‑Wave Technology</h3>
-                <p>
-                    This innovation represents an engineering leap in contactless mechanical energy transfer. It employs Acoustic Beamforming using a software‑controlled array of acoustic emitters to focus sound energy into a narrow, precisely directed beam rather than dispersing randomly. The scientific value lies in its ability to generate induced resonance vibrations at the target when the focused beam impacts, with frequencies tuned between 200 Hz and 350 Hz. This technique mimics the natural bio‑frequencies that stimulate mechanical interaction in target objects with high efficiency from a safe distance, serving as a revolutionary non‑contact alternative to traditional mechanical methods, completely protecting sensitive targets from physical tearing or damage.
-                </p>
+                <h3 data-key="inn3Title">🔊 Targeted Sound‑Wave Technology</h3>
+                <div class="truncated-text" id="innovationText3">
+                    <p data-key="inn3Desc">
+                        This innovation represents an engineering leap in contactless mechanical energy transfer. It employs Acoustic Beamforming using a software‑controlled array of acoustic emitters to focus sound energy into a narrow, precisely directed beam rather than dispersing randomly. The scientific value lies in its ability to generate induced resonance vibrations at the target when the focused beam impacts, with frequencies tuned between 200 Hz and 350 Hz. This technique mimics the natural bio‑frequencies that stimulate mechanical interaction in target objects with high efficiency from a safe distance, serving as a revolutionary non‑contact alternative to traditional mechanical methods, completely protecting sensitive targets from physical tearing or damage.
+                    </p>
+                </div>
+                <button class="read-more-btn" id="readMoreBtn3" data-key="readMore">Read More</button>
             </div>
         </div>
     </section>
 
     <section class="section" id="versions">
-        <div class="section-label reveal">// Project Versions</div>
-        <h2 class="section-title reveal">Evolution of FARM8OT</h2>
+        <div class="section-label reveal" data-key="verLabel">// Project Versions</div>
+        <h2 class="section-title reveal" data-key="verTitle">Evolution of FARM8OT</h2>
         <div class="versions-grid reveal">
             <div class="version-card">
                 <h3>FARM8OT V1</h3>
-                <p>The first prototype of the project, development started in early April 2025 and continued until mid‑May. This initial version was limited to fully manual movement control and plant type identification through color differentiation. It served as the foundation stone for the entire project.</p>
+                <p data-key="v1Desc">The first prototype of the project, development started in early April 2025 and continued until mid‑May. This initial version was limited to fully manual movement control and plant type identification through color differentiation. It served as the foundation stone for the entire project.</p>
                 <div class="version-images">
                     <img src="https://j.top4top.io/p_38071varw1.jpeg" alt="V1 Image 1" loading="lazy">
                     <img src="https://k.top4top.io/p_3807aplo62.jpeg" alt="V1 Image 2" loading="lazy">
@@ -252,7 +325,7 @@
             </div>
             <div class="version-card">
                 <h3>FARM8OT V2</h3>
-                <p>Development began in early July 2025 and lasted until mid‑June 2026. This second version was a breakthrough that transformed the project from a rudimentary stage to an advanced system. It introduced a six‑wheel robot with a suspension inspired by NASA's Perseverance rover, and employed advanced AI through a custom‑designed Sipeed Maix RISC‑V Edge AI processor and camera (1 TOPS). The robot became semi‑autonomous, capable of distinguishing plant types and growth stages using Ultralytics YOLOv8 algorithms. The key innovation was replacing ground‑based pollination with drone‑based targeted sound waves, marking a qualitative leap in the project.</p>
+                <p data-key="v2Desc">Development began in early July 2025 and lasted until mid‑June 2026. This second version was a breakthrough that transformed the project from a rudimentary stage to an advanced system. It introduced a six‑wheel robot with a suspension inspired by NASA's Perseverance rover, and employed advanced AI through a custom‑designed Sipeed Maix RISC‑V Edge AI processor and camera (1 TOPS). The robot became semi‑autonomous, capable of distinguishing plant types and growth stages using Ultralytics YOLOv8 algorithms. The key innovation was replacing ground‑based pollination with drone‑based targeted sound waves, marking a qualitative leap in the project.</p>
                 <div class="version-images">
                     <img src="https://l.top4top.io/p_3807wf5wf3.jpeg" alt="V2 Image 1" loading="lazy">
                     <img src="https://a.top4top.io/p_38076z3fd4.jpeg" alt="V2 Image 2" loading="lazy">
@@ -260,37 +333,37 @@
             </div>
             <div class="version-card">
                 <h3>FARM8OT V3</h3>
-                <p>The third version will focus on developing the drone system and building a network connecting hundreds of drones to implement the next‑generation idea (which cannot be disclosed for intellectual property reasons). Development is expected to begin in early September.</p>
+                <p data-key="v3Desc">The third version will focus on developing the drone system and building a network connecting hundreds of drones to implement the next‑generation idea (which cannot be disclosed for intellectual property reasons). Development is expected to begin in early September.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="models">
-        <div class="section-label reveal">// Interactive 3D Models</div>
-        <h2 class="section-title reveal">Explore Our Hardware</h2>
-        <p class="section-desc reveal" style="margin-bottom:1rem;">Click and drag to rotate, scroll to zoom.</p>
+        <div class="section-label reveal" data-key="modelsLabel">// Interactive 3D Models</div>
+        <h2 class="section-title reveal" data-key="modelsTitle">Explore Our Hardware</h2>
+        <p class="section-desc reveal" style="margin-bottom:1rem;" data-key="modelsDesc">Click and drag to rotate, scroll to zoom.</p>
         <div class="models-grid reveal">
-            <div class="model-card"><model-viewer src="3R.glb" alt="Farm 8OT Robot" auto-rotate camera-controls shadow-intensity="0.6" environment-image="neutral" exposure="0.8" class="model-viewer" loading="lazy" reveal="auto"></model-viewer><div class="model-label">🤖 Farm 8OT Robot</div></div>
-            <div class="model-card"><model-viewer src="RE.glb" alt="Remote Control" auto-rotate camera-controls shadow-intensity="0.6" environment-image="neutral" exposure="0.8" class="model-viewer" loading="lazy" reveal="auto"></model-viewer><div class="model-label">🎮 Remote Control</div></div>
-            <div class="model-card"><model-viewer src="DR.glb" alt="Drone" auto-rotate camera-controls shadow-intensity="0.6" environment-image="neutral" exposure="0.8" class="model-viewer" loading="lazy" reveal="auto"></model-viewer><div class="model-label">🛸 Farm 8OT Drone</div></div>
+            <div class="model-card"><model-viewer src="3R.glb" alt="Farm 8OT Robot" auto-rotate camera-controls shadow-intensity="0.6" environment-image="neutral" exposure="0.8" class="model-viewer" loading="lazy" reveal="auto"></model-viewer><div class="model-label" data-key="model1">🤖 Farm 8OT Robot</div></div>
+            <div class="model-card"><model-viewer src="RE.glb" alt="Remote Control" auto-rotate camera-controls shadow-intensity="0.6" environment-image="neutral" exposure="0.8" class="model-viewer" loading="lazy" reveal="auto"></model-viewer><div class="model-label" data-key="model2">🎮 Remote Control</div></div>
+            <div class="model-card"><model-viewer src="DR.glb" alt="Drone" auto-rotate camera-controls shadow-intensity="0.6" environment-image="neutral" exposure="0.8" class="model-viewer" loading="lazy" reveal="auto"></model-viewer><div class="model-label" data-key="model3">🛸 Farm 8OT Drone</div></div>
         </div>
     </section>
 
     <section class="section" id="team">
-        <div class="section-label reveal" style="text-align:center;">// The Creators</div>
-        <h2 class="section-title reveal" style="text-align:center;">Meet The Team</h2>
+        <div class="section-label reveal" style="text-align:center;" data-key="teamLabel">// The Creators</div>
+        <h2 class="section-title reveal" style="text-align:center;" data-key="teamTitle">Meet The Team</h2>
         <div class="team-grid reveal">
             <div class="team-card">
                 <img src="https://k.top4top.io/p_3807kzi8z2.jpeg" alt="Abdulrahman Al-Maaitah" class="team-avatar" loading="lazy">
                 <h3>Abdulrahman Al-Maaitah</h3>
-                <div class="team-role">Co-Founder</div>
-                <p class="team-desc">Responsible for Programming, Website Development, and Artificial Intelligence Systems.</p>
+                <div class="team-role" data-key="role1">Co-Founder</div>
+                <p class="team-desc" data-key="desc1">Responsible for Programming, Website Development, and Artificial Intelligence Systems.</p>
             </div>
             <div class="team-card">
                 <img src="https://j.top4top.io/p_3807gplyq1.jpeg" alt="Haitham Al-Maaitah" class="team-avatar" loading="lazy">
                 <h3>Haitham Al-Maaitah</h3>
-                <div class="team-role">Co-Founder</div>
-                <p class="team-desc">Responsible for Mechanical Design, CAD System Development, and PCB System Development.</p>
+                <div class="team-role" data-key="role2">Co-Founder</div>
+                <p class="team-desc" data-key="desc2">Responsible for Mechanical Design, CAD System Development, and PCB System Development.</p>
             </div>
         </div>
     </section>
@@ -301,19 +374,177 @@
         </video>
         <div class="insta-overlay"></div>
         <div class="insta-content">
-            <div class="section-label">// Stay Connected</div>
-            <h2 class="section-title" style="font-size:2.5rem;">Ready to Transform<br>Your Farming?</h2>
-            <p class="section-desc" style="margin:0 auto 1.5rem; color: rgba(255,255,255,0.9);">Farm 8OT is the perfect partner for smarter, more efficient, and sustainable agriculture. Follow our journey on Instagram for the latest updates, behind-the-scenes, and more!</p>
-            <a href="https://www.instagram.com/farm8ot" target="_blank" class="instagram-btn">📷 Follow @Farm8ot</a>
+            <div class="section-label" data-key="instaLabel">// Stay Connected</div>
+            <h2 class="section-title" style="font-size:2.5rem;" data-key="instaTitle">Ready to Transform<br>Your Farming?</h2>
+            <p class="section-desc" style="margin:0 auto 1.5rem; color: rgba(255,255,255,0.9);" data-key="instaDesc">Farm 8OT is the perfect partner for smarter, more efficient, and sustainable agriculture. Follow our journey on Instagram for the latest updates, behind-the-scenes, and more!</p>
+            <a href="https://www.instagram.com/farm8ot" target="_blank" class="instagram-btn" data-key="instaBtn">📷 Follow @Farm8ot</a>
         </div>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2026 Farm 8OT. All Rights Reserved. Designed & Built in Jordan by Abdulrahman & Haitham Al-Maaitah.</p>
+        <p data-key="footer">&copy; 2026 Farm 8OT. All Rights Reserved. Designed & Built in Jordan by Abdulrahman & Haitham Al-Maaitah.</p>
     </footer>
 
     <script>
         (function() {
+            // Translations object
+            const translations = {
+                en: {
+                    navAbout: "What is FARM8OT?",
+                    navInnovations: "Innovations",
+                    navVersions: "Versions",
+                    navModels: "3D Models",
+                    navTeam: "Team",
+                    navInsta: "Instagram",
+                    heroBadge: "Designed & Built in Jordan",
+                    heroSubtitle: "Simulating bee buzzing through sound waves.",
+                    heroBtn1: "Discover More",
+                    heroBtn2: "View Innovations",
+                    scroll: "Scroll",
+                    aboutLabel: "// What is FARM8OT?",
+                    aboutTitle: "Redefining Pollination<br>With Sound & AI",
+                    aboutDesc: "FARM8OT is an intelligent agricultural system developed to address the decline in pollination efficiency in certain crops due to the reduction of bee populations and natural pollinators caused by intensive pesticide use and environmental factors. The project mimics the natural vibrations produced by bees during pollination using artificial intelligence, robotics, and drones. The system identifies plants with flowers ready for pollination through image analysis, then directs a drone equipped with targeted sound‑wave vibrations to stimulate pollen transfer within the flower. FARM8OT increases crop productivity, reduces the need for manual pollination, and offers an innovative solution supporting the future of smart agriculture and food sustainability.",
+                    readMore: "Read More",
+                    readLess: "Read Less",
+                    innLabel: "// Key Innovations",
+                    innTitle: "Breakthrough Technologies<br>Behind Farm 8OT",
+                    inn1Title: "🧠 Sipeed Maix RISC‑V Edge AI",
+                    inn1Desc: "The innovative core of the project lies in its custom‑designed computer vision system. A dedicated AI camera and processor were developed as an integrated standalone unit on a single board using the Sipeed Maix RISC‑V Edge controller, delivering an exceptional computing power of 1 TOPS. The key innovation is the ability to process and analyze data locally at the edge with extreme speed, eliminating the need for external cloud servers. This enables the robot to run advanced Ultralytics YOLOv8 algorithms efficiently, granting the system immediate autonomous capability to identify plant species and accurately determine plant age based solely on visual input.",
+                    inn2Title: "🚀 Advanced All‑Terrain Suspension",
+                    inn2Desc: "The second innovation is the advanced mechanical design of the robot's chassis, specifically the six‑wheel suspension system. Inspired by NASA's Perseverance rover rocker‑bogie mechanism, this custom‑engineered suspension equally distributes weight across all six wheels and provides exceptional stability during motion. It ensures continuous ground contact even when traversing rough agricultural terrain and uneven slopes. This innovative engineering grants the robot superior kinematic flexibility and the ability to overcome obstacles smoothly, guaranteeing uninterrupted field operation while protecting the control boards and AI camera from excessive vibration.",
+                    inn3Title: "🔊 Targeted Sound‑Wave Technology",
+                    inn3Desc: "This innovation represents an engineering leap in contactless mechanical energy transfer. It employs Acoustic Beamforming using a software‑controlled array of acoustic emitters to focus sound energy into a narrow, precisely directed beam rather than dispersing randomly. The scientific value lies in its ability to generate induced resonance vibrations at the target when the focused beam impacts, with frequencies tuned between 200 Hz and 350 Hz. This technique mimics the natural bio‑frequencies that stimulate mechanical interaction in target objects with high efficiency from a safe distance, serving as a revolutionary non‑contact alternative to traditional mechanical methods, completely protecting sensitive targets from physical tearing or damage.",
+                    verLabel: "// Project Versions",
+                    verTitle: "Evolution of FARM8OT",
+                    v1Desc: "The first prototype of the project, development started in early April 2025 and continued until mid‑May. This initial version was limited to fully manual movement control and plant type identification through color differentiation. It served as the foundation stone for the entire project.",
+                    v2Desc: "Development began in early July 2025 and lasted until mid‑June 2026. This second version was a breakthrough that transformed the project from a rudimentary stage to an advanced system. It introduced a six‑wheel robot with a suspension inspired by NASA's Perseverance rover, and employed advanced AI through a custom‑designed Sipeed Maix RISC‑V Edge AI processor and camera (1 TOPS). The robot became semi‑autonomous, capable of distinguishing plant types and growth stages using Ultralytics YOLOv8 algorithms. The key innovation was replacing ground‑based pollination with drone‑based targeted sound waves, marking a qualitative leap in the project.",
+                    v3Desc: "The third version will focus on developing the drone system and building a network connecting hundreds of drones to implement the next‑generation idea (which cannot be disclosed for intellectual property reasons). Development is expected to begin in early September.",
+                    modelsLabel: "// Interactive 3D Models",
+                    modelsTitle: "Explore Our Hardware",
+                    modelsDesc: "Click and drag to rotate, scroll to zoom.",
+                    model1: "🤖 Farm 8OT Robot",
+                    model2: "🎮 Remote Control",
+                    model3: "🛸 Farm 8OT Drone",
+                    teamLabel: "// The Creators",
+                    teamTitle: "Meet The Team",
+                    role1: "Co-Founder",
+                    desc1: "Responsible for Programming, Website Development, and Artificial Intelligence Systems.",
+                    role2: "Co-Founder",
+                    desc2: "Responsible for Mechanical Design, CAD System Development, and PCB System Development.",
+                    instaLabel: "// Stay Connected",
+                    instaTitle: "Ready to Transform<br>Your Farming?",
+                    instaDesc: "Farm 8OT is the perfect partner for smarter, more efficient, and sustainable agriculture. Follow our journey on Instagram for the latest updates, behind-the-scenes, and more!",
+                    instaBtn: "📷 Follow @Farm8ot",
+                    footer: "© 2026 Farm 8OT. All Rights Reserved. Designed & Built in Jordan by Abdulrahman & Haitham Al-Maaitah."
+                },
+                ar: {
+                    navAbout: "ما هو FARM8OT؟",
+                    navInnovations: "الابتكارات",
+                    navVersions: "الإصدارات",
+                    navModels: "نماذج ثلاثية الأبعاد",
+                    navTeam: "الفريق",
+                    navInsta: "إنستغرام",
+                    heroBadge: "صُمم وصُنع في الأردن",
+                    heroSubtitle: "محاكاة طنين النحل باستخدام الموجات الصوتية.",
+                    heroBtn1: "اكتشف المزيد",
+                    heroBtn2: "عرض الابتكارات",
+                    scroll: "اسحب",
+                    aboutLabel: "// ما هو FARM8OT؟",
+                    aboutTitle: "إعادة تعريف التلقيح<br>باستخدام الصوت والذكاء الاصطناعي",
+                    aboutDesc: "FARM8OT هو نظام زراعي ذكي طُوِّر لمعالجة مشكلة انخفاض كفاءة التلقيح في بعض المحاصيل الزراعية نتيجة تراجع أعداد النحل والملقحات الطبيعية بسبب الاستخدام المكثف للمبيدات الحشرية والعوامل البيئية الأخرى. يعتمد المشروع على محاكاة الاهتزازات الطبيعية التي ينتجها النحل أثناء عملية التلقيح باستخدام تقنيات الذكاء الاصطناعي والروبوتات والطائرات المسيّرة. يقوم النظام بتحديد النباتات التي تحتوي على أزهار جاهزة للتلقيح من خلال تحليل الصور، ثم يوجه طائرة مسيّرة مزودة بنظام اهتزازات صوتية موجهة لتحفيز انتقال حبوب اللقاح داخل الزهرة. يساهم FARM8OT في زيادة إنتاجية المحاصيل وتقليل الحاجة إلى التلقيح اليدوي، ويقدم حلاً مبتكراً يدعم مستقبل الزراعة الذكية والاستدامة الغذائية.",
+                    readMore: "عرض المزيد",
+                    readLess: "عرض أقل",
+                    innLabel: "// الابتكارات الرئيسية",
+                    innTitle: "تقنيات ثورية<br>خلف Farm 8OT",
+                    inn1Title: "🧠 معالج Sipeed Maix RISC‑V Edge للذكاء الاصطناعي",
+                    inn1Desc: "يبرز الجانب الابتكاري والنوعي للمشروع في تطوير نظام الرؤية الحاسوبية؛ حيث تم تصميم وتصنيع كاميرا ومعالج الذكاء الاصطناعي معاً كمنظومة مستقلة ومتكاملة على لوحة واحدة باستخدام المتحكم Sipeed Maix RISC-V Edge بقدرة معالجة حاسوبية فائقة تصل إلى 1TOPS. وتكمن القيمة الابتكاريه في هذا النظام في القدرة على معالجة البيانات وتحليلها محلياً عند الحافة (Edge Computing) بسرعة استثنائية ودون الحاجة للاتصال بخوادم خارجية، مما ساعد على جعل نظام التحكم في الروبوت شبه آلي بالكامل. ويمتلك هذا الابتكار القدرة العالية على تشغيل خوارزميات YOLOv8 المتقدمة من شركة Ultralytics بكفاءة عالية، مما يمنح المنظومة القدرة الذاتية الفورية على تمييز أنواع النباتات وتحديد عمر النبات بدقة متناهية بناءً على الرؤية البصرية.",
+                    inn2Title: "🚀 نظام التعليق الحركي المتقدم للتضاريس الوعرة",
+                    inn2Desc: "يبرز الابتكار الثاني للمشروع في التصميم الميكانيكي المتقدم لهيكل الروبوت، وتحديداً في تطوير نظام التعليق وحركة العجلات. حيث تم تصميم وتصنيع نظام تعليق متطور لست عجلات، مستوحى هندسياً من آلية مركبة وكالة ناسا الفضائية (Perseverance). تكمن القيمة الابتكارية في هذا النظام في قدرته العالية على توزيع الوزن بالتساوي على جميع العجلات الست وتأمين ثبات استثنائي للروبوت أثناء حركته، مما يضمن ملامسة جميع العجلات لسطح الأرض باستمرار حتى عند اجتياز التضاريس الزراعية الوعرة والمنحدرات غير المستوية. هذا التصميم الهندسي المبتكر يمنح الروبوت مرونة حركية فائقة وقدرة على تخطي العقبات بسلاسة، مما يضمن استمرارية العمل الميداني بكفاءة وأمان، ويحافظ على استقرار بوردات التحكم وكاميرا الذكاء الاصطناعي أثناء التنقل.",
+                    inn3Title: "🔊 تقنية الموجات الصوتية الموجهة",
+                    inn3Desc: "مثل هذا الابتكار قفزة هندسية في آلية نقل الطاقة الميكانيكية عن بُعد وبطريقة لامسية بالكامل. وتعتمد هذه التقنية على توظيف مبدأ 'تشكيل الشعاع الصوتي' (Acoustic Beamforming)، حيث يتم استخدام مصفوفة من البواعث الصوتية المحكومة برمجياً للتحكم في تداخل الموجات، مما يؤدي إلى تركيز الطاقة الصوتية في شعاع ضيق وموجه بدقة عالية نحو الهدف، بدلاً من انتشارها العشوائي في المحيط. وتستند القيمة العلمية لهذا الابتكار إلى قدرته على توليد اهتزازات رنينية مستحثة (Induced Resonance) عند اصطدام الشعاع الموجه بالهدف، حيث تم ضبط الترددات لتتراوح بين 200Hz و 350Hz. تكمن أهمية هذه التقنية في محاكاة الترددات الحيوية الطبيعية التي تحفز التفاعل الميكانيكي في الأجسام المستهدفة بكفاءة عالية ومن مسافة آمنة. ويعد هذا الابتكار حلاً هندسياً ثورياً كبديل للوسائل الميكانيكية التقليدية، حيث يضمن نقل الطاقة اللازمة لتحقيق الاهتزاز المطلوب دون أي تماس فيزيائي، مما يوفر حماية تامة للأهداف الحساسة من التمزق أو التلف المادي، ويفتح آفاقاً جديدة في تطبيقات التفاعل عن بُعد فائقة الدقة.",
+                    verLabel: "// إصدارات المشروع",
+                    verTitle: "تطور FARM8OT",
+                    v1Desc: "يُعدّ FARM8OT V1 النسخة الأولية من المشروع، والتي تم البدء في تطويرها في بداية شهر نيسان من سنة 2025 واستمر تطويرها حتى منتصف شهر مايو، حيث كان هو النقطة التي انطلق منها المشروع. وكان هذا الروبوت في نسخته الأولية يقتصر على القدرة على التحرك عن طريق التحكم اليدوي بالكامل، ومعرفة نوع النبات عن طريق التمييز بين الألوان، وهو يعد بمثابة حجر الأساس للمشروع.",
+                    v2Desc: "يُعدّ FARM8OT V2 النسخة الثانية من المشروع، والتي تم البدء في تطويرها في بداية شهر يوليو عام 2025 واستمرت حتى منتصف شهر يونيو عام 2026. ويعد هذا الإصدار الثاني هو الثورة التي نقلت المشروع من المرحلة البدائية إلى المشروع المتقدم؛ وذلك عن طريق تطوير روبوت بست عجلات بنظام تعليق مستوحى من مركبة ناسا Perseverance، واستخدام تقنيات ذكاء اصطناعي متطورة من خلال تصميم وتصنيع معالج وكاميرا الذكاء الاصطناعي بالمتحكم Sipeed Maix RISC-V Edge بقدرة 1TOPS، والذي ساعد على جعل نظام التحكم في الروبوت شبه آلي بالكامل، بالإضافة إلى قدرة الروبوت على تمييز أنواع النباتات وأعمارها عن طريق استخدام خوارزميات YOLOv8 من شركة Ultralytics. وتكمن نقطة الاختلاف الجوهرية عن الإصدار السابق في استبدال طريقة التلقيح باستخدام الروبوت الأرضي وتطويرها للعمل من خلال الدرونز واستخدام الموجات الصوتية الموجهة. ويعد هذا الإصدار الثاني بمثابة الانتقالة النوعية في مسيرة المشروع.",
+                    v3Desc: "تُعد FARM8OT V3 النسخة الثالثة من المشروع، وهي النسخة التي سوف تركز على تطوير نظام الطائرات المسيرة (الدرونز)، وتطوير شبكة تربط مئات الطائرات لتنفيذ الفكرة القادمة (والتي لا يمكن الإفصاح عنها لأغراض حقوق الملكية الفكرية). ويرجح البدء في تطوير هذا النظام في بداية شهر سبتمبر.",
+                    modelsLabel: "// نماذج تفاعلية ثلاثية الأبعاد",
+                    modelsTitle: "استكشف أجهزتنا",
+                    modelsDesc: "انقر واسحب للتدوير، مرر للتكبير.",
+                    model1: "🤖 روبوت Farm 8OT",
+                    model2: "🎮 جهاز التحكم عن بعد",
+                    model3: "🛸 طائرة Farm 8OT",
+                    teamLabel: "// المؤسسون",
+                    teamTitle: "تعرف على الفريق",
+                    role1: "مؤسس مشارك",
+                    desc1: "مسؤول عن البرمجة، تطوير الموقع الإلكتروني، وأنظمة الذكاء الاصطناعي.",
+                    role2: "مؤسس مشارك",
+                    desc2: "مسؤول عن التصميم الميكانيكي، تطوير نظام CAD، وتطوير نظام PCB.",
+                    instaLabel: "// ابق على تواصل",
+                    instaTitle: "هل أنت مستعد<br>لتطوير زراعتك؟",
+                    instaDesc: "FARM8OT هو الشريك المثالي لزراعة أكثر ذكاءً وكفاءة واستدامة. تابع رحلتنا على إنستغرام للحصول على آخر التحديثات وكواليس العمل والمزيد!",
+                    instaBtn: "📷 تابع @Farm8ot",
+                    footer: "© 2026 Farm 8OT. جميع الحقوق محفوظة. صُمم وصُنع في الأردن بواسطة عبدالرحمن وهيثم المعايطة."
+                }
+            };
+
+            let currentLang = 'en';
+
+            // Apply language
+            function applyLanguage(lang) {
+                currentLang = lang;
+                const t = translations[lang];
+                
+                // Update body class for RTL/LTR
+                document.body.classList.toggle('lang-ar', lang === 'ar');
+                
+                // Update all elements with data-key attribute
+                document.querySelectorAll('[data-key]').forEach(el => {
+                    const key = el.getAttribute('data-key');
+                    if (t[key]) {
+                        if (el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'A' || el.tagName === 'BUTTON' || el.tagName === 'DIV' || el.tagName === 'H2' || el.tagName === 'H3') {
+                            el.innerHTML = t[key];
+                        } else {
+                            el.textContent = t[key];
+                        }
+                    }
+                });
+                
+                // Update read more buttons text based on expanded state
+                updateReadMoreButtons();
+                
+                // Update lang toggle button text
+                const langToggle = document.getElementById('langToggle');
+                if (langToggle) {
+                    langToggle.innerHTML = lang === 'en' ? '🇸🇦 العربية' : '🇬🇧 English';
+                }
+                
+                // Save preference
+                localStorage.setItem('farm8ot-lang', lang);
+            }
+
+            function updateReadMoreButtons() {
+                const t = translations[currentLang];
+                document.querySelectorAll('.read-more-btn').forEach(btn => {
+                    const textEl = btn.previousElementSibling;
+                    if (textEl && textEl.classList.contains('truncated-text')) {
+                        btn.textContent = textEl.classList.contains('expanded') ? t.readLess : t.readMore;
+                    }
+                });
+            }
+
+            // Language toggle
+            document.getElementById('langToggle').addEventListener('click', () => {
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+                applyLanguage(newLang);
+            });
+
+            // Load saved language preference
+            const savedLang = localStorage.getItem('farm8ot-lang');
+            if (savedLang === 'ar') {
+                applyLanguage('ar');
+            }
+
+            // Particle canvas
             const canvas = document.getElementById('particleCanvas');
             const ctx = canvas.getContext('2d');
             let w, h, particles = [];
@@ -326,11 +557,37 @@
                 requestAnimationFrame(animate);
             }
             animate();
+
+            // Navbar scroll
             window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
+
+            // Mobile menu
             document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('active'));
             document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('active')));
+
+            // Read more functionality
+            function setupReadMore(btnId, textId) {
+                const btn = document.getElementById(btnId);
+                const text = document.getElementById(textId);
+                if (btn && text) {
+                    btn.addEventListener('click', () => {
+                        text.classList.toggle('expanded');
+                        const t = translations[currentLang];
+                        btn.textContent = text.classList.contains('expanded') ? t.readLess : t.readMore;
+                    });
+                }
+            }
+
+            setupReadMore('readMoreAboutBtn', 'aboutText');
+            setupReadMore('readMoreBtn1', 'innovationText1');
+            setupReadMore('readMoreBtn2', 'innovationText2');
+            setupReadMore('readMoreBtn3', 'innovationText3');
+
+            // Scroll reveal
             const observer = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); observer.unobserve(e.target); } }) }, { threshold:0.1 });
             document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+            // Smooth scroll
             document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){ const t=document.querySelector(this.getAttribute('href')); if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); } }));
         })();
     </script>
