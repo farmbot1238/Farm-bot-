@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="google-site-verification" content="NT0SMG2FY2Shk66u_xwqFMBBrWqExgPw9BoD6BYgB4E" />
     <title>FARM 8OT — Intelligent Agricultural Robot | Jordan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,8 +60,9 @@
         .hero {
             position: relative; z-index: 1; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; overflow: hidden;
         }
-        .hero-video { position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1; filter:brightness(0.35) contrast(1.1); }
-        .hero-overlay { position:absolute; inset:0; background: radial-gradient(circle at center, transparent 20%, rgba(2,2,8,0.85) 90%); z-index:0; }
+        .hero-video-wrapper { position: absolute; top: -20%; left: 0; width: 100%; height: 140%; }
+        .hero-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.45) contrast(1.1); }
+        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 20%, rgba(2,2,8,0.85) 90%); z-index: 0; }
         .hero-content { position:relative; z-index:1; max-width:900px; text-align:center; }
         .hero-badge { display:inline-block; padding:0.4rem 1rem; border:1px solid rgba(255,255,255,0.2); border-radius:50px; font-size:0.7rem; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:1.5rem; backdrop-filter:blur(10px); background:rgba(255,255,255,0.02); }
         .hero-badge .badge-dot { display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--green-particle); margin-right:0.4rem; box-shadow:0 0 8px var(--green-glow); animation:logoPulse 2s infinite; }
@@ -84,65 +84,55 @@
         .section-title { font-family:var(--font-display); font-size:clamp(1.8rem, 5vw, 2.8rem); color:#fff; margin-bottom:0.8rem; line-height:1.2; }
         .section-desc { color:var(--text-secondary); max-width:600px; font-size:0.95rem; }
 
-        .features-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:1.5rem; margin-top:2.5rem; }
-        .feature-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:20px; overflow:hidden; transition:0.3s; }
-        .feature-card:hover { border-color:rgba(255,255,255,0.2); transform:translateY(-4px); }
-        .feature-img { width:100%; height:160px; object-fit:cover; border-bottom:1px solid var(--border-card); filter:brightness(0.8); transition:0.4s; }
-        .feature-card:hover .feature-img { filter:brightness(1); }
-        .feature-body { padding:1.2rem; }
-        .feature-body h3 { font-family:var(--font-display); color:#fff; margin-bottom:0.4rem; font-size:0.95rem; }
-        .feature-body p { color:var(--text-muted); font-size:0.8rem; }
-
-        .specs-strip { display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:1rem; margin-top:2.5rem; }
-        .spec-item { background:var(--bg-card); border:1px solid var(--border-card); border-radius:16px; padding:1.5rem 1rem; text-align:center; }
-        .spec-value { font-family:var(--font-display); font-size:1.8rem; color:#fff; }
-        .spec-label { color:var(--text-muted); font-size:0.7rem; margin-top:0.3rem; text-transform:uppercase; }
-
-        .team-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; max-width:700px; margin:2.5rem auto 0; }
-        .team-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:20px; padding:2rem 1.5rem; text-align:center; }
-        .team-avatar { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,0.04); margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; font-size:2rem; }
-        .team-card h3 { color:#fff; font-family:var(--font-display); font-size:1.1rem; }
-        .team-card p { color:var(--text-muted); font-size:0.8rem; }
-
-        /* بطاقات الصور مع زوايا خفيفة وتجاوب */
-        .card1 { transform: rotate(-4deg); }
-        .card2 { transform: rotate(-2deg); }
-        .card3 { transform: rotate(0deg); }
-        .card4 { transform: rotate(2deg); }
-        .card5 { transform: rotate(4deg); }
-
-        .gallery-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:1rem; margin-top:2rem; }
-        .gallery-grid .card1, .gallery-grid .card2, .gallery-grid .card3, .gallery-grid .card4 {
-            transition: transform 0.3s ease;
-        }
-        .gallery-img { width:100%; border-radius:16px; border:1px solid var(--border-card); object-fit:cover; height:200px; filter:brightness(0.9); transition:0.4s; }
-        .gallery-img:hover { filter:brightness(1.05); transform:scale(1.02); border-color:rgba(255,255,255,0.3); }
-        .gallery-caption { text-align:center; color:var(--text-muted); font-size:0.75rem; margin-top:0.4rem; }
-
-        .models-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .model-card {
-            background: var(--bg-card);
+        .innovations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
+        .innovation-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 20px; padding: 2rem; transition: 0.3s; display: flex; flex-direction: column; }
+        .innovation-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .innovation-card img {
+            width: 100%;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
             border: 1px solid var(--border-card);
-            border-radius: 20px;
-            overflow: hidden;
-            width: 300px;
-            max-width: 100%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transition: var(--transition-smooth);
+            object-fit: cover;
+            height: 300px;
+            object-position: top center;
+            filter: brightness(0.9);
+            transition: 0.3s;
         }
+        .innovation-card:hover img { filter: brightness(1.1); transform: scale(1.02); }
+        .innovation-card h3 { font-family: var(--font-display); color: #fff; font-size: 1.2rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-card); padding-bottom: 0.6rem; }
+        .innovation-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; flex: 1; }
+
+        .team-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:2rem; max-width:800px; margin:2.5rem auto 0; }
+        .team-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:20px; padding:2rem 1.5rem; text-align:center; }
+        .team-avatar { width:120px; height:120px; border-radius:50%; object-fit:cover; margin:0 auto 1.2rem; display:block; border: 2px solid var(--border-card); transition: 0.3s; }
+        .team-card:hover .team-avatar { border-color: var(--green-particle); box-shadow: 0 0 25px rgba(74,222,128,0.4); }
+        .team-card h3 { color:#fff; font-family:var(--font-display); font-size:1.2rem; margin-bottom:0.3rem; }
+        .team-role { color:var(--green-particle); font-size:0.9rem; font-weight:600; margin-bottom:0.6rem; }
+        .team-desc { color:var(--text-muted); font-size:0.8rem; line-height:1.5; }
+
+        .versions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
+        .version-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 20px; padding: 1.8rem; transition: 0.3s; display: flex; flex-direction: column; }
+        .version-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .version-card h3 { font-family: var(--font-display); color: #fff; margin-bottom: 1rem; font-size: 1.3rem; border-bottom: 1px solid var(--border-card); padding-bottom: 0.6rem; }
+        .version-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; flex: 1; }
+        .version-images { display: flex; gap: 0.8rem; margin-top: 1.2rem; flex-wrap: wrap; }
+        .version-images img { width: calc(50% - 0.4rem); border-radius: 12px; object-fit: cover; height: 150px; border: 1px solid var(--border-card); filter: brightness(0.9); transition: 0.3s; }
+        .version-images img:hover { filter: brightness(1.1); transform: scale(1.03); }
+
+        .models-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem; }
+        .model-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 20px; overflow: hidden; width: 300px; max-width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: var(--transition-smooth); }
         .model-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); }
         .model-viewer { width: 100%; height: 300px; background: #000; --poster-color: transparent; --progress-bar-color: #4ade80; }
         .model-label { text-align: center; padding: 0.8rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--text-secondary); border-top: 1px solid var(--border-card); background: rgba(0,0,0,0.3); }
 
-        .instagram-cta { text-align: center; padding: 3rem 1.5rem; background: linear-gradient(to bottom, transparent, rgba(10,10,24,0.6)); border-top: 1px solid var(--border-subtle); }
-        .instagram-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; font-weight: 700; font-size: 1rem; border-radius: 50px; text-decoration: none; transition: 0.3s; }
-        .instagram-btn:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(220,39,67,0.4); }
+        .instagram-cta {
+            position: relative; padding: 6rem 1.5rem; text-align: center; overflow: hidden; margin: 0; border-radius: 0; max-width: 100%; min-height: 550px; display: flex; align-items: center; justify-content: center; background: transparent; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
+        }
+        .insta-video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) contrast(1.1) saturate(1.2); z-index: -1; }
+        .insta-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(2,2,8,0.7) 0%, rgba(10,10,24,0.5) 100%); z-index: 0; }
+        .insta-content { position: relative; z-index: 1; max-width: 700px; }
+        .instagram-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.9rem 2.5rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; font-weight: 700; font-size: 1.1rem; border-radius: 50px; text-decoration: none; transition: 0.3s; margin-top: 1.5rem; }
+        .instagram-btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(220,39,67,0.5); }
 
         .footer { border-top:1px solid var(--border-subtle); padding:2rem 1.5rem; text-align:center; color:var(--text-muted); font-size:0.8rem; position:relative; z-index:1; }
         .footer a { color:var(--text-secondary); text-decoration:none; }
@@ -150,27 +140,26 @@
         .reveal { opacity:0; transform:translateY(30px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .reveal.revealed { opacity:1; transform:translateY(0); }
 
-        /* تجاوب الهاتف */
         @media (max-width: 768px) {
             .nav-links { display:none; position:fixed; inset:0; background:rgba(2,2,8,0.95); flex-direction:column; justify-content:center; align-items:center; gap:2rem; z-index:999; }
             .nav-links.active { display:flex; }
             .menu-toggle { display:flex; }
-            .hero { padding: 1.5rem 1rem; }
-            .hero-title { font-size: clamp(2.5rem, 10vw, 4rem); }
-            .gallery-grid { grid-template-columns: 1fr; gap: 1.8rem; }
-            .card1, .card2, .card3, .card4, .card5 { transform: rotate(0deg) !important; } /* إزالة التدوير على الموبايل */
-            .gallery-img { height: auto; max-height: 280px; }
+            .team-grid { grid-template-columns: 1fr; }
             .models-grid { flex-direction: column; align-items: center; }
             .model-card { width: 100%; }
             .model-viewer { height: 280px; }
-            .features-grid { grid-template-columns: 1fr; }
-            .specs-strip { grid-template-columns: 1fr 1fr; }
             .section { padding: 3rem 1rem; }
+            .versions-grid { grid-template-columns: 1fr; }
+            .version-images img { height: 130px; }
+            .innovations-grid { grid-template-columns: 1fr; }
+            .innovation-card img { height: 250px; }
+            .instagram-cta { min-height: 450px; padding: 4rem 1rem; }
         }
         @media (max-width: 480px) {
             .hero-buttons { flex-direction: column; align-items: center; }
             .btn-primary, .btn-outline { width: 80%; text-align: center; }
-            .specs-strip { grid-template-columns: 1fr; }
+            .version-images img { height: 110px; }
+            .innovation-card img { height: 220px; }
         }
     </style>
 </head>
@@ -182,10 +171,9 @@
             <a href="#" class="nav-logo"><span class="logo-dot"></span>FARM 8OT</a>
             <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#about">About</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#specs">Specs</a></li>
-                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">What is FARM8OT?</a></li>
+                <li><a href="#innovations">Innovations</a></li>
+                <li><a href="#versions">Versions</a></li>
                 <li><a href="#models">3D Models</a></li>
                 <li><a href="#team">Team</a></li>
                 <li><a href="#instagram" class="nav-cta">Instagram</a></li>
@@ -194,37 +182,86 @@
     </nav>
 
     <section class="hero" id="hero">
-        <video class="hero-video" autoplay loop muted playsinline>
-            <source src="https://i.top4top.io/m_3802834yl1.mp4" type="video/mp4">
-            <img src="https://i.ibb.co/FLtcZJSQ/F84.jpg" alt="Farm 8OT">
-        </video>
+        <div class="hero-video-wrapper">
+            <video class="hero-video" autoplay loop muted playsinline>
+                <source src="https://i.top4top.io/m_3802834yl1.mp4" type="video/mp4">
+                <img src="https://i.ibb.co/FLtcZJSQ/F84.jpg" alt="Farm 8OT">
+            </video>
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-content reveal">
             <div class="hero-badge"><span class="badge-dot"></span> Designed & Built in Jordan</div>
             <h1 class="hero-title">FARM<br><span class="highlight">8OT</span></h1>
-            <p class="hero-subtitle">The intelligent agricultural robot — revolutionizing farming through autonomous monitoring, precise crop analysis, and seamless human-robot collaboration.</p>
+            <p class="hero-subtitle">Simulating bee buzzing through sound waves.</p>
             <div class="hero-buttons">
                 <a href="#about" class="btn-primary">Discover More</a>
-                <a href="#features" class="btn-outline">View Capabilities</a>
+                <a href="#innovations" class="btn-outline">View Innovations</a>
             </div>
         </div>
         <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><span>Scroll</span><div class="scroll-line"></div></div>
     </section>
 
     <section class="section" id="about">
-        <div class="section-label reveal">// About The Project</div>
-        <h2 class="section-title reveal">Redefining Agriculture<br>With Intelligent Robotics</h2>
-        <p class="section-desc reveal" style="margin-bottom:1.5rem;">Farm 8OT is an intelligent agricultural robot fully designed and built in <strong style="color:#fff;">Jordan</strong> by <strong style="color:#fff;">Abdulrahman Al-Maaytah</strong> and <strong style="color:#fff;">Haitham Al-Maaytah</strong>. It monitors crops, detects harmful plants, makes autonomous decisions, and can be controlled remotely.</p>
+        <div class="section-label reveal">// What is FARM8OT?</div>
+        <h2 class="section-title reveal">Redefining Pollination<br>With Sound & AI</h2>
+        <p class="section-desc reveal" style="max-width:800px; margin-bottom:1.5rem;">
+            FARM8OT is an intelligent agricultural system developed to address the decline in pollination efficiency in certain crops due to the reduction of bee populations and natural pollinators caused by intensive pesticide use and environmental factors. The project mimics the natural vibrations produced by bees during pollination using artificial intelligence, robotics, and drones. The system identifies plants with flowers ready for pollination through image analysis, then directs a drone equipped with targeted sound‑wave vibrations to stimulate pollen transfer within the flower. FARM8OT increases crop productivity, reduces the need for manual pollination, and offers an innovative solution supporting the future of smart agriculture and food sustainability.
+        </p>
     </section>
 
-    <section class="section" style="padding-top:1rem;">
-        <div class="section-label reveal">// Meet Farm 8OT</div>
-        <h2 class="section-title reveal">The Real Robot</h2>
-        <div class="gallery-grid reveal">
-            <div class="card1"><img src="https://i.ibb.co/FLtcZJSQ/F84.jpg" alt="Farm 8OT" class="gallery-img" loading="lazy"><p class="gallery-caption">Farm 8OT in action</p></div>
-            <div class="card2"><img src="https://i.ibb.co/TMLVSQ8G/F82.jpg" alt="Farm 8OT" class="gallery-img" loading="lazy"><p class="gallery-caption">Close-up view</p></div>
-            <div class="card3"><img src="https://i.ibb.co/B20wzrXp/F81.jpg" alt="Farm 8OT" class="gallery-img" loading="lazy"><p class="gallery-caption">Field deployment</p></div>
-            <div class="card4"><img src="https://i.ibb.co/FLtcZJSQ/F84.jpg" alt="Farm 8OT" class="gallery-img" loading="lazy"><p class="gallery-caption">Autonomous operation</p></div>
+    <section class="section" id="innovations">
+        <div class="section-label reveal">// Key Innovations</div>
+        <h2 class="section-title reveal">Breakthrough Technologies<br>Behind Farm 8OT</h2>
+        <div class="innovations-grid reveal">
+            <div class="innovation-card">
+                <!-- الصورة الأولى: الجزء السفلي هو المهم، تم ضبط object-position ليكون bottom center -->
+                <img src="https://j.top4top.io/p_3807xcjfc1.jpeg" alt="Computer Vision AI" loading="lazy" style="object-position: bottom center;">
+                <h3>🧠 Sipeed Maix RISC‑V Edge AI</h3>
+                <p>
+                    The innovative core of the project lies in its custom‑designed computer vision system. A dedicated AI camera and processor were developed as an integrated standalone unit on a single board using the Sipeed Maix RISC‑V Edge controller, delivering an exceptional computing power of 1 TOPS. The key innovation is the ability to process and analyze data locally at the edge with extreme speed, eliminating the need for external cloud servers. This enables the robot to run advanced Ultralytics YOLOv8 algorithms efficiently, granting the system immediate autonomous capability to identify plant species and accurately determine plant age based solely on visual input.
+                </p>
+            </div>
+            <div class="innovation-card">
+                <img src="https://k.top4top.io/p_3807kj4bo2.jpeg" alt="Suspension System" loading="lazy">
+                <h3>🚀 Advanced All‑Terrain Suspension</h3>
+                <p>
+                    The second innovation is the advanced mechanical design of the robot's chassis, specifically the six‑wheel suspension system. Inspired by NASA's Perseverance rover rocker‑bogie mechanism, this custom‑engineered suspension equally distributes weight across all six wheels and provides exceptional stability during motion. It ensures continuous ground contact even when traversing rough agricultural terrain and uneven slopes. This innovative engineering grants the robot superior kinematic flexibility and the ability to overcome obstacles smoothly, guaranteeing uninterrupted field operation while protecting the control boards and AI camera from excessive vibration.
+                </p>
+            </div>
+            <div class="innovation-card">
+                <img src="https://h.top4top.io/p_380712iua1.jpeg" alt="Sound Wave Technology" loading="lazy">
+                <h3>🔊 Targeted Sound‑Wave Technology</h3>
+                <p>
+                    This innovation represents an engineering leap in contactless mechanical energy transfer. It employs Acoustic Beamforming using a software‑controlled array of acoustic emitters to focus sound energy into a narrow, precisely directed beam rather than dispersing randomly. The scientific value lies in its ability to generate induced resonance vibrations at the target when the focused beam impacts, with frequencies tuned between 200 Hz and 350 Hz. This technique mimics the natural bio‑frequencies that stimulate mechanical interaction in target objects with high efficiency from a safe distance, serving as a revolutionary non‑contact alternative to traditional mechanical methods, completely protecting sensitive targets from physical tearing or damage.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="versions">
+        <div class="section-label reveal">// Project Versions</div>
+        <h2 class="section-title reveal">Evolution of FARM8OT</h2>
+        <div class="versions-grid reveal">
+            <div class="version-card">
+                <h3>FARM8OT V1</h3>
+                <p>The first prototype of the project, development started in early April 2025 and continued until mid‑May. This initial version was limited to fully manual movement control and plant type identification through color differentiation. It served as the foundation stone for the entire project.</p>
+                <div class="version-images">
+                    <img src="https://j.top4top.io/p_38071varw1.jpeg" alt="V1 Image 1" loading="lazy">
+                    <img src="https://k.top4top.io/p_3807aplo62.jpeg" alt="V1 Image 2" loading="lazy">
+                </div>
+            </div>
+            <div class="version-card">
+                <h3>FARM8OT V2</h3>
+                <p>Development began in early July 2025 and lasted until mid‑June 2026. This second version was a breakthrough that transformed the project from a rudimentary stage to an advanced system. It introduced a six‑wheel robot with a suspension inspired by NASA's Perseverance rover, and employed advanced AI through a custom‑designed Sipeed Maix RISC‑V Edge AI processor and camera (1 TOPS). The robot became semi‑autonomous, capable of distinguishing plant types and growth stages using Ultralytics YOLOv8 algorithms. The key innovation was replacing ground‑based pollination with drone‑based targeted sound waves, marking a qualitative leap in the project.</p>
+                <div class="version-images">
+                    <img src="https://l.top4top.io/p_3807wf5wf3.jpeg" alt="V2 Image 1" loading="lazy">
+                    <img src="https://a.top4top.io/p_38076z3fd4.jpeg" alt="V2 Image 2" loading="lazy">
+                </div>
+            </div>
+            <div class="version-card">
+                <h3>FARM8OT V3</h3>
+                <p>The third version will focus on developing the drone system and building a network connecting hundreds of drones to implement the next‑generation idea (which cannot be disclosed for intellectual property reasons). Development is expected to begin in early September.</p>
+            </div>
         </div>
     </section>
 
@@ -239,59 +276,40 @@
         </div>
     </section>
 
-    <section class="section" id="features">
-        <div class="section-label reveal">// Core Capabilities</div>
-        <h2 class="section-title reveal">What Farm 8OT Can Do</h2>
-        <div class="features-grid">
-            <div class="feature-card reveal"><img src="https://img.b2bpic.net/free-photo/grass-blade-with-water-drops_23-2147759119.jpg" alt="Growth" class="feature-img"><div class="feature-body"><h3>🌱 Growth Tracking</h3><p>Monitors crops continuously, tracking growth stages and identifying plants ready for harvest.</p></div></div>
-            <div class="feature-card reveal"><img src="https://img.b2bpic.net/free-photo/close-up-xanthosoma-leaves_53876-75098.jpg" alt="Disease" class="feature-img"><div class="feature-body"><h3>🛡️ Disease Detection</h3><p>Automatically detects harmful plants and diseases, removing them without damaging healthy crops.</p></div></div>
-            <div class="feature-card reveal"><img src="https://img.b2bpic.net/free-photo/3d-render-techno-background-with-male-head-programming-code_1048-5828.jpg" alt="AI" class="feature-img"><div class="feature-body"><h3>🧠 AI Decision Making</h3><p>Operates independently using AI to make accurate agricultural decisions based on real‑time data.</p></div></div>
-            <div class="feature-card reveal"><img src="https://img.b2bpic.net/free-photo/farmer-with-tablet-close-up_23-2148579698.jpg" alt="Remote" class="feature-img"><div class="feature-body"><h3>📡 Remote Monitoring</h3><p>Fully controllable from anywhere, giving farmers complete oversight of their fields.</p></div></div>
-            <div class="feature-card reveal"><img src="https://img.b2bpic.net/free-photo/side-view-elder-woman-sitting-wheat-field_23-2148579985.jpg" alt="Reports" class="feature-img"><div class="feature-body"><h3>📊 Detailed Reports</h3><p>Generates comprehensive reports on land and crop conditions for smarter planning.</p></div></div>
-            <div class="feature-card reveal"><img src="https://img.b2bpic.net/free-photo/smart-robotic-farmers-concept-robot-farmers-agriculture-technology-farm-automation_35913-2567.jpg" alt="Resource" class="feature-img"><div class="feature-body"><h3>♻️ Resource Optimization</h3><p>Reduces waste of water, fertilizers, and time — for truly sustainable farming.</p></div></div>
-        </div>
-    </section>
-
-    <section class="section" id="specs">
-        <div class="section-label reveal">// Technical Highlights</div>
-        <h2 class="section-title reveal">Built for Performance</h2>
-        <div class="specs-strip reveal">
-            <div class="spec-item"><div class="spec-value">24/7</div><div class="spec-label">Operation</div></div>
-            <div class="spec-item"><div class="spec-value">AI</div><div class="spec-label">Intelligence</div></div>
-            <div class="spec-item"><div class="spec-value">100%</div><div class="spec-label">Autonomous</div></div>
-            <div class="spec-item"><div class="spec-value">Remote</div><div class="spec-label">Control</div></div>
-        </div>
-    </section>
-
-    <section class="section" id="gallery">
-        <div class="section-label reveal">// Visual Gallery</div>
-        <h2 class="section-title reveal">More Farm 8OT Moments</h2>
-        <div class="gallery-grid reveal">
-            <div class="card1"><img src="https://img.b2bpic.net/free-photo/robot-drones-farming-field-sunset_23-2152000893.jpg" alt="Sunset" class="gallery-img" loading="lazy"></div>
-            <div class="card2"><img src="https://img.b2bpic.net/free-photo/robots-drones-agricultural-field-sunrise_23-2152000861.jpg" alt="Sunrise" class="gallery-img" loading="lazy"></div>
-            <div class="card3"><img src="https://img.b2bpic.net/free-photo/asian-woman-studying-different-plants-with-tablet_23-2148776799.jpg" alt="Research" class="gallery-img" loading="lazy"></div>
-            <div class="card4"><img src="https://img.b2bpic.net/free-photo/zoom-out-home-office-with-monitors-stock-market_482257-29630.jpg" alt="Dashboard" class="gallery-img" loading="lazy"></div>
-        </div>
-    </section>
-
     <section class="section" id="team">
         <div class="section-label reveal" style="text-align:center;">// The Creators</div>
         <h2 class="section-title reveal" style="text-align:center;">Meet The Team</h2>
         <div class="team-grid reveal">
-            <div class="team-card"><div class="team-avatar">👨‍💻</div><h3>Abdulrahman Al-Maaytah</h3><p>Co-Founder & Lead Engineer</p><p>📍 Jordan</p></div>
-            <div class="team-card"><div class="team-avatar">👨‍🔬</div><h3>Haitham Al-Maaytah</h3><p>Co-Founder & Systems Architect</p><p>📍 Jordan</p></div>
+            <div class="team-card">
+                <img src="https://k.top4top.io/p_3807kzi8z2.jpeg" alt="Abdulrahman Al-Maaitah" class="team-avatar" loading="lazy">
+                <h3>Abdulrahman Al-Maaitah</h3>
+                <div class="team-role">Co-Founder</div>
+                <p class="team-desc">Responsible for Programming, Website Development, and Artificial Intelligence Systems.</p>
+            </div>
+            <div class="team-card">
+                <img src="https://j.top4top.io/p_3807gplyq1.jpeg" alt="Haitham Al-Maaitah" class="team-avatar" loading="lazy">
+                <h3>Haitham Al-Maaitah</h3>
+                <div class="team-role">Co-Founder</div>
+                <p class="team-desc">Responsible for Mechanical Design, CAD System Development, and PCB System Development.</p>
+            </div>
         </div>
     </section>
 
-    <section id="instagram" class="instagram-cta reveal">
-        <div class="section-label">// Stay Connected</div>
-        <h2 class="section-title">Ready to Transform<br>Your Farming?</h2>
-        <p class="section-desc" style="margin:0 auto 1.5rem; max-width:550px;">Farm 8OT is the perfect partner for smarter, more efficient, and sustainable agriculture. Follow our journey on Instagram for the latest updates, behind-the-scenes, and more!</p>
-        <a href="https://www.instagram.com/farm8ot" target="_blank" class="instagram-btn">📷 Follow @Farm8ot</a>
-    </section>
+    <div id="instagram" class="instagram-cta reveal">
+        <video class="insta-video-bg" autoplay loop muted playsinline>
+            <source src="https://c.top4top.io/m_3807btrni1.mp4" type="video/mp4">
+        </video>
+        <div class="insta-overlay"></div>
+        <div class="insta-content">
+            <div class="section-label">// Stay Connected</div>
+            <h2 class="section-title" style="font-size:2.5rem;">Ready to Transform<br>Your Farming?</h2>
+            <p class="section-desc" style="margin:0 auto 1.5rem; color: rgba(255,255,255,0.9);">Farm 8OT is the perfect partner for smarter, more efficient, and sustainable agriculture. Follow our journey on Instagram for the latest updates, behind-the-scenes, and more!</p>
+            <a href="https://www.instagram.com/farm8ot" target="_blank" class="instagram-btn">📷 Follow @Farm8ot</a>
+        </div>
+    </div>
 
     <footer class="footer">
-        <p>&copy; 2026 Farm 8OT. Designed & Built in Jordan by Abdulrahman & Haitham Al-Maaytah.</p>
+        <p>&copy; 2026 Farm 8OT. All Rights Reserved. Designed & Built in Jordan by Abdulrahman & Haitham Al-Maaitah.</p>
     </footer>
 
     <script>
