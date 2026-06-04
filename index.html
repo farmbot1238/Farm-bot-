@@ -71,7 +71,6 @@
         .nav-cta { padding:0.5rem 1.2rem; border:1px solid rgba(255,255,255,0.3); border-radius:50px; color:#fff; text-decoration:none; font-size:0.8rem; font-weight:600; transition:0.3s; }
         .nav-cta:hover { border-color:#fff; background:rgba(255,255,255,0.05); }
 
-        /* Language toggle */
         .lang-toggle {
             background: transparent;
             border: 1px solid rgba(255,255,255,0.3);
@@ -159,7 +158,6 @@
         }
         .innovation-card:hover img { filter: brightness(1.1); transform: scale(1.02); }
         .innovation-card h3 { font-family: var(--font-display); color: #fff; font-size: 1.2rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-card); padding-bottom: 0.6rem; }
-        .innovation-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
 
         .team-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:2rem; max-width:800px; margin:2.5rem auto 0; }
         .team-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:20px; padding:2rem 1.5rem; text-align:center; }
@@ -173,7 +171,7 @@
         .version-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 20px; padding: 1.8rem; transition: 0.3s; display: flex; flex-direction: column; }
         .version-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         .version-card h3 { font-family: var(--font-display); color: #fff; margin-bottom: 1rem; font-size: 1.3rem; border-bottom: 1px solid var(--border-card); padding-bottom: 0.6rem; }
-        .version-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; flex: 1; }
+        .version-card .truncated-text p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
         .version-images { display: flex; gap: 0.8rem; margin-top: 1.2rem; flex-wrap: wrap; }
         .version-images img { width: calc(50% - 0.4rem); border-radius: 12px; object-fit: cover; height: 150px; border: 1px solid var(--border-card); filter: brightness(0.9); transition: 0.3s; }
         .version-images img:hover { filter: brightness(1.1); transform: scale(1.03); }
@@ -317,7 +315,10 @@
         <div class="versions-grid reveal">
             <div class="version-card">
                 <h3>FARM8OT V1</h3>
-                <p data-key="v1Desc">The first prototype of the project, development started in early April 2025 and continued until mid‑May. This initial version was limited to fully manual movement control and plant type identification through color differentiation. It served as the foundation stone for the entire project.</p>
+                <div class="truncated-text" id="versionText1">
+                    <p data-key="v1Desc">The first prototype of the project, development started in early April 2025 and continued until mid‑May. This initial version was limited to fully manual movement control and plant type identification through color differentiation. It served as the foundation stone for the entire project.</p>
+                </div>
+                <button class="read-more-btn" id="readMoreV1" data-key="readMore">Read More</button>
                 <div class="version-images">
                     <img src="https://j.top4top.io/p_38071varw1.jpeg" alt="V1 Image 1" loading="lazy">
                     <img src="https://k.top4top.io/p_3807aplo62.jpeg" alt="V1 Image 2" loading="lazy">
@@ -325,7 +326,10 @@
             </div>
             <div class="version-card">
                 <h3>FARM8OT V2</h3>
-                <p data-key="v2Desc">Development began in early July 2025 and lasted until mid‑June 2026. This second version was a breakthrough that transformed the project from a rudimentary stage to an advanced system. It introduced a six‑wheel robot with a suspension inspired by NASA's Perseverance rover, and employed advanced AI through a custom‑designed Sipeed Maix RISC‑V Edge AI processor and camera (1 TOPS). The robot became semi‑autonomous, capable of distinguishing plant types and growth stages using Ultralytics YOLOv8 algorithms. The key innovation was replacing ground‑based pollination with drone‑based targeted sound waves, marking a qualitative leap in the project.</p>
+                <div class="truncated-text" id="versionText2">
+                    <p data-key="v2Desc">Development began in early July 2025 and lasted until mid‑June 2026. This second version was a breakthrough that transformed the project from a rudimentary stage to an advanced system. It introduced a six‑wheel robot with a suspension inspired by NASA's Perseverance rover, and employed advanced AI through a custom‑designed Sipeed Maix RISC‑V Edge AI processor and camera (1 TOPS). The robot became semi‑autonomous, capable of distinguishing plant types and growth stages using Ultralytics YOLOv8 algorithms. The key innovation was replacing ground‑based pollination with drone‑based targeted sound waves, marking a qualitative leap in the project.</p>
+                </div>
+                <button class="read-more-btn" id="readMoreV2" data-key="readMore">Read More</button>
                 <div class="version-images">
                     <img src="https://l.top4top.io/p_3807wf5wf3.jpeg" alt="V2 Image 1" loading="lazy">
                     <img src="https://a.top4top.io/p_38076z3fd4.jpeg" alt="V2 Image 2" loading="lazy">
@@ -333,7 +337,10 @@
             </div>
             <div class="version-card">
                 <h3>FARM8OT V3</h3>
-                <p data-key="v3Desc">The third version will focus on developing the drone system and building a network connecting hundreds of drones to implement the next‑generation idea (which cannot be disclosed for intellectual property reasons). Development is expected to begin in early September.</p>
+                <div class="truncated-text" id="versionText3">
+                    <p data-key="v3Desc">The third version will focus on developing the drone system and building a network connecting hundreds of drones to implement the next‑generation idea (which cannot be disclosed for intellectual property reasons). Development is expected to begin in early September.</p>
+                </div>
+                <button class="read-more-btn" id="readMoreV3" data-key="readMore">Read More</button>
             </div>
         </div>
     </section>
@@ -387,7 +394,6 @@
 
     <script>
         (function() {
-            // Translations object
             const translations = {
                 en: {
                     navAbout: "What is FARM8OT?",
@@ -489,15 +495,10 @@
 
             let currentLang = 'en';
 
-            // Apply language
             function applyLanguage(lang) {
                 currentLang = lang;
                 const t = translations[lang];
-                
-                // Update body class for RTL/LTR
                 document.body.classList.toggle('lang-ar', lang === 'ar');
-                
-                // Update all elements with data-key attribute
                 document.querySelectorAll('[data-key]').forEach(el => {
                     const key = el.getAttribute('data-key');
                     if (t[key]) {
@@ -508,17 +509,9 @@
                         }
                     }
                 });
-                
-                // Update read more buttons text based on expanded state
                 updateReadMoreButtons();
-                
-                // Update lang toggle button text
                 const langToggle = document.getElementById('langToggle');
-                if (langToggle) {
-                    langToggle.innerHTML = lang === 'en' ? '🇸🇦 العربية' : '🇬🇧 English';
-                }
-                
-                // Save preference
+                if (langToggle) langToggle.innerHTML = lang === 'en' ? '🇸🇦 العربية' : '🇬🇧 English';
                 localStorage.setItem('farm8ot-lang', lang);
             }
 
@@ -532,19 +525,15 @@
                 });
             }
 
-            // Language toggle
             document.getElementById('langToggle').addEventListener('click', () => {
                 const newLang = currentLang === 'en' ? 'ar' : 'en';
                 applyLanguage(newLang);
             });
 
-            // Load saved language preference
             const savedLang = localStorage.getItem('farm8ot-lang');
-            if (savedLang === 'ar') {
-                applyLanguage('ar');
-            }
+            if (savedLang === 'ar') applyLanguage('ar');
 
-            // Particle canvas
+            // Canvas
             const canvas = document.getElementById('particleCanvas');
             const ctx = canvas.getContext('2d');
             let w, h, particles = [];
@@ -558,14 +547,11 @@
             }
             animate();
 
-            // Navbar scroll
             window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
-
-            // Mobile menu
             document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('active'));
             document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('active')));
 
-            // Read more functionality
+            // Read more setup for all sections
             function setupReadMore(btnId, textId) {
                 const btn = document.getElementById(btnId);
                 const text = document.getElementById(textId);
@@ -582,12 +568,12 @@
             setupReadMore('readMoreBtn1', 'innovationText1');
             setupReadMore('readMoreBtn2', 'innovationText2');
             setupReadMore('readMoreBtn3', 'innovationText3');
+            setupReadMore('readMoreV1', 'versionText1');
+            setupReadMore('readMoreV2', 'versionText2');
+            setupReadMore('readMoreV3', 'versionText3');
 
-            // Scroll reveal
             const observer = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); observer.unobserve(e.target); } }) }, { threshold:0.1 });
             document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-            // Smooth scroll
             document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){ const t=document.querySelector(this.getAttribute('href')); if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); } }));
         })();
     </script>
